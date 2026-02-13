@@ -1,39 +1,36 @@
-import { Checkbox, FormControlLabel } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 
 import AuthFrom from '../components/Auth/AuthFrom'
 import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
-
-type LoginSubmit = {
+type RegisterSubmit = {
     account: string,
     password: string,
-    remember: boolean
+    confirmPassword: string
 }
 
-const defaultValues: LoginSubmit = {
+const defaultValues: RegisterSubmit = {
     account: "",
     password: "",
-    remember: false
-
+    confirmPassword: ""
 }
 
-function LoginPage() {
+function RegisterPage() {
 
     const { t } = useTranslation()
-    const methods = useForm<LoginSubmit>({
+
+    const methods = useForm<RegisterSubmit>({
         defaultValues
     })
 
     const { control, handleSubmit } = methods
 
-    const submitData = (data: LoginSubmit) => {
+    const submitData = (data: RegisterSubmit) => {
         console.log(data);
     }
-
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} >
+        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("registerPage.register")}>
             <Controller
                 name="account"
                 control={control}
@@ -59,15 +56,15 @@ function LoginPage() {
                 )}
             />
             <Controller
-                name="remember"
+                name="confirmPassword"
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                    <FormControlLabel
-                        control={<Checkbox
-                            checked={field.value}
-                            onChange={(e) => field.onChange(e.target.checked)}
-                        />}
-                        label="Remember me"
+                    <InputComponent
+                        label="confirm password"
+                        value={field.value}
+                        onChange={field.onChange}
+                        helperText={error?.message}
+                        type={InputComponentTypes.PASSWORD}
                     />
                 )}
             />
@@ -75,4 +72,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage
+export default RegisterPage

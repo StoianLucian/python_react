@@ -1,15 +1,12 @@
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom"
+import AppRoutes from "./routing/AppRoutes";
+import "../i18n"
 
 
 function App() {
-  const navigate = useNavigate();
-
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login"/>
-
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   )
 }

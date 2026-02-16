@@ -4,9 +4,10 @@ import { Controller, useForm } from 'react-hook-form'
 import AuthFrom from '../components/Auth/AuthFrom'
 import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next';
+import { useLogin } from '../api/hooks/tanstack/useLogin';
 
 
-type LoginSubmit = {
+export type LoginSubmit = {
     account: string,
     password: string,
     remember: boolean
@@ -28,8 +29,15 @@ function LoginPage() {
 
     const { control, handleSubmit } = methods
 
-    const submitData = (data: LoginSubmit) => {
-        console.log(data);
+    const { mutateAsync } = useLogin()
+
+    const submitData = async (data: LoginSubmit) => {
+        try {
+            const test = await mutateAsync(data)
+        } catch (error) {
+
+        }
+
     }
 
     return (

@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
-import HomePage from '../pages/homePage'
-import RegisterPage from '../pages/registerPage'
-import LoginPage from '../pages/loginPage'
+import LoginPage from '../pages/LoginPage'
+import RegisterPage from '../pages/RegisterPage'
+import HomePage from '../pages/HomePAge'
 
 const routes = [{
     path: APP_PATHS.LOGIN,

@@ -2,7 +2,22 @@
   "loginPage": {
     "login": "Login"
   },
+
   "registerPage": {
-    "register": "Register"
+    "register": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password"
+  },
+
+  "errors": {
+    "isRequired": "{{field}} is required",
+    "invalidEmail": "Invalid email",
+    "passwordsDoNotMatch": "Passwords do not match"
+  },
+
+  "success": {
+    "accountCreated": "Account created successfully"
   }
 }

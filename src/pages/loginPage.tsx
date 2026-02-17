@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useLogin } from '../api/hooks/tanstack/useLogin';
 
 
-export type LoginSubmit = {
+export type LoginCredentials = {
     account: string,
     password: string,
     remember: boolean
 }
 
-const defaultValues: LoginSubmit = {
+const defaultValues: LoginCredentials = {
     account: "",
     password: "",
     remember: false
@@ -23,7 +23,7 @@ const defaultValues: LoginSubmit = {
 function LoginPage() {
 
     const { t } = useTranslation()
-    const methods = useForm<LoginSubmit>({
+    const methods = useForm<LoginCredentials>({
         defaultValues
     })
 
@@ -31,7 +31,7 @@ function LoginPage() {
 
     const { mutateAsync } = useLogin()
 
-    const submitData = async (data: LoginSubmit) => {
+    const submitData = async (data: LoginCredentials) => {
         try {
             const test = await mutateAsync(data)
         } catch (error) {

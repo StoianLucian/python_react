@@ -9,11 +9,13 @@ type InputComponentProps = {
     type?: string
     helperText?: string
     variant?: InputComponentVariants
+    error?: boolean
 }
 
 export enum InputComponentTypes {
     TEXT = "text",
-    PASSWORD = "password"
+    PASSWORD = "password",
+    EMAIL = "email"
 }
 
 export enum InputComponentVariants {
@@ -22,7 +24,7 @@ export enum InputComponentVariants {
     STANDARD = "standard"
 }
 
-function InputComponent({ value, onChange, label, type = InputComponentTypes.TEXT, helperText, variant = InputComponentVariants.OUTLINE }: InputComponentProps) {
+function InputComponent({ value, onChange, label, type = InputComponentTypes.TEXT, helperText, variant = InputComponentVariants.OUTLINE, error }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
     function handleInputType(type: InputComponentTypes) {
@@ -37,19 +39,33 @@ function InputComponent({ value, onChange, label, type = InputComponentTypes.TEX
             value={value}
             helperText={helperText}
             variant={variant}
-            slotProps={
-                type === InputComponentTypes.PASSWORD
-                    ? {
-                        input: {
-                            endAdornment: inputType === InputComponentTypes.PASSWORD
-                                ?
-                                <BsEye cursor="pointer" onClick={() => handleInputType(InputComponentTypes.TEXT)} />
-                                :
-                                <BsEyeSlash cursor="pointer" onClick={() => handleInputType(InputComponentTypes.PASSWORD)} />
-                        }
-                    }
-                    : undefined
-            }
+            error={!!error}
+            slotProps={{
+                formHelperText: {
+                    sx: {
+                        color: error ? 'red' : 'gray',
+                        fontSize: '0.875rem',
+                        fontWeight: error ? 600 : 400,
+                    },
+                },
+                ...(type === InputComponentTypes.PASSWORD && {
+                    input: {
+                        endAdornment:
+                            inputType === InputComponentTypes.PASSWORD ? (
+                                <BsEye
+                                    cursor="pointer"
+                                    onClick={() => handleInputType(InputComponentTypes.TEXT)}
+                                />
+                            ) : (
+                                <BsEyeSlash
+                                    cursor="pointer"
+                                    onClick={() => handleInputType(InputComponentTypes.PASSWORD)}
+                                />
+                            ),
+                    },
+                }
+                )
+            }}
         />
     )
 }

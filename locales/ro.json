@@ -3,6 +3,20 @@
     "login": "Autentificare"
   },
   "registerPage": {
-    "register": "Înregistrare"
+    "register": "Înregistrare",
+    "username": "Utilizator",
+    "email": "Email",
+    "password": "Parolă",
+    "confirmPassword": "Confirmă parola"
+  },
+
+  "errors": {
+    "isRequired": "{{field}} este obligatoriu",
+    "invalidEmail": "Email invalid",
+    "passwordsDoNotMatch": "Parolele nu se potrivesc"
+  },
+
+  "success": {
+    "accountCreated": "Utilizator creat cu succes"
   }
 }

@@ -1,5 +1,4 @@
 import type { LoginCredentials } from "../pages/LoginPage"
-import type { RegisterCredentials } from "../pages/RegisterPage"
 import { api } from "./axiosConfig"
 
 
@@ -15,7 +14,8 @@ export async function login(credentials: LoginCredentials) {
     try {
         const response = await api.post(AUTH_ROUTES.LOGIN, credentials)
 
-        return response
+
+        return response.data
     } catch (error) {
         throw error
     }

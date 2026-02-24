@@ -1,6 +1,17 @@
 {
+  "profileMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "ro": "Romanian",
+    "en": "English"
+  },
   "loginPage": {
-    "login": "Login"
+    "login": "Login",
+    "account": "Account",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "registerNewAccount": "Don't have an account? Click here"
   },
 
   "registerPage": {
@@ -8,13 +19,15 @@
     "username": "Username",
     "email": "Email",
     "password": "Password",
-    "confirmPassword": "Confirm password"
+    "confirmPassword": "Confirm password",
+    "aldreadyHaveAccount": "Already have an account? Click here"
   },
 
   "errors": {
     "isRequired": "{{field}} is required",
     "invalidEmail": "Invalid email",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "user_not_found": "User not found"
   },
 
   "success": {

@@ -4,8 +4,9 @@ import AuthFrom from '../components/Auth/AuthFrom'
 import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next'
 import { useRegister } from '../api/hooks/tanstack/useRegister'
-import { useNavigate } from 'react-router-dom'
 import { APP_PATHS } from '../routing/routes'
+import Stack from '@mui/material/Stack'
+import NavigationLink from '../components/navigationLink/NavigationLink'
 
 export type RegisterCredentials = {
     username: string,
@@ -114,6 +115,9 @@ function RegisterPage() {
                     />
                 )}
             />
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <NavigationLink to={APP_PATHS.LOGIN} linkText={t("registerPage.aldreadyHaveAccount")} />
+            </Stack>
         </AuthFrom>
     )
 }

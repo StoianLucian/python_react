@@ -1,10 +1,11 @@
-import { Checkbox, FormControlLabel } from '@mui/material'
+import { Checkbox, FormControlLabel, Stack } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
-
 import AuthFrom from '../components/Auth/AuthFrom'
 import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '../api/hooks/tanstack/useLogin';
+import { APP_PATHS } from '../routing/routes';
+import NavigationLink from '../components/navigationLink/NavigationLink';
 
 
 export type LoginCredentials = {
@@ -33,11 +34,12 @@ function LoginPage() {
 
     const submitData = async (data: LoginCredentials) => {
         try {
-            const test = await mutateAsync(data)
+            const user = await mutateAsync(data);
+
+            console.log(user);
         } catch (error) {
 
         }
-
     }
 
     return (
@@ -45,40 +47,47 @@ function LoginPage() {
             <Controller
                 name="account"
                 control={control}
+                rules={{ required: t("errors.isRequired", { field: t("loginPage.account") }) }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label="account"
+                        label={t("loginPage.account")}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
+                        error={!!error?.message}
                     />
                 )} />
             <Controller
                 name="password"
                 control={control}
+                rules={{ required: t("errors.isRequired", { field: t("loginPage.password") }) }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label="password"
+                        label={t("loginPage.password")}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
+                        error={!!error?.message}
                         type={InputComponentTypes.PASSWORD}
                     />
                 )}
             />
-            <Controller
-                name="remember"
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                    <FormControlLabel
-                        control={<Checkbox
-                            checked={field.value}
-                            onChange={(e) => field.onChange(e.target.checked)}
-                        />}
-                        label="Remember me"
-                    />
-                )}
-            />
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Controller
+                    name="remember"
+                    control={control}
+                    render={({ field }) => (
+                        <FormControlLabel
+                            control={<Checkbox
+                                checked={field.value}
+                                onChange={(e) => field.onChange(e.target.checked)}
+                            />}
+                            label={t("loginPage.rememberMe")}
+                        />
+                    )}
+                />
+                <NavigationLink to={APP_PATHS.REGISTER} linkText={t("loginPage.registerNewAccount")} />
+            </Stack>
         </AuthFrom>
     )
 }

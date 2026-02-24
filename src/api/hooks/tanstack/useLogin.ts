@@ -11,8 +11,14 @@ export function useLogin() {
             const response = await login(credentials); // credentials passed here
             return response;
         },
-        onError: (error) => {
-            toast("test")
+        onError: (error: any) => {
+            const errorCode = error.response?.data?.detail?.errorCode;
+            if (errorCode) {
+                const errorMessage = t(`errors.${errorCode}`);
+                toast(errorMessage, {type: "error"});
+            } else {
+                toast(t("errors.unknownError"), { type: "error" });
+            }
         }
     });
 }

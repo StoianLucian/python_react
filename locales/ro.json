@@ -1,19 +1,33 @@
 {
+  "profileMenu": {
+    "profile": "Profil",
+    "settings": "Setări",
+    "logout": "Deconectare",
+    "ro": "Română",
+    "en": "Engleză"
+  },
+
   "loginPage": {
-    "login": "Autentificare"
+    "login": "Autentificare",
+    "account": "Cont",
+    "password": "Parolă",
+    "rememberMe": "Tine-mă minte",
+    "registerNewAccount": "Nu ai un cont? Click aici"
   },
   "registerPage": {
     "register": "Înregistrare",
     "username": "Utilizator",
     "email": "Email",
     "password": "Parolă",
-    "confirmPassword": "Confirmă parola"
+    "confirmPassword": "Confirmă parola",
+    "aldreadyHaveAccount": "Ai deja un cont? Click aici"
   },
 
   "errors": {
     "isRequired": "{{field}} este obligatoriu",
     "invalidEmail": "Email invalid",
-    "passwordsDoNotMatch": "Parolele nu se potrivesc"
+    "passwordsDoNotMatch": "Parolele nu se potrivesc",
+    "user_not_found": "Utilizatorul nu a fost găsit"
   },
 
   "success": {

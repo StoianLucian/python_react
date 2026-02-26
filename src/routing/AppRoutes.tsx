@@ -14,13 +14,18 @@ const routes = [{
     path: APP_PATHS.REGISTER,
     element: <RegisterPage />,
     isPrivate: false
-}
-    ,
+},
 {
     path: APP_PATHS.HOME,
     element: <HomePage />,
     isPrivate: true
-}]
+},
+{
+    path: "*",
+    element: <>any page</>,
+    isPrivate: false
+}
+]
 
 const returnRoutes = () => {
     const appRoutes = routes.map((route) => {

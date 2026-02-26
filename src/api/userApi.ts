@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import type { RegisterCredentials } from "../pages/RegisterPage";
 import { api } from "./axiosConfig";
 

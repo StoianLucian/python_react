@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { login } from '../../authApi';
-import type { LoginCredentials } from '../../../pages/LoginPage';
+import { logout } from '../../authApi';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../authContext/AuthContext';
@@ -13,13 +12,13 @@ export type LoginResponse = {
     email: string
 }
 
-export function useLogin() {
+export function useLogout() {
     const navigate = useNavigate();
     const { setIsAuthenticated, setUser } = useAuthContext();
     const { t } = useTranslation();
-    return useMutation<LoginResponse, any, LoginCredentials>({
-        mutationFn: async (credentials) => {
-            const response = await login(credentials);
+    return useMutation({
+        mutationFn: async () => {
+            const response = await logout();
             return response;
         },
         onError: (error: any) => {
@@ -31,9 +30,16 @@ export function useLogin() {
             }
         },
         onSuccess(data) {
-            setIsAuthenticated(true);
-            setUser(data);
-            navigate(APP_PATHS.HOME);
+            if (data?.status === 200) {
+                toast(t('logout.success'), { type: 'success' });
+                setIsAuthenticated(false);
+                setUser(undefined);
+                navigate(APP_PATHS.LOGIN);
+            } else {
+                toast(t('logout.error'), { type: 'error' });
+            }
+
         }
+
     });
 }

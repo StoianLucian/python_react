@@ -40,6 +40,13 @@ function InputComponent({ value, onChange, label, type = InputComponentTypes.TEX
             helperText={helperText}
             variant={variant}
             error={!!error}
+            // autoComplete={
+            //     type === InputComponentTypes.PASSWORD
+            //         ? 'current-password'
+            //         : type === InputComponentTypes.EMAIL
+            //             ? 'email'
+            //             : undefined
+            // }
             slotProps={{
                 formHelperText: {
                     sx: {
@@ -62,6 +69,7 @@ function InputComponent({ value, onChange, label, type = InputComponentTypes.TEX
                                     onClick={() => handleInputType(InputComponentTypes.PASSWORD)}
                                 />
                             ),
+                        "aria-current": "true"
                     },
                 }
                 )

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useLogin } from '../api/hooks/tanstack/useLogin';
 import { APP_PATHS } from '../routing/routes';
 import NavigationLink from '../components/navigationLink/NavigationLink';
+import { useAuthContext } from '../authContext/AuthContext';
 
 
 export type LoginCredentials = {
@@ -28,15 +29,22 @@ function LoginPage() {
         defaultValues
     })
 
+    const { setUser, setIsAuthenticated } = useAuthContext()
+
     const { control, handleSubmit } = methods
 
-    const { mutateAsync } = useLogin()
+    const { mutateAsync: loginHandler } = useLogin()
+
+    function handleLogin(user: { id: string, username: string, email: string }) {
+        setUser(user)
+        setIsAuthenticated(true)
+    }
 
     const submitData = async (data: LoginCredentials) => {
         try {
-            const user = await mutateAsync(data);
+            const user = await loginHandler(data);
 
-            console.log(user);
+            handleLogin(user)
         } catch (error) {
 
         }

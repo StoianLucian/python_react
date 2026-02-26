@@ -31,11 +31,11 @@ function RegisterPage() {
 
     const { control, handleSubmit, watch } = methods
 
-    const { mutateAsync } = useRegister()
+    const { mutateAsync: registerHandler } = useRegister()
 
     const submitData = async (data: RegisterCredentials) => {
         try {
-            await mutateAsync(data)
+            await registerHandler(data)
         } catch (error) {
 
         }

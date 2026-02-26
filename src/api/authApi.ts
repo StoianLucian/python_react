@@ -12,8 +12,7 @@ const enum AUTH_ROUTES {
 export async function login(credentials: LoginCredentials) {
 
     try {
-        const response = await api.post(AUTH_ROUTES.LOGIN, credentials)
-
+        const response = await api.post(AUTH_ROUTES.LOGIN, credentials);
 
         return response.data
     } catch (error) {
@@ -21,12 +20,10 @@ export async function login(credentials: LoginCredentials) {
     }
 }
 
-
-
 export function logout() {
 
     try {
-        const response = api.post(AUTH_ROUTES.LOGIN)
+        const response = api.post(AUTH_ROUTES.LOGOUT, {});
 
         return response
     } catch (error) {

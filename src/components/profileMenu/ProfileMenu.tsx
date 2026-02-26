@@ -1,14 +1,15 @@
-import { Button, FormControlLabel, Menu, Radio, RadioGroup } from "@mui/material"
+import { Button, FormControlLabel, IconButton, Menu, Radio, RadioGroup, Stack } from "@mui/material"
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-import { APP_PATHS } from "../../routing/routes";
+import { useAuthContext } from "../../authContext/AuthContext";
+import { useLogout } from "../../api/hooks/tanstack/useLogout";
+import ChevronDownIcon from '@mui/icons-material/ExpandMore';
 
 function ProfileMenu() {
-    const navigate = useNavigate();
     const { t, i18n } = useTranslation();
     const [anchorEl, setAnchorEl] = useState(null);
     const [value, setValue] = useState(i18n.language);
+    const { user, isAuthenticated } = useAuthContext();
 
     function handleClick(event: any) {
         setAnchorEl(event.currentTarget); // anchor the menu to this button
@@ -23,31 +24,40 @@ function ProfileMenu() {
         i18n.changeLanguage(event);
     }
 
-    function logout() {
-        navigate(APP_PATHS.LOGIN)
-    }
+    const { mutateAsync: handleLogout } = useLogout();
 
     return (
         <div style={{ position: "absolute", top: "0", right: "0", padding: "1rem" }}>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleClick}
-            >
-                Stoian Lucian
+            <Button onClick={handleClick} aria-label="expand">
+                {user?.username || "not logged into account"}
+                <div style={{ "translate": 102 }}></div>
+                <ChevronDownIcon sx={{
+                    transform: !!anchorEl ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.3s ease'
+                }} />
             </Button>
             <Menu
                 anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
+                open={!!anchorEl}
                 onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
             >
                 <RadioGroup value={value} onChange={(e) => { handleLanguageChange(e.target.value) }} style={{ padding: "1rem" }}>
                     <FormControlLabel value="ro" control={<Radio />} label={t("profileMenu.ro")} />
                     <FormControlLabel value="en" control={<Radio />} label={t("profileMenu.en")} />
-                    <Button onClick={logout}>{t("profileMenu.logout")}</Button>
                 </RadioGroup>
-            </Menu>
+                <Stack>
+                    {isAuthenticated && <Button onClick={() => { handleLogout(), setAnchorEl(null) }}>{t("profileMenu.logout")}</Button>}
+                </Stack>
 
+            </Menu>
         </div>
     )
 }

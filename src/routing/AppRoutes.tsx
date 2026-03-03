@@ -3,38 +3,36 @@ import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
 import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
-import HomePage from '../pages/HomePAge'
+import { useAuthContext } from '../authContext/AuthContext'
+import Dashboard from '../pages/Dashboard'
 
-const routes = [{
-    path: APP_PATHS.LOGIN,
-    element: <LoginPage />,
-    isPrivate: false
-},
-{
-    path: APP_PATHS.REGISTER,
-    element: <RegisterPage />,
-    isPrivate: false
-},
-{
-    path: APP_PATHS.HOME,
-    element: <HomePage />,
-    isPrivate: true
-},
-{
-    path: "*",
-    element: <>any page</>,
-    isPrivate: false
-}
-]
+const routes = [
+    { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
+    { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
+    { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
+    { path: "*", element: <>Page not found</>, isPrivate: false },
+];
 
 const returnRoutes = () => {
-    const appRoutes = routes.map((route) => {
-        const element = route.isPrivate ? (<PrivateRoute>{route.element}</PrivateRoute>) : (route.element)
 
-        return (<Route key={route.path} path={route.path} element={element} />)
-    })
+    const { isAuthenticated, loading } = useAuthContext()
 
-    return appRoutes
+    if (!loading) {
+        const appRoutes = routes.map((route) => {
+            const element = route.isPrivate ? (<PrivateRoute>{route.element}</PrivateRoute>) : (route.element)
+            if (route.path === APP_PATHS.LOGIN && isAuthenticated) {
+                return
+            }
+
+            return (<Route key={route.path} path={route.path} element={element} />)
+        })
+        return appRoutes
+    } else {
+        return [<Route key="loading" path="*" element={<>Loading...</>} />]
+    }
+
+
+
 }
 
 function AppRoutes() {

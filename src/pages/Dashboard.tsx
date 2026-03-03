@@ -1,6 +1,8 @@
 import { Box, Stack } from "@mui/material"
 import { APP_PATHS } from "../routing/routes";
 import Icon, { IconsEnum } from "../components/Icons/Icon";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const gradients = [
     "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)",
@@ -17,59 +19,51 @@ const getRandomGradient = () => {
 }
 
 const items = [{
-    title: "Profile",
-    routes: APP_PATHS.PROFILE,
-    icon: IconsEnum.HOME
+    title: "settings",
+    route: APP_PATHS.PROFILE,
+    icon: IconsEnum.COG
 }, {
-    title: "Profile",
-    routes: APP_PATHS.PROFILE,
+    title: "profile",
+    route: APP_PATHS.PROFILE,
     icon: IconsEnum.PROFILE
 },
 {
-    title: "Profile",
-    routes: APP_PATHS.PROFILE,
+    title: "home",
+    route: APP_PATHS.PROFILE,
     icon: IconsEnum.HOME
-}]
+},
+{
+    title: "PDF",
+    route: APP_PATHS.PROFILE,
+    icon: IconsEnum.PDF
+},
+]
 
 const newItems = items.map(item => ({ ...item, gradient: getRandomGradient() }))
 
 function Dashboard() {
+    const { t } = useTranslation()
     return (
         <Box
+            className="w-screen min-h-screen flex flex-wrap justify-center content-center gap-4  "
             sx={{
-                width: "100vw",
-                minHeight: "100vh",
                 backgroundImage: 'url("/src/assets/images/background.png")',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
-                alignContent: "center",
-                gap: 4,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
             }}
         >
-
-            {newItems.map((item, index) => (
-                <>
-                    <Stack direction="column" spacing={2} sx={{ justifyContent: "center", alignItems: "center", mb: 4 }} key={index}>
+            {newItems.map((item) => (
+                <Link key={item.title} to={item.route}>
+                    <Stack className="justify-center items-center" direction="column" spacing={2} >
                         <Box
-                            sx={{
-                                background: item.gradient,
-                                height: 200,
-                                width: 300,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                borderRadius: 2,
-                            }}
+                            className="flex items-center justify-center h-50 w-75 rounded-lg"
+                            sx={{ background: item.gradient }}
                         >
-                            <Icon size={120} iconName={IconsEnum.HOME} />
+                            <Icon size={120} iconName={item.icon} />
                         </Box>
-                        <div>{item.title}</div>
-                        <div></div>
+                        <div> {t(`dashboard.${item.title}`)}</div>
                     </Stack>
-                </>
+                </Link>
             ))}
         </Box >
     )

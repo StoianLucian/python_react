@@ -1,4 +1,10 @@
 {
+  "dashboard": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "home": "Home",
+    "PDF": "PDF"
+  },
   "profileMenu": {
     "profile": "Profile",
     "settings": "Settings",

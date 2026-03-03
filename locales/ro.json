@@ -1,4 +1,10 @@
 {
+  "dashboard": {
+    "profile": "Profil",
+    "settings": "Setări",
+    "home": "Pagină de pornire",
+    "PDF": "PDF"
+  },
   "profileMenu": {
     "profile": "Profil",
     "settings": "Setări",

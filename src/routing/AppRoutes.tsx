@@ -6,14 +6,14 @@ import RegisterPage from '../pages/RegisterPage'
 import { useAuthContext } from '../authContext/AuthContext'
 import Dashboard from '../pages/Dashboard'
 
-const routes = [
-    { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
-    { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
-    { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
-    { path: "*", element: <>Page not found</>, isPrivate: false },
-];
-
 const returnRoutes = () => {
+
+    const routes = [
+        { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
+        { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
+        { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
+        { path: "*", element: <>Page not found</>, isPrivate: false },
+    ];
 
     const { isAuthenticated, loading } = useAuthContext()
 
@@ -30,9 +30,6 @@ const returnRoutes = () => {
     } else {
         return [<Route key="loading" path="*" element={<>Loading...</>} />]
     }
-
-
-
 }
 
 function AppRoutes() {

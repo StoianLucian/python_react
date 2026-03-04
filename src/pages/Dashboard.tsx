@@ -13,9 +13,19 @@ const gradients = [
 ];
 
 const getRandomGradient = () => {
+    // Pick a random index
+    const index = Math.floor(Math.random() * gradients.length);
 
-    const randomIndex = Math.floor(Math.random() * gradients.length);
-    return gradients[randomIndex];
+    // Remove the element from the array and get it
+    const [removed] = gradients.splice(index, 1);
+
+
+    console.log(gradients)
+
+
+    console.log(removed)
+
+    return removed;
 }
 
 const items = [{
@@ -34,7 +44,7 @@ const items = [{
 },
 {
     title: "PDF",
-    route: APP_PATHS.PROFILE,
+    route: APP_PATHS.FILES,
     icon: IconsEnum.PDF
 },
 ]

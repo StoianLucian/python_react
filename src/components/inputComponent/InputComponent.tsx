@@ -4,7 +4,7 @@ import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 type InputComponentProps = {
     value: string
-    onChange: () => void
+    onChange: (value: string) => void
     label?: string
     type?: string
     helperText?: string
@@ -35,7 +35,7 @@ function InputComponent({ value, onChange, label, type = InputComponentTypes.TEX
         <TextField
             label={label}
             type={inputType}
-            onChange={onChange}
+            onChange={(e) => onChange(e.target.value)}
             value={value}
             helperText={helperText}
             variant={variant}

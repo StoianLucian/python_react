@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { useState } from 'react'
+import React, { useState, type JSX } from 'react'
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 type InputComponentProps = {
@@ -10,6 +10,7 @@ type InputComponentProps = {
     helperText?: string
     variant?: InputComponentVariants
     error?: boolean
+    icon?: React.ReactNode
 }
 
 export enum InputComponentTypes {
@@ -24,7 +25,16 @@ export enum InputComponentVariants {
     STANDARD = "standard"
 }
 
-function InputComponent({ value, onChange, label, type = InputComponentTypes.TEXT, helperText, variant = InputComponentVariants.OUTLINE, error }: InputComponentProps) {
+function InputComponent({
+    value,
+    onChange,
+    label,
+    type = InputComponentTypes.TEXT,
+    helperText,
+    variant = InputComponentVariants.OUTLINE,
+    error,
+    icon
+}: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
     function handleInputType(type: InputComponentTypes) {
@@ -72,7 +82,12 @@ function InputComponent({ value, onChange, label, type = InputComponentTypes.TEX
                         "aria-current": "true"
                     },
                 }
-                )
+                ),
+                ...(icon && {
+                    input: {
+                        startAdornment: icon
+                    }
+                })
             }}
         />
     )

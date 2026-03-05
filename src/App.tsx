@@ -7,8 +7,8 @@ import ProfileMenu from "./components/profileMenu/ProfileMenu";
 function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
       <ProfileMenu />
+      <AppRoutes />
     </BrowserRouter>
   )
 }

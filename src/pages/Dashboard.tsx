@@ -20,11 +20,6 @@ const getRandomGradient = () => {
     const [removed] = gradients.splice(index, 1);
 
 
-    console.log(gradients)
-
-
-    console.log(removed)
-
     return removed;
 }
 

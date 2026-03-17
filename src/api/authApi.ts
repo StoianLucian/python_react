@@ -1,5 +1,5 @@
 import type { LoginCredentials } from "../pages/LoginPage"
-import { api } from "./axiosConfig"
+import { api, ApiMethod, request } from "./axiosConfig"
 
 
 const enum AUTH_ROUTES {
@@ -7,18 +7,10 @@ const enum AUTH_ROUTES {
     LOGOUT = "/auth/logout"
 }
 
-
-
 export async function login(credentials: LoginCredentials) {
-
-    try {
-        const response = await api.post(AUTH_ROUTES.LOGIN, credentials);
-
-        return response.data
-    } catch (error) {
-        throw error
-    }
+    return await request({ method: ApiMethod.POST, url: AUTH_ROUTES.LOGIN, data: credentials })
 }
+
 
 export function logout() {
 

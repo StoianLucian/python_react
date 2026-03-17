@@ -2,14 +2,10 @@ import { Box, Button, Collapse, Grid, Stack } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import InputComponent from '../components/inputComponent/InputComponent'
 import Icon, { IconsEnum } from '../components/Icons/Icon';
+import { uploadFile } from '../api/fileApi';
+import useGetFiles from '../api/hooks/tanstack/files/useGetFiles';
+import useGetFile from '../api/hooks/tanstack/files/useGetFile';
 
-const updates = [
-    { message: "Updated profile picture", time: "2026-03-03 10:15 AM" },
-    { message: "Changed password", time: "2026-03-02 03:42 PM" },
-    { message: "Added new project", time: "2026-03-01 09:20 AM" },
-    { message: "Updated settings", time: "2026-02-28 11:50 AM" },
-    { message: "Joined new team", time: "2026-02-27 02:05 PM" },
-];
 
 function FilesPage() {
     const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -26,17 +22,20 @@ function FilesPage() {
         setIsDragging(toggle);
     }
 
-    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         setIsDragging(false);
 
         const files = Array.from(e.dataTransfer.files);
-
-
-        if (files[0].type !== "application/pdf") {
-            alert("pdf type supported only")
+        if (files.length > 0) {
+            const response = await uploadFile(files[0]);
+            console.log(response);
         }
+
     };
+
+    const { data: files = [] } = useGetFiles();
+    const { mutateAsync: getFile } = useGetFile()
 
     return (
         <Grid container direction="row" className="h-screen w-screen"
@@ -58,9 +57,10 @@ function FilesPage() {
                         <Stack
                             direction="column"
                         >
-                            {updates.map((update) => <Stack key={update.time} direction="column">
-                                <Box>{update.message}</Box>
-                                <Box>{update.time}</Box>
+                            {files?.map((file: any) => <Stack key={file.id} direction="column">
+                                <Box>{file.file_name}</Box>
+                                <Box>{file.storage_key}</Box>
+                                <Button onClick={() => getFile(file.id)}>test</Button>
                             </Stack>)}
                         </Stack>
                         <Box

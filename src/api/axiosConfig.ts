@@ -17,14 +17,14 @@ interface RequestType {
   method: ApiMethod,
   url: string
   data?: any
+  responseType?: "arraybuffer" | "blob" | "document" | "json" | "text" | "stream"
 }
 
-export const request = async ({ method, url, data }: RequestType) => {
+export const request = async ({ method, url, data, responseType = "json" }: RequestType) => {
 
-
-  console.log(method, url, data)
   try {
-    const response = await api.request({ method, url, data })
+    const response = await api.request({ method, url, data, responseType })
+
     return response.data
   } catch (error) {
     throw error

@@ -1,19 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { getFile, getFIles } from "../../../fileApi";
+import { useMutation } from "@tanstack/react-query";
+import { getFile } from "../../../fileApi";
+
 
 
 const useGetFile = () => {
 
   return useMutation({
-    mutationFn: (id: any) => getFile(id),
-    // refetchInterval: queryTime("1h"),
-    // enabled: !!filters,
-    // onError: (error: Error) => {
-    //   showToaster(
-    //     t(`${TRANSLATION_KEY.ERRORS}:${error}`),
-    //     ToastStatusEnum.ERROR
-    //   );
-    // },
+    mutationFn: ({ id, filename }: { id: string; filename: string }) => getFile(id, filename),
   });
 };
 

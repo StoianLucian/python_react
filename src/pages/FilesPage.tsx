@@ -1,10 +1,10 @@
 import { Box, Button, Collapse, Grid, Stack } from '@mui/material'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import InputComponent from '../components/inputComponent/InputComponent'
 import Icon, { IconsEnum } from '../components/Icons/Icon';
 import { uploadFile } from '../api/fileApi';
-import useGetFiles from '../api/hooks/tanstack/files/useGetFiles';
 import useGetFile from '../api/hooks/tanstack/files/useGetFile';
+import useGetFiles from '../api/hooks/tanstack/files/useGetFIles';
 
 
 function FilesPage() {
@@ -59,9 +59,12 @@ function FilesPage() {
                         >
                             {files?.map((file: any) => <Stack key={file.id} direction="column">
                                 <Box>{file.file_name}</Box>
-                                <Box>{file.storage_key}</Box>
-                                <Button onClick={() => getFile(file.id)}>test</Button>
-                            </Stack>)}
+                                {/* <Box>{file.storage_key}</Box> */}
+                                <Button onClick={() => getFile({ id: file.id, filename: file.file_name })}>
+                                    Download file
+                                </Button>
+                            </Stack>)
+                            }
                         </Stack>
                         <Box
                             onDrop={handleDrop}

@@ -11,10 +11,14 @@ function FilesPage() {
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [open, setOpen] = useState(true)
     const [search, setSearch] = useState("")
-    const ref = useRef<HTMLDivElement>(null)
+    const [query, setQuery] = useState("")
 
     const handleSearch = (value: string) => {
         setSearch(value)
+    }
+
+    const handleQuerySubmit = () => {
+        setQuery("")
     }
 
     const toggleDrag = (toggle: boolean, e: React.DragEvent<HTMLDivElement>) => {
@@ -37,14 +41,20 @@ function FilesPage() {
     const { data: files = [] } = useGetFiles();
     const { mutateAsync: getFile } = useGetFile()
 
+
+    console.log(files)
+
     return (
-        <Grid container direction="row" className="h-screen w-screen"
+        <Grid
+            container
+            direction="row"
+            className="h-screen w-screen"
             onDrop={(e) => toggleDrag(false, e)}
             onDragOver={(e) => toggleDrag(true, e)}
             onDragLeave={(e) => toggleDrag(false, e)}
         >
             <Box className={`flex flex-row items-start`}>
-                <Collapse ref={ref} in={open} orientation="horizontal">
+                <Collapse in={open} orientation="horizontal">
                     <Grid className="pl-10">
                         <InputComponent
                             value={search}
@@ -91,16 +101,26 @@ function FilesPage() {
                     />
                 </Button>
             </Box>
-            <Grid >
+            <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
+
+
+                <Box className="flex-1 bg-gray-100 rounded-lg my-4">
+                    {/* ocupă ~80% din înălțime */}
+                </Box>
                 <InputComponent
-                    value={search}
-                    onChange={(value) => handleSearch(value)}
-                    icon={<Icon
-                        iconName={IconsEnum.PROFILE}
-                        className='mx-1'
-                    />}
+                    value={query}
+                    onChange={(value) => setQuery(value)}
+                    icon={
+                        <Button onClick={handleQuerySubmit}>
+                            <Icon
+                                iconName={IconsEnum.ARROW}
+                                className='mx-1'
+                            />
+                        </Button>
+                    }
+                    iconPosition="end"
                 />
-            </Grid>
+            </Box>
         </Grid>
     )
 }

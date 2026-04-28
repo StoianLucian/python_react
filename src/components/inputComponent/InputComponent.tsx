@@ -11,6 +11,7 @@ type InputComponentProps = {
     variant?: InputComponentVariants
     error?: boolean
     icon?: React.ReactNode
+    iconPosition?: 'start' | 'end'
 }
 
 export enum InputComponentTypes {
@@ -33,7 +34,8 @@ function InputComponent({
     helperText,
     variant = InputComponentVariants.OUTLINE,
     error,
-    icon
+    icon,
+    iconPosition = 'start'
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -85,7 +87,8 @@ function InputComponent({
                 ),
                 ...(icon && {
                     input: {
-                        startAdornment: icon
+                        ...(iconPosition === "start" && { startAdornment: icon }),
+                        ...(iconPosition === "end" && { endAdornment: icon })
                     }
                 })
             }}

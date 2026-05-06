@@ -1,26 +1,75 @@
-import { Box, Button, Collapse, Grid, Stack } from '@mui/material'
+import { Box, Button, CircularProgress, Collapse, Grid, Stack } from '@mui/material'
 import { useRef, useState } from 'react'
 import InputComponent from '../components/inputComponent/InputComponent'
 import Icon, { IconsEnum } from '../components/Icons/Icon';
 import { uploadFile } from '../api/fileApi';
 import useGetFile from '../api/hooks/tanstack/files/useGetFile';
 import useGetFiles from '../api/hooks/tanstack/files/useGetFIles';
-
+import { useChat } from '../api/hooks/tanstack/chat/useChat';
+import { useAuthContext } from '../authContext/AuthContext';
+type Message = {
+    message: string,
+    sender: string
+}
 
 function FilesPage() {
+    const { user } = useAuthContext()
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [open, setOpen] = useState(true)
     const [search, setSearch] = useState("")
     const [query, setQuery] = useState("")
+    const [response, setResponse] = useState<Message[]>([]);
+    const controllerRef = useRef<AbortController | null>(null);
+    let aiIndex: number | null = null;
+    let buffer = "";
 
     const handleSearch = (value: string) => {
         setSearch(value)
     }
 
-    const handleQuerySubmit = () => {
-        setQuery("")
-    }
+    const handleChunk = (chunk: string) => {
+        buffer += chunk;
 
+        setResponse((prev) => {
+            let updated = [...prev];
+
+            if (aiIndex === null) {
+                aiIndex = updated.length;
+                updated.push({
+                    message: "",
+                    sender: "AI",
+                });
+            }
+
+            updated[aiIndex] = {
+                message: buffer,
+                sender: "AI",
+            };
+
+            return updated;
+        });
+    };
+
+    const { mutateAsync, isPending } = useChat();
+
+    const stopChat = () => {
+        controllerRef.current?.abort();
+    };
+
+    const handleQuerySubmit = async (query: string) => {
+        controllerRef.current = new AbortController();
+
+        const signal = controllerRef.current.signal;
+        setQuery("");
+        setResponse((prev) => [
+            ...prev,
+            { message: query, sender: user?.id || "test" },
+        ]);
+
+        await mutateAsync({ query, handleChunk, signal })
+
+
+    };
     const toggleDrag = (toggle: boolean, e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
         setIsDragging(toggle);
@@ -41,8 +90,19 @@ function FilesPage() {
     const { data: files = [] } = useGetFiles();
     const { mutateAsync: getFile } = useGetFile()
 
+    function toggleIcon(bool: boolean) {
+        return bool ? IconsEnum.COG : IconsEnum.ARROW
+    }
 
-    console.log(files)
+    function handleButton(bool: boolean) {
+
+        if (bool) {
+            stopChat()
+        } else {
+            handleQuerySubmit(query)
+        }
+
+    }
 
     return (
         <Grid
@@ -103,17 +163,30 @@ function FilesPage() {
             </Box>
             <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
 
+                <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
+                    {response.map((item, i) => (
+                        <div
+                            key={i}
+                            className={`max-w-[75%] px-3 py-2 rounded-lg ${item.sender === user?.id
+                                ? "bg-blue-500 text-white self-end"
+                                : "bg-white self-start"
+                                }`}
 
-                <Box className="flex-1 bg-gray-100 rounded-lg my-4">
-                    {/* ocupă ~80% din înălțime */}
+                        >
+                            {item.message}
+                        </div>
+                    ))}
+                    <Box className="flex justify-center" >
+                        {isPending && <CircularProgress />}
+                    </Box>
                 </Box>
                 <InputComponent
                     value={query}
                     onChange={(value) => setQuery(value)}
                     icon={
-                        <Button onClick={handleQuerySubmit}>
+                        <Button onClick={() => handleButton(isPending)}>
                             <Icon
-                                iconName={IconsEnum.ARROW}
+                                iconName={toggleIcon(isPending)}
                                 className='mx-1'
                             />
                         </Button>
@@ -121,7 +194,7 @@ function FilesPage() {
                     iconPosition="end"
                 />
             </Box>
-        </Grid>
+        </Grid >
     )
 }
 

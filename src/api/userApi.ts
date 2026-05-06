@@ -12,7 +12,6 @@ export async function register(credentials: RegisterCredentials) {
 
         return response.data
     } catch (error: any) {
-        console.log(error.response)
         throw error
     }
 }

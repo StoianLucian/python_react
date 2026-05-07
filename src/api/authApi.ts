@@ -1,4 +1,4 @@
-import type { LoginCredentials } from "../pages/LoginPage"
+import type { LoginCredentials } from "../pages/LoginPage";
 import { api, ApiMethod, request } from "./axiosConfig"
 
 

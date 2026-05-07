@@ -33,7 +33,7 @@ function LoginPage() {
 
     const { control, handleSubmit } = methods
 
-    const { mutateAsync: loginHandler } = useLogin()
+    const { mutateAsync: loginHandler, isPending } = useLogin()
 
     function handleLogin(user: { id: string, username: string, email: string }) {
         setUser(user)
@@ -51,7 +51,7 @@ function LoginPage() {
     }
 
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} >
+        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} isPending={isPending} >
             <Controller
                 name="account"
                 control={control}

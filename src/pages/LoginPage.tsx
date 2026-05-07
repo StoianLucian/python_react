@@ -36,13 +36,6 @@ function LoginPage() {
 
     const { mutateAsync: loginHandler } = useLogin()
 
-    async function test() {
-        const resposene = await axios.get("https://python-te51.onrender.com/test");
-        console.log("test")
-        console.log(resposene, "test response")
-
-    }
-
     function handleLogin(user: { id: string, username: string, email: string }) {
         setUser(user)
         setIsAuthenticated(true)

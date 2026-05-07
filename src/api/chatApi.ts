@@ -8,6 +8,8 @@ export async function chat(prompt: string, handleChunk: (chunk: string) => void,
     const url = import.meta.env.VITE_API_URL
     const isDev = import.meta.env.VITE_IS_PROD
     const baseURL = isDev ? "http://127.0.0.1:8000" : url
+
+    console.log(baseURL)
     const res = await fetch(baseURL + "/chat", {
         method: ApiMethod.POST,
         headers: {

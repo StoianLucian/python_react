@@ -7,9 +7,10 @@ import axios from "axios"
 //     : 'http://127.0.0.1:8000'
 
 
-const url = import.meta.env.VITE_API_URL?.trim()
+const url = import.meta.env.VITE_API_URL
+const isDev = import.meta.env.VITE_IS_PROD
 
-const baseURL = url ? url : "http://127.0.0.1:8000"
+const baseURL = isDev ? "http://127.0.0.1:8000" : url
 
 export const api = axios.create({
   baseURL,

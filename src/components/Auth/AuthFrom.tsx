@@ -11,19 +11,13 @@ type AuthFormProps = {
 function AuthFrom({ children, onSubmit, btnText, isPending }: AuthFormProps) {
 
     return (
-        <Container maxWidth="lg"
-            sx={{
-                display: "flex",
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                {isPending ? "true" : "false"}
+        <Container maxWidth="lg" className='flex justify-center items-center'>
             <form onSubmit={onSubmit}>
                 <Stack maxWidth="35rem" sx={{
                     width: "50vw"
                 }} spacing={2}>
                     {children}
-                    <Button variant="contained" type='submit'>{isPending ? <CircularProgress color="inherit"  /> : btnText}</Button>
+                    <Button variant="contained" type='submit'>{isPending ? <CircularProgress size={25} color="inherit" /> : btnText}</Button>
                 </Stack>
             </form>
         </Container>

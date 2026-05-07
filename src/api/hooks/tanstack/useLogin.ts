@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../../authApi';
-import type { LoginCredentials } from '../../../pages/LoginPage';
+// import type { LoginCredentials } from '../../../pages/LoginPage';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../authContext/AuthContext';
@@ -17,7 +17,7 @@ export function useLogin() {
     const navigate = useNavigate();
     const { setIsAuthenticated, setUser } = useAuthContext();
     const { t } = useTranslation();
-    return useMutation<LoginResponse, any, LoginCredentials>({
+    return useMutation<LoginResponse, any>({
         mutationFn: async (credentials) => {
             const response = await login(credentials);
             return response;

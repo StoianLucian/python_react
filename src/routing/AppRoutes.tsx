@@ -1,11 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
 import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
-import LoginPage from '../pages/LoginPage'
 import RegisterPage from '../pages/RegisterPage'
 import { useAuthContext } from '../authContext/AuthContext'
 import Dashboard from '../pages/Dashboard'
 import FilesPage from '../pages/FilesPage'
+import LoginPage from '../pages/LoginPage'
 
 const routes = [
     { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },

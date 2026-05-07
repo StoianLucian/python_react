@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { chat } from '../../../chatApi';
 
 type ChatProps = {

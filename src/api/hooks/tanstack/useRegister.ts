@@ -18,9 +18,11 @@ export function useRegister() {
             return response;
         },
         onError: (error) => {
+            console.log(error)
             toast("test")
         },
         onSuccess: (success) => {
+            console.log(success)
             toast(t("success.accountCreated"), { type: "success" })
             navigate(APP_PATHS.LOGIN);
 

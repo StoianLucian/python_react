@@ -1,8 +1,8 @@
 import { ApiMethod } from "./axiosConfig";
 
-const enum CHAT_ROUTES_ENUM {
-    CHAT = "/chat",
-}
+// const enum CHAT_ROUTES_ENUM {
+//     CHAT = "/chat",
+// }
 
 export async function chat(prompt: string, handleChunk: (chunk: string) => void, signal: AbortSignal) {
     const res = await fetch("http://localhost:8000/chat", {

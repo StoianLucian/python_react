@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import React, { useState, type JSX } from 'react'
+import React, { useState } from 'react'
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 
 type InputComponentProps = {

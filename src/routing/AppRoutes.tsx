@@ -17,8 +17,6 @@ const routes = [
 
 const returnRoutes = () => {
 
-
-
     const { isAuthenticated, loading } = useAuthContext()
 
     if (!loading) {

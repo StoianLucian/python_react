@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../authContext/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { APP_PATHS } from '../../../routing/routes';
+import type { LoginCredentials } from '../../../pages/LoginPage';
 
 export type LoginResponse = {
     id: string
@@ -17,7 +18,7 @@ export function useLogin() {
     const navigate = useNavigate();
     const { setIsAuthenticated, setUser } = useAuthContext();
     const { t } = useTranslation();
-    return useMutation<LoginResponse, any>({
+    return useMutation<LoginResponse, any, LoginCredentials>({
         mutationFn: async (credentials) => {
             const response = await login(credentials);
             return response;

@@ -5,9 +5,10 @@ import RegisterPage from '../pages/RegisterPage'
 import { useAuthContext } from '../authContext/AuthContext'
 import Dashboard from '../pages/Dashboard'
 import FilesPage from '../pages/FilesPage'
+import LoginPage from '../pages/LoginPage'
 
 const routes = [
-    // { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
+    { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
     { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
     { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
     { path: APP_PATHS.FILES, element: <FilesPage />, isPrivate: true },

@@ -31,7 +31,7 @@ function RegisterPage() {
 
     const { control, handleSubmit, watch } = methods
 
-    const { mutateAsync: registerHandler } = useRegister()
+    const { mutateAsync: registerHandler, isPending } = useRegister()
 
     const submitData = async (data: RegisterCredentials) => {
         try {
@@ -42,7 +42,7 @@ function RegisterPage() {
     }
 
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("registerPage.register")}>
+        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("registerPage.register")} isPending={isPending}>
             <Controller
                 name="username"
                 control={control}

@@ -9,6 +9,8 @@ const enum AUTH_ROUTES {
 }
 
 export async function login(credentials: LoginCredentials) {
+
+    console.log(credentials);
     return await request({ method: ApiMethod.POST, url: AUTH_ROUTES.LOGIN, data: credentials })
 }
 

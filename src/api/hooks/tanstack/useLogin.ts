@@ -32,6 +32,7 @@ export function useLogin() {
             }
         },
         onSuccess(data) {
+            console.log(data);
             setIsAuthenticated(true);
             setUser(data);
             navigate(APP_PATHS.HOME);

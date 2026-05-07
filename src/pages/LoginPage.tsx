@@ -49,12 +49,12 @@ function LoginPage() {
     }
 
     const submitData = async (data: LoginCredentials) => {
-        const url = import.meta.env.VITE_API_URL;
-        console.log(url);
+        // const url = import.meta.env.VITE_API_URL;
+        // console.log(url);
 
 
-        await test()
-        return;
+        // await test()
+        // return;
         try {
             const user = await loginHandler(data);
 

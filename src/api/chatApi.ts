@@ -21,7 +21,7 @@ export async function chat(prompt: string, handleChunk: (chunk: string) => void,
     }
 
     const decoder = new TextDecoder();
-    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
     while (true) {
         const { value, done } = await reader.read();
@@ -35,7 +35,7 @@ export async function chat(prompt: string, handleChunk: (chunk: string) => void,
 
         console.log(chunk)
 
-        await sleep(200);
+        // await sleep(200);
         handleChunk(chunk)
     }
 }

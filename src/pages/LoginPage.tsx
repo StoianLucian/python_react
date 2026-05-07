@@ -7,6 +7,7 @@ import { useLogin } from '../api/hooks/tanstack/useLogin';
 import { APP_PATHS } from '../routing/routes';
 import NavigationLink from '../components/navigationLink/NavigationLink';
 import { useAuthContext } from '../authContext/AuthContext';
+import axios from 'axios';
 
 
 export type LoginCredentials = {
@@ -35,12 +36,25 @@ function LoginPage() {
 
     const { mutateAsync: loginHandler } = useLogin()
 
+    async function test() {
+        const resposene = await axios.get("https://python-te51.onrender.com/test");
+        console.log("test")
+        console.log(resposene, "test response")
+
+    }
+
     function handleLogin(user: { id: string, username: string, email: string }) {
         setUser(user)
         setIsAuthenticated(true)
     }
 
     const submitData = async (data: LoginCredentials) => {
+        const url = import.meta.env.VITE_API_URL;
+        console.log(url);
+
+
+        await test()
+        return;
         try {
             const user = await loginHandler(data);
 

@@ -1,26 +1,26 @@
 import { Box, Button, CircularProgress, Collapse, Grid, Stack } from '@mui/material'
 import { useRef, useState } from 'react'
-import InputComponent from '../components/inputComponent/InputComponent'
-import Icon, { IconsEnum } from '../components/Icons/Icon';
-import useGetFile from '../api/hooks/tanstack/files/useGetFile';
-import useGetFiles from '../api/hooks/tanstack/files/useGetFIles';
-import { useChat } from '../api/hooks/tanstack/chat/useChat';
-import { useAuthContext } from '../authContext/AuthContext';
+import InputComponent from '../../components/inputComponent/InputComponent'
+import Icon, { IconsEnum } from '../../components/Icons/Icon';
+import useGetFile from '../../api/hooks/tanstack/files/useGetFile';
+import useGetFiles from '../../api/hooks/tanstack/files/useGetFIles';
+import { useChat } from '../../api/hooks/tanstack/chat/useChat';
+import { useAuthContext } from '../../authContext/AuthContext';
 import ReactMarkdown from "react-markdown";
-import SelectComponent from '../components/select/SelectComponent';
-import { useUploadFile } from '../api/hooks/tanstack/files/useUploadFile';
+import SelectComponent from '../../components/select/SelectComponent';
+import { useUploadFile } from '../../api/hooks/tanstack/files/useUploadFile';
+import { options, toggleIcon } from './helper';
+import StatusDot from '../../components/statusDot/StatusDot';
+import { translations } from '../../../i18n';
+import { useTranslation } from 'react-i18next';
 
 type Message = {
     message: string,
     sender: string
 }
 
-const options = [
-    { name: "deepseek-r1:1.5b", id: "deepseek-r1:1.5b" },
-    { name: "qwen3:8b", id: "qwen3:8b" },
-];
-
 function FilesPage() {
+    const { t } = useTranslation()
     const { user } = useAuthContext()
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [open, setOpen] = useState(true)
@@ -63,7 +63,7 @@ function FilesPage() {
         });
     };
 
-    const { mutateAsync, isPending } = useChat();
+    const { mutateAsync: startChat, isPending } = useChat();
 
     const stopChat = () => {
         controllerRef.current?.abort();
@@ -84,7 +84,7 @@ function FilesPage() {
             prompt: query
         }
 
-        await mutateAsync({ obj, handleChunk, signal })
+        await startChat({ obj, handleChunk, signal })
 
 
     };
@@ -104,12 +104,6 @@ function FilesPage() {
         }
 
     };
-
-
-
-    function toggleIcon(bool: boolean) {
-        return bool ? IconsEnum.COG : IconsEnum.ARROW
-    }
 
     function handleButton(bool: boolean) {
         if (bool) {
@@ -148,7 +142,7 @@ function FilesPage() {
                                 <Box>{file.file_name}</Box>
                                 {/* <Box>{file.storage_key}</Box> */}
                                 <Button onClick={() => getFile({ id: file.id, filename: file.file_name })}>
-                                    Download file
+                                    {t(translations.filesPage.downloadFile)}
                                 </Button>
                             </Stack>)
                             }
@@ -179,7 +173,7 @@ function FilesPage() {
                 </Button>
             </Box>
             <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
-
+                <StatusDot status={true} isPending={false} />
                 <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
                     {response.map((item, i) => (
                         <div

@@ -29,6 +29,10 @@
     "aldreadyHaveAccount": "Ai deja un cont? Click aici"
   },
 
+  "filesPage": {
+    "downloadFile": "Descarcă fisierul"
+  },
+
   "errors": {
     "isRequired": "{{field}} este obligatoriu",
     "invalidEmail": "Email invalid",

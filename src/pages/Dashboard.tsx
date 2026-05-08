@@ -3,6 +3,8 @@ import { APP_PATHS } from "../routing/routes";
 import Icon, { IconsEnum } from "../components/Icons/Icon";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { TranslationKey } from "../../i18n";
+import backgroundImage from "../assets/images/background.png";
 
 const gradients = [
     "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)",
@@ -52,7 +54,7 @@ function Dashboard() {
         <Box
             className="w-screen min-h-screen flex flex-wrap justify-center content-center gap-4  "
             sx={{
-                backgroundImage: 'url("/src/assets/images/background.png")',
+                backgroundImage: `url(${backgroundImage})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center'
             }}
@@ -66,7 +68,7 @@ function Dashboard() {
                         >
                             <Icon size={120} iconName={item.icon} />
                         </Box>
-                        <div> {t(`dashboard.${item.title}`)}</div>
+                        <div> {t(`${TranslationKey.DASHBOARD}.${item.title}`)}</div>
                     </Stack>
                 </Link>
             ))}

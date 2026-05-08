@@ -1,12 +1,11 @@
 import { useMutation } from '@tanstack/react-query';
 import { login } from '../../authApi';
-// import type { LoginCredentials } from '../../../pages/LoginPage';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { useAuthContext } from '../../../authContext/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { APP_PATHS } from '../../../routing/routes';
-import type { LoginCredentials } from '../../../pages/LoginPage';
+import type { LoginCredentials } from '../../../pages/login/LoginPage';
 
 export type LoginResponse = {
     id: string

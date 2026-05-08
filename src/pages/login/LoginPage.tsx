@@ -1,12 +1,13 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
-import AuthFrom from '../components/Auth/AuthFrom'
-import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
+import AuthFrom from '../../components/Auth/AuthFrom'
+import InputComponent, { InputComponentTypes } from '../../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next';
-import { useLogin } from '../api/hooks/tanstack/useLogin';
-import { APP_PATHS } from '../routing/routes';
-import NavigationLink from '../components/navigationLink/NavigationLink';
-import { useAuthContext } from '../authContext/AuthContext';
+import { useLogin } from '../../api/hooks/tanstack/useLogin';
+import { APP_PATHS } from '../../routing/routes';
+import NavigationLink from '../../components/navigationLink/NavigationLink';
+import { useAuthContext } from '../../authContext/AuthContext';
+import { translations } from '../../../i18n';
 
 
 export type LoginCredentials = {
@@ -55,10 +56,10 @@ function LoginPage() {
             <Controller
                 name="account"
                 control={control}
-                rules={{ required: t("errors.isRequired", { field: t("loginPage.account") }) }}
+                rules={{ required: t(translations.errors.isRequired, { field: t(translations.loginPage.account) }) }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("loginPage.account")}
+                        label={t(t(translations.loginPage.account))}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -68,10 +69,10 @@ function LoginPage() {
             <Controller
                 name="password"
                 control={control}
-                rules={{ required: t("errors.isRequired", { field: t("loginPage.password") }) }}
+                rules={{ required: t(translations.errors.isRequired, { field: t(translations.loginPage.registerNewAccount) }) }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("loginPage.password")}
+                        label={t(translations.loginPage.password)}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -90,11 +91,11 @@ function LoginPage() {
                                 checked={field.value}
                                 onChange={(e) => field.onChange(e.target.checked)}
                             />}
-                            label={t("loginPage.rememberMe")}
+                            label={t(translations.loginPage.rememberMe)}
                         />
                     )}
                 />
-                <NavigationLink to={APP_PATHS.REGISTER} linkText={t("loginPage.registerNewAccount")} />
+                <NavigationLink to={APP_PATHS.REGISTER} linkText={t(translations.loginPage.registerNewAccount)} />
             </Stack>
         </AuthFrom>
     )

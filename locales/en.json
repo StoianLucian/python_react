@@ -29,6 +29,10 @@
     "aldreadyHaveAccount": "Already have an account? Click here"
   },
 
+  "filesPage": {
+    "downloadFile": "Download file"
+  },
+
   "errors": {
     "isRequired": "{{field}} is required",
     "invalidEmail": "Invalid email",

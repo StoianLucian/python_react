@@ -1,12 +1,14 @@
 import { Controller, useForm } from 'react-hook-form'
 
-import AuthFrom from '../components/Auth/AuthFrom'
-import InputComponent, { InputComponentTypes } from '../components/inputComponent/InputComponent'
-import { useTranslation } from 'react-i18next'
-import { useRegister } from '../api/hooks/tanstack/useRegister'
-import { APP_PATHS } from '../routing/routes'
+
 import Stack from '@mui/material/Stack'
-import NavigationLink from '../components/navigationLink/NavigationLink'
+import { useTranslation } from 'react-i18next'
+import { useRegister } from '../../api/hooks/tanstack/useRegister'
+import AuthFrom from '../../components/Auth/AuthFrom'
+import InputComponent, { InputComponentTypes } from '../../components/inputComponent/InputComponent'
+import NavigationLink from '../../components/navigationLink/NavigationLink'
+import { APP_PATHS } from '../../routing/routes'
+import { translations } from '../../../i18n'
 
 export type RegisterCredentials = {
     username: string,
@@ -42,14 +44,16 @@ function RegisterPage() {
     }
 
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("registerPage.register")} isPending={isPending}>
+        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t(translations.registerPage.register)} isPending={isPending}>
             <Controller
                 name="username"
                 control={control}
-                rules={{ required: t("errors.isRequired", { field: t("registerPage.username") }) }}
+                rules={{
+                    required: t(`${translations.errors.isRequired}`, { field: t(`${translations.registerPage.username}`) })
+                }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("registerPage.username")}
+                        label={t(translations.registerPage.username)}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -61,16 +65,16 @@ function RegisterPage() {
                 control={control}
                 rules={
                     {
-                        required: t("errors.isRequired", { field: t("registerPage.email") }),
+                        required: t(translations.errors.isRequired, { field: t(translations.registerPage.email) }),
                         pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: t("errors.invalidEmail")  // your translation for invalid email
+                            message: t(translations.errors.invalidEmail)
                         }
                     }
                 }
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("registerPage.email")}
+                        label={t(translations.registerPage.email)}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -81,10 +85,10 @@ function RegisterPage() {
             <Controller
                 name="password"
                 control={control}
-                rules={{ required: t("errors.isRequired", { field: t("registerPage.password") }) }}
+                rules={{ required: t(translations.errors.isRequired, { field: t(translations.registerPage.password) }) }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("registerPage.password")}
+                        label={t(translations.registerPage.password)}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -97,16 +101,16 @@ function RegisterPage() {
                 name="confirmPassword"
                 control={control}
                 rules={{
-                    required: t("errors.isRequired", { field: t("registerPage.confirmPassword") }),
+                    required: t(translations.errors.isRequired, { field: t(translations.registerPage.confirmPassword) }),
                     validate: (value) => {
                         if (value !== watch("password")) {
-                            return t("errors.passwordsDoNotMatch")
+                            return t(translations.errors.passwordsDoNotMatch)
                         }
                     }
                 }}
                 render={({ field, fieldState: { error } }) => (
                     <InputComponent
-                        label={t("registerPage.confirmPassword")}
+                        label={t(translations.registerPage.confirmPassword)}
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
@@ -116,7 +120,7 @@ function RegisterPage() {
                 )}
             />
             <Stack direction="row" justifyContent="space-between" alignItems="center">
-                <NavigationLink to={APP_PATHS.LOGIN} linkText={t("registerPage.aldreadyHaveAccount")} />
+                <NavigationLink to={APP_PATHS.LOGIN} linkText={t(translations.registerPage.alreadyHaveAccount)} />
             </Stack>
         </AuthFrom>
     )

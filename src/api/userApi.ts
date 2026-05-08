@@ -1,4 +1,4 @@
-import type { RegisterCredentials } from "../pages/RegisterPage";
+import type { RegisterCredentials } from "../pages/register/RegisterPage";
 import { api } from "./axiosConfig";
 
 const enum USER_ROUTES {

@@ -7,9 +7,10 @@ import axios from "axios"
 //     : 'http://127.0.0.1:8000'
 
 
-const url = import.meta.env.VITE_IS_DEV
+const isDev = import.meta.env.VITE_IS_DEV;
+const apiUrl = import.meta.env.VITE_IS_DEV;
 
-export const baseURL = url
+export const baseURL = isDev ? "http://127.0.0.1:8000" : apiUrl
 
 console.log(baseURL, "ur;l");
 

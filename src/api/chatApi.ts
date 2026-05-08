@@ -1,21 +1,28 @@
 import { ApiMethod } from "./axiosConfig";
 
-// const enum CHAT_ROUTES_ENUM {
-//     CHAT = "/chat",
-// }
+const enum CHAT_ROUTES_ENUM {
+    CHAT = "/chat",
+}
 
-export async function chat(prompt: string, handleChunk: (chunk: string) => void, signal: AbortSignal) {
+export async function chat(
+    obj: {
+        prompt: string,
+        model: string
+    },
+    handleChunk: (chunk: string) => void,
+    signal: AbortSignal
+) {
     const url = import.meta.env.VITE_API_URL
     const isDev = import.meta.env.VITE_IS_PROD
     const baseURL = isDev ? "http://127.0.0.1:8000" : url
 
     console.log(baseURL)
-    const res = await fetch(baseURL + "/chat", {
+    const res = await fetch(baseURL + CHAT_ROUTES_ENUM.CHAT, {
         method: ApiMethod.POST,
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify(obj),
     });
 
     const reader = res.body?.getReader();

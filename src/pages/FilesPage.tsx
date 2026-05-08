@@ -2,15 +2,23 @@ import { Box, Button, CircularProgress, Collapse, Grid, Stack } from '@mui/mater
 import { useRef, useState } from 'react'
 import InputComponent from '../components/inputComponent/InputComponent'
 import Icon, { IconsEnum } from '../components/Icons/Icon';
-import { uploadFile } from '../api/fileApi';
 import useGetFile from '../api/hooks/tanstack/files/useGetFile';
 import useGetFiles from '../api/hooks/tanstack/files/useGetFIles';
 import { useChat } from '../api/hooks/tanstack/chat/useChat';
 import { useAuthContext } from '../authContext/AuthContext';
+import ReactMarkdown from "react-markdown";
+import SelectComponent from '../components/select/SelectComponent';
+import { useUploadFile } from '../api/hooks/tanstack/files/useUploadFile';
+
 type Message = {
     message: string,
     sender: string
 }
+
+const options = [
+    { name: "deepseek-r1:1.5b", id: "deepseek-r1:1.5b" },
+    { name: "qwen3:8b", id: "qwen3:8b" },
+];
 
 function FilesPage() {
     const { user } = useAuthContext()
@@ -19,9 +27,14 @@ function FilesPage() {
     const [search, setSearch] = useState("")
     const [query, setQuery] = useState("")
     const [response, setResponse] = useState<Message[]>([]);
+    const [model, setModel] = useState<string>(options[0].id)
     const controllerRef = useRef<AbortController | null>(null);
     let aiIndex: number | null = null;
     let buffer = "";
+
+    const { data: files = [] } = useGetFiles();
+    const { mutateAsync: getFile } = useGetFile()
+    const { mutateAsync: uploadFile } = useUploadFile()
 
     const handleSearch = (value: string) => {
         setSearch(value)
@@ -66,7 +79,12 @@ function FilesPage() {
             { message: query, sender: user?.id || "test" },
         ]);
 
-        await mutateAsync({ query, handleChunk, signal })
+        const obj = {
+            model: model,
+            prompt: query
+        }
+
+        await mutateAsync({ obj, handleChunk, signal })
 
 
     };
@@ -87,21 +105,18 @@ function FilesPage() {
 
     };
 
-    const { data: files = [] } = useGetFiles();
-    const { mutateAsync: getFile } = useGetFile()
+
 
     function toggleIcon(bool: boolean) {
         return bool ? IconsEnum.COG : IconsEnum.ARROW
     }
 
     function handleButton(bool: boolean) {
-
         if (bool) {
             stopChat()
         } else {
             handleQuerySubmit(query)
         }
-
     }
 
     return (
@@ -119,10 +134,12 @@ function FilesPage() {
                         <InputComponent
                             value={search}
                             onChange={(value) => handleSearch(value)}
-                            icon={<Icon
-                                iconName={IconsEnum.PROFILE}
-                                className='mx-1'
-                            />}
+                            endIcon={
+                                <Icon
+                                    iconName={IconsEnum.PROFILE}
+                                    className='mx-1'
+                                />
+                            }
                         />
                         <Stack
                             direction="column"
@@ -171,28 +188,35 @@ function FilesPage() {
                                 ? "bg-blue-500 text-white self-end"
                                 : "bg-white self-start"
                                 }`}
-
                         >
-                            {item.message}
+                            <ReactMarkdown>{item.message}</ReactMarkdown>
                         </div>
                     ))}
                     <Box className="flex justify-center" >
                         {isPending && <CircularProgress />}
                     </Box>
                 </Box>
-                <InputComponent
-                    value={query}
-                    onChange={(value) => setQuery(value)}
-                    icon={
-                        <Button onClick={() => handleButton(isPending)}>
-                            <Icon
-                                iconName={toggleIcon(isPending)}
-                                className='mx-1'
-                            />
-                        </Button>
-                    }
-                    iconPosition="end"
-                />
+                <Box className="flex gap-4">
+                    <SelectComponent
+                        onChange={setModel}
+                        value={model}
+                        options={options}
+                        itemKey="id"
+                    />
+                    <InputComponent
+                        classNames='w-full'
+                        value={query}
+                        onChange={(value) => setQuery(value)}
+                        endIcon={
+                            <Button onClick={() => handleButton(isPending)}>
+                                <Icon
+                                    iconName={toggleIcon(isPending)}
+                                    className='mx-1'
+                                />
+                            </Button>
+                        }
+                    />
+                </Box>
             </Box>
         </Grid >
     )

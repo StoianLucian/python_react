@@ -2,15 +2,18 @@ import { useMutation } from '@tanstack/react-query';
 import { chat } from '../../../chatApi';
 
 type ChatProps = {
-    query: string,
+    obj: {
+        prompt: string,
+        model: string
+    },
     handleChunk: (chunk: string) => void,
     signal: AbortSignal
 }
 
 export function useChat() {
     return useMutation({
-        mutationFn: async ({ query, handleChunk, signal }: ChatProps) => {
-            return await chat(query, handleChunk, signal);
+        mutationFn: async ({ obj, handleChunk, signal }: ChatProps) => {
+            return await chat(obj, handleChunk, signal);
         },
     });
 }

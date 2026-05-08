@@ -10,8 +10,9 @@ type InputComponentProps = {
     helperText?: string
     variant?: InputComponentVariants
     error?: boolean
-    icon?: React.ReactNode
-    iconPosition?: 'start' | 'end'
+    frontIcon?: React.ReactNode,
+    endIcon?: React.ReactNode,
+    classNames?: string
 }
 
 export enum InputComponentTypes {
@@ -34,8 +35,9 @@ function InputComponent({
     helperText,
     variant = InputComponentVariants.OUTLINE,
     error,
-    icon,
-    iconPosition = 'start'
+    frontIcon,
+    endIcon,
+    classNames
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -45,6 +47,7 @@ function InputComponent({
 
     return (
         <TextField
+            className={classNames}
             label={label}
             type={inputType}
             onChange={(e) => onChange(e.target.value)}
@@ -72,11 +75,13 @@ function InputComponent({
                         endAdornment:
                             inputType === InputComponentTypes.PASSWORD ? (
                                 <BsEye
+                                    tabIndex={0}
                                     cursor="pointer"
                                     onClick={() => handleInputType(InputComponentTypes.TEXT)}
                                 />
                             ) : (
                                 <BsEyeSlash
+                                    tabIndex={0}
                                     cursor="pointer"
                                     onClick={() => handleInputType(InputComponentTypes.PASSWORD)}
                                 />
@@ -85,12 +90,12 @@ function InputComponent({
                     },
                 }
                 ),
-                ...(icon && {
+                ...(frontIcon || endIcon) && {
                     input: {
-                        ...(iconPosition === "start" && { startAdornment: icon }),
-                        ...(iconPosition === "end" && { endAdornment: icon })
+                        ...(frontIcon && { startAdornment: frontIcon }),
+                        ...(endIcon && { endAdornment: endIcon }),
                     }
-                })
+                },
             }}
         />
     )

@@ -9,7 +9,9 @@ import axios from "axios"
 
 const url = import.meta.env.VITE_IS_DEV
 
-export const baseURL = url ? "http://127.0.0.1:8000" : url
+export const baseURL = url
+
+console.log(baseURL, "ur;l");
 
 export const api = axios.create({
   baseURL,

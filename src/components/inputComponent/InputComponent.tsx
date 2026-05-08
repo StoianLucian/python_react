@@ -12,7 +12,8 @@ type InputComponentProps = {
     error?: boolean
     frontIcon?: React.ReactNode,
     endIcon?: React.ReactNode,
-    classNames?: string
+    classNames?: string,
+    isDisabled?: boolean
 }
 
 export enum InputComponentTypes {
@@ -37,7 +38,8 @@ function InputComponent({
     error,
     frontIcon,
     endIcon,
-    classNames
+    classNames,
+    isDisabled
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -47,6 +49,7 @@ function InputComponent({
 
     return (
         <TextField
+            disabled={isDisabled}
             className={classNames}
             label={label}
             type={inputType}

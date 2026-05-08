@@ -1,7 +1,9 @@
-import { ApiMethod } from "./axiosConfig";
+import axios from "axios";
+import { ApiMethod, baseURL } from "./axiosConfig";
 
 const enum CHAT_ROUTES_ENUM {
     CHAT = "/chat",
+    CHAT_PING = "/chat/ping"
 }
 
 export async function chat(
@@ -12,11 +14,6 @@ export async function chat(
     handleChunk: (chunk: string) => void,
     signal: AbortSignal
 ) {
-    const url = import.meta.env.VITE_API_URL
-    const isDev = import.meta.env.VITE_IS_PROD
-    const baseURL = isDev ? "http://127.0.0.1:8000" : url
-
-    console.log(baseURL)
     const res = await fetch(baseURL + CHAT_ROUTES_ENUM.CHAT, {
         method: ApiMethod.POST,
         headers: {
@@ -50,4 +47,20 @@ export async function chat(
         // await sleep(200);
         handleChunk(chunk)
     }
+}
+
+export async function pingModel(
+    model: string
+) {
+
+    try {
+        const res = await axios.post(baseURL + CHAT_ROUTES_ENUM.CHAT_PING, { model });
+
+        return res
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+
+
 }

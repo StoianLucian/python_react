@@ -10,7 +10,7 @@ type ChatProps = {
     signal: AbortSignal
 }
 
-export function useChat() {
+export function useChatModel() {
     return useMutation({
         mutationFn: async ({ obj, handleChunk, signal }: ChatProps) => {
             return await chat(obj, handleChunk, signal);

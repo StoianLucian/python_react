@@ -1,10 +1,10 @@
 import { Box, Button, CircularProgress, Collapse, Grid, Stack } from '@mui/material'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import InputComponent from '../../components/inputComponent/InputComponent'
 import Icon, { IconsEnum } from '../../components/Icons/Icon';
 import useGetFile from '../../api/hooks/tanstack/files/useGetFile';
 import useGetFiles from '../../api/hooks/tanstack/files/useGetFIles';
-import { useChat } from '../../api/hooks/tanstack/chat/useChat';
+import { useChatModel } from '../../api/hooks/tanstack/chat/useChat';
 import { useAuthContext } from '../../authContext/AuthContext';
 import ReactMarkdown from "react-markdown";
 import SelectComponent from '../../components/select/SelectComponent';
@@ -13,6 +13,7 @@ import { options, toggleIcon } from './helper';
 import StatusDot from '../../components/statusDot/StatusDot';
 import { translations } from '../../../i18n';
 import { useTranslation } from 'react-i18next';
+import { usePingModel } from '../../api/hooks/tanstack/usePingChat';
 
 type Message = {
     message: string,
@@ -27,14 +28,21 @@ function FilesPage() {
     const [search, setSearch] = useState("")
     const [query, setQuery] = useState("")
     const [response, setResponse] = useState<Message[]>([]);
-    const [model, setModel] = useState<string>(options[0].id)
+    const [model, setModel] = useState<string>(options[1].id)
+    const [status, setStatus] = useState<boolean>(false)
     const controllerRef = useRef<AbortController | null>(null);
     let aiIndex: number | null = null;
     let buffer = "";
 
     const { data: files = [] } = useGetFiles();
-    const { mutateAsync: getFile } = useGetFile()
-    const { mutateAsync: uploadFile } = useUploadFile()
+    const { mutateAsync: getFile } = useGetFile();
+    const { mutateAsync: uploadFile } = useUploadFile();
+    const { mutateAsync: pingModel, isPending: pingPending } = usePingModel(setStatus);
+    const { mutateAsync: startChat, isPending: chatPending } = useChatModel();
+
+    useEffect(() => {
+        pingModel(model)
+    }, [model])
 
     const handleSearch = (value: string) => {
         setSearch(value)
@@ -63,14 +71,17 @@ function FilesPage() {
         });
     };
 
-    const { mutateAsync: startChat, isPending } = useChat();
+
 
     const stopChat = () => {
         controllerRef.current?.abort();
     };
 
     const handleQuerySubmit = async (query: string) => {
+
+        if (query.trim() === "") return
         controllerRef.current = new AbortController();
+
 
         const signal = controllerRef.current.signal;
         setQuery("");
@@ -173,7 +184,7 @@ function FilesPage() {
                 </Button>
             </Box>
             <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
-                <StatusDot status={true} isPending={false} />
+                <StatusDot status={status} isPending={pingPending} />
                 <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
                     {response.map((item, i) => (
                         <div
@@ -187,7 +198,7 @@ function FilesPage() {
                         </div>
                     ))}
                     <Box className="flex justify-center" >
-                        {isPending && <CircularProgress />}
+                        {chatPending && <CircularProgress />}
                     </Box>
                 </Box>
                 <Box className="flex gap-4">
@@ -198,13 +209,14 @@ function FilesPage() {
                         itemKey="id"
                     />
                     <InputComponent
+                        isDisabled={pingPending}
                         classNames='w-full'
                         value={query}
                         onChange={(value) => setQuery(value)}
                         endIcon={
-                            <Button onClick={() => handleButton(isPending)}>
+                            <Button onClick={() => handleButton(chatPending)}>
                                 <Icon
-                                    iconName={toggleIcon(isPending)}
+                                    iconName={toggleIcon(chatPending)}
                                     className='mx-1'
                                 />
                             </Button>

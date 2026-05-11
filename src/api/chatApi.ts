@@ -54,8 +54,15 @@ export async function chat(
 
                 console.log(parsed);
 
-                handleChunk(parsed.response, true);
-                handleChunk(parsed.thinking, false);
+                if (parsed.response) {
+                    handleChunk(parsed.response, true);
+                }
+
+                if (parsed.thinking) {
+                    handleChunk(parsed.thinking, false);
+                }
+
+
             }
         }
     } catch (error) {

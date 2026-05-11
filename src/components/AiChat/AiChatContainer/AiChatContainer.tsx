@@ -12,7 +12,7 @@ export default function AiChatContainer({ chatItems, chatPending }: AiChatBoxPro
     return (
         <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
             {chatItems.map((chatItem, i) => {
-                const isUser = chatItem.sender === Sender.USER
+                const isUser = chatItem.role === Sender.USER
 
                 return (
                     <Stack key={i} className={`max-w-[75%] px-3 py-2 rounded-lg gap-5 ${isUser
@@ -26,11 +26,8 @@ export default function AiChatContainer({ chatItems, chatPending }: AiChatBoxPro
                                 alignMessage={isUser}
                                 showMessage={!isUser} />
                         </CollapsableContainer>
-
-
-
                         <AiChatMessage
-                            message={chatItem.message}
+                            message={chatItem.content}
                             alignMessage={isUser}
                             showMessage
                         />

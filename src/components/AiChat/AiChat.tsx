@@ -10,13 +10,13 @@ import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 
 export enum Sender {
-    AGENT = "AGENT",
-    USER = "USER",
+    AGENT = "assistant",
+    USER = "user",
 }
 export type ChatResponse = {
-    message: string
+    content: string
     thinking: string
-    sender: Sender
+    role: Sender
 }
 
 export default function AiChat() {
@@ -39,13 +39,13 @@ export default function AiChat() {
             if (aiIndex === null) {
                 aiIndex = updated.length;
                 updated.push({
-                    message: "",
+                    content: "",
                     thinking: "",
-                    sender: Sender.AGENT,
+                    role: Sender.AGENT,
                 });
             }
 
-            const prevMessage = updated[aiIndex]?.message || ""
+            const prevMessage = updated[aiIndex]?.content || ""
             const prevThinking = updated[aiIndex]?.thinking || ""
 
             updated[aiIndex] = {
@@ -53,7 +53,7 @@ export default function AiChat() {
 
                 ...(isResponse
                     ? {
-                        message:
+                        content:
                             (prevMessage || "") + chunk,
                     }
                     : {
@@ -61,7 +61,7 @@ export default function AiChat() {
                             (prevThinking || "") + chunk,
                     }),
 
-                sender: Sender.AGENT,
+                role: Sender.AGENT,
             };
 
             return updated;
@@ -78,10 +78,8 @@ export default function AiChat() {
         setQuery("");
         setChatResponse((prev) => [
             ...prev,
-            { message: query, thinking: "", sender: Sender.USER },
+            { content: query, thinking: "", role: Sender.USER },
         ]);
-
-        console.log(chatResponse)
 
         const obj = {
             model: model,

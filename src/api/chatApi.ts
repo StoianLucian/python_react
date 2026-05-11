@@ -16,6 +16,7 @@ export async function chat(
 ) {
 
     try {
+        console.log(signal)
         const res = await fetch(baseURL + CHAT_ROUTES_ENUM.CHAT, {
             method: ApiMethod.POST,
             headers: {

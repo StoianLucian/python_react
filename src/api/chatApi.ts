@@ -33,31 +33,28 @@ export async function chat(
 
         const decoder = new TextDecoder();
         // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+        let buffer = "";
 
         while (true) {
+            const { done, value } = await reader!.read();
 
-            if (signal.aborted) {
-                break
-            }
-            const { value, done } = await reader.read();
             if (done) break;
 
-            const chunkStr = decoder.decode(value, { stream: true });
+            buffer += decoder.decode(value, { stream: true });
 
+            const lines = buffer.split("\n");
 
-            const res = JSON.parse(chunkStr);
+            buffer = lines.pop() || "";
 
-            if (res.thinking !== null) {
-                const thinkingchung = res.thinking
+            for (const line of lines) {
+                if (!line.trim()) continue;
 
-                console.log(thinkingchung)
-                handleChunk(thinkingchung, false)
-            }
+                const parsed = JSON.parse(line);
 
-            if (res.response !== null) {
-                const responseChunk = res.response
-                handleChunk(responseChunk, true)
-                console.log(responseChunk)
+                console.log(parsed);
+
+                handleChunk(parsed.response, true);
+                handleChunk(parsed.thinking, false);
             }
         }
     } catch (error) {

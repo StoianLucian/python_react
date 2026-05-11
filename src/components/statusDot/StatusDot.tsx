@@ -4,14 +4,14 @@ import { BsCircleFill } from 'react-icons/bs'
 
 type StatusDotProps = {
     status: boolean;
-    isPending: boolean
+    statusPending: boolean
 }
-export default function StatusDot({ status, isPending }: StatusDotProps) {
+export default function StatusDot({ status, statusPending }: StatusDotProps) {
     const color = status ? "green" : "red"
     const text = status ? "Active" : "Inactive"
     return (
         <Box className="flex justify-start items-center gap-2">
-            {isPending
+            {statusPending
                 ?
                 <>
                     <CircularProgress size={20} /> Loading...

@@ -6,7 +6,7 @@ type ChatProps = {
         prompt: string,
         model: string
     },
-    handleChunk: (chunk: string) => void,
+    handleChunk: (chunk: string, isResponse: boolean) => void,
     signal: AbortSignal
 }
 

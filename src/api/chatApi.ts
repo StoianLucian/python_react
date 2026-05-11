@@ -11,7 +11,7 @@ export async function chat(
         prompt: string,
         model: string
     },
-    handleChunk: (chunk: string) => void,
+    handleChunk: (chunk: string, isResponse: boolean) => void,
     signal: AbortSignal
 ) {
     const res = await fetch(baseURL + CHAT_ROUTES_ENUM.CHAT, {
@@ -33,19 +33,27 @@ export async function chat(
     // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
     while (true) {
-        const { value, done } = await reader.read();
-        if (signal?.aborted) {
-            reader.cancel();
-            break;
+
+        if (signal.aborted) {
+            break
         }
+        const { value, done } = await reader.read();
         if (done) break;
 
-        const chunk = decoder.decode(value, { stream: true });
+        const chunkStr = decoder.decode(value, { stream: true });
 
-        console.log(chunk)
 
-        // await sleep(200);
-        handleChunk(chunk)
+        const res = JSON.parse(chunkStr);
+
+        if (res.thinking) {
+            const thinkingchung = res.thinking
+            handleChunk(thinkingchung, false)
+        }
+
+        if (res.response) {
+            const responseChunk = res.response
+            handleChunk(responseChunk, true)
+        }
     }
 }
 

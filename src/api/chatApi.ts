@@ -47,14 +47,17 @@ export async function chat(
 
             const res = JSON.parse(chunkStr);
 
-            if (res.thinking) {
+            if (res.thinking !== null) {
                 const thinkingchung = res.thinking
+
+                console.log(thinkingchung)
                 handleChunk(thinkingchung, false)
             }
 
-            if (res.response) {
+            if (res.response !== null) {
                 const responseChunk = res.response
                 handleChunk(responseChunk, true)
+                console.log(responseChunk)
             }
         }
     } catch (error) {

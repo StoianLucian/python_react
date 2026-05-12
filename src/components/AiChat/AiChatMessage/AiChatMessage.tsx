@@ -3,13 +3,12 @@ import ReactMarkdown from 'react-markdown'
 
 type AiChatMessageProps = {
     message: string;
-    alignMessage: boolean;
-    showMessage: boolean;
+    alignRight: boolean;
 }
 
-export default function AiChatMessage({ message, alignMessage, showMessage }: AiChatMessageProps) {
+export default function AiChatMessage({ message, alignRight }: AiChatMessageProps) {
 
-    if (!showMessage || message == "") return
+    if (message == "") return
 
     const alignEnd = "bg-blue-500 text-white self-end"
     const alignStart = "bg-white self-start"
@@ -17,14 +16,12 @@ export default function AiChatMessage({ message, alignMessage, showMessage }: Ai
 
     return (
         <Box
-            className={`${AiClasses} ${alignMessage
+            className={`${AiClasses} ${alignRight
                 ? alignEnd
                 : alignStart
                 } `}
         >
-
             <ReactMarkdown>{message}</ReactMarkdown>
-
         </Box>
     )
 }

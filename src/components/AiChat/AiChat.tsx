@@ -9,15 +9,17 @@ import { useChatModel } from '../../api/hooks/tanstack/chat/useChat'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 
-export enum Sender {
+export enum Role {
     AGENT = "assistant",
     USER = "user",
 }
 export type ChatResponse = {
     content: string
     thinking: string
-    role: Sender
+    role: Role
 }
+
+export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
     const [query, setQuery] = useState("")
@@ -26,7 +28,7 @@ export default function AiChat() {
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const controllerRef = useRef<AbortController | null>(null);
 
-    let aiIndex: number | null = null;
+    const aiIndexRef = useRef<number | null>(null);
 
     const { mutateAsync: pingModel, isPending: pingPending } = usePingModel(setStatus);
     const { mutateAsync: startChat, isPending: chatPending } = useChatModel();
@@ -36,20 +38,20 @@ export default function AiChat() {
         setChatResponse((prev) => {
             let updated = [...prev];
 
-            if (aiIndex === null) {
-                aiIndex = updated.length;
+            if (aiIndexRef.current === null) {
+                aiIndexRef.current = updated.length;
                 updated.push({
                     content: "",
                     thinking: "",
-                    role: Sender.AGENT,
+                    role: Role.AGENT,
                 });
             }
 
-            const prevMessage = updated[aiIndex]?.content || ""
-            const prevThinking = updated[aiIndex]?.thinking || ""
+            const prevMessage = updated[aiIndexRef.current]?.content || ""
+            const prevThinking = updated[aiIndexRef.current]?.thinking || ""
 
-            updated[aiIndex] = {
-                ...updated[aiIndex],
+            updated[aiIndexRef.current] = {
+                ...updated[aiIndexRef.current],
 
                 ...(isResponse
                     ? {
@@ -61,7 +63,7 @@ export default function AiChat() {
                             (prevThinking || "") + chunk,
                     }),
 
-                role: Sender.AGENT,
+                role: Role.AGENT,
             };
 
             return updated;
@@ -72,19 +74,30 @@ export default function AiChat() {
     const handleQuerySubmit = async (query: string) => {
         if (query.trim() === "") return
         controllerRef.current = new AbortController();
-
+        aiIndexRef.current = null;
 
         const signal = controllerRef.current.signal;
         setQuery("");
-        setChatResponse((prev) => [
-            ...prev,
-            { content: query, thinking: "", role: Sender.USER },
-        ]);
+
+        const newMessage = {
+            content: query,
+            thinking: "",
+            role: Role.USER
+        }
+
+        const updatedHistory = [
+            ...chatResponse,
+            newMessage
+        ];
+        setChatResponse(updatedHistory);
 
         const obj = {
-            model: model,
-            prompt: query
-        }
+            model,
+            history: updatedHistory.map((response) => ({
+                role: response.role,
+                content: response.content
+            }))
+        };
 
         await startChat({ obj, handleChunk: showAiResponse, signal })
     };

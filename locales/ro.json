@@ -33,6 +33,10 @@
     "downloadFile": "Descarcă fisierul"
   },
 
+  "aiChat": {
+    "thinking": "Gândește..."
+  },
+
   "errors": {
     "isRequired": "{{field}} este obligatoriu",
     "invalidEmail": "Email invalid",

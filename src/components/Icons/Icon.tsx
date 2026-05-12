@@ -4,13 +4,15 @@ import profileIcon from "../../assets/svgs/profile_icon.png"
 import pdfIcon from "../../assets/svgs/pdf_icon.png"
 import CogIcon from "../../assets/svgs/cogwheel_icon.png"
 import ArrowIcon from "../../assets/svgs/arrow_icon.png"
+import ChevronIcon from "../../assets/svgs/chevron_icon.png"
 
 export enum IconsEnum {
     HOME = "home_icon",
     PROFILE = "profile_icon",
     PDF = "pdf_icon",
     COG = "cogwheel_icon",
-    ARROW = "arrow_icon"
+    ARROW = "arrow_icon",
+    CHEVRON = "chevron_icon"
 }
 
 const srcMap: Record<IconsEnum, string> = {
@@ -18,7 +20,8 @@ const srcMap: Record<IconsEnum, string> = {
     [IconsEnum.PROFILE]: profileIcon,
     [IconsEnum.PDF]: pdfIcon,
     [IconsEnum.COG]: CogIcon,
-    [IconsEnum.ARROW]: ArrowIcon
+    [IconsEnum.ARROW]: ArrowIcon,
+    [IconsEnum.CHEVRON]: ChevronIcon
 };
 
 type IconsProps = {

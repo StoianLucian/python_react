@@ -12,6 +12,7 @@ export enum TranslationKey {
     LOGIN_PAGE = "loginPage",
     REGISTER_PAGE = "registerPage",
     FILES_PAGE = "filesPage",
+    AI_CHAT = "aiChat",
     ERRORS = "errors",
     SUCCESS = "success",
 }
@@ -52,7 +53,9 @@ export const translations = {
     filesPage: {
         downloadFile: `${TranslationKey.FILES_PAGE}.downloadFile`,
     },
-
+    aiChat: {
+        thinking: `${TranslationKey.AI_CHAT}.thinking`,
+    },
     errors: {
         isRequired: `${TranslationKey.ERRORS}.isRequired`,
         invalidEmail: `${TranslationKey.ERRORS}.invalidEmail`,

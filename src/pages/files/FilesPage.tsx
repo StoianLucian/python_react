@@ -8,8 +8,6 @@ import { useUploadFile } from '../../api/hooks/tanstack/files/useUploadFile';
 import { translations } from '../../../i18n';
 import { useTranslation } from 'react-i18next';
 import AiChat from '../../components/AiChat/AiChat';
-import axios from 'axios';
-import { baseURL } from '../../api/axiosConfig';
 
 function FilesPage() {
     const { t } = useTranslation()
@@ -41,22 +39,6 @@ function FilesPage() {
 
     };
 
-    async function test() {
-
-        const messages = [
-            { "role": "system", "content": "You are a helpful assistant." },
-            { "role": "user", "content": "please remember this number '11'" },
-            { "role": "assistant", "content": "Hello!" },
-            { "role": "user", "content": "what was the number?" }
-        ]
-        const data = {
-            model: "qwen3:8b",
-            messages: messages
-        }
-        const test = await axios.post(baseURL + "/chat/test", data);
-
-        console.log(test);
-    }
 
 
     return (
@@ -68,7 +50,6 @@ function FilesPage() {
             onDragOver={(e) => toggleDrag(true, e)}
             onDragLeave={(e) => toggleDrag(false, e)}
         >
-            <Button onClick={test}>TEST</Button>
             <Box className={`flex flex-row items-start`}>
                 <Collapse in={open} orientation="horizontal">
                     <Grid className="pl-10">

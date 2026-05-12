@@ -1,7 +1,9 @@
 import { Box, CircularProgress, Stack } from '@mui/material'
-import { Sender, type ChatResponse } from '../AiChat'
 import AiChatMessage from '../AiChatMessage/AiChatMessage'
 import CollapsableContainer from '../../CollapsableContainer/CollapsableContainer'
+import { Role, type ChatResponse } from '../AiChat'
+import { useTranslation } from 'react-i18next'
+import { translations } from '../../../../i18n'
 
 export type AiChatBoxProps = {
     chatItems: ChatResponse[]
@@ -9,27 +11,32 @@ export type AiChatBoxProps = {
 }
 
 export default function AiChatContainer({ chatItems, chatPending }: AiChatBoxProps) {
+    const { t } = useTranslation()
     return (
         <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
             {chatItems.map((chatItem, i) => {
-                const isUser = chatItem.role === Sender.USER
+                const isUser = chatItem.role === Role.USER
+                const isLast = i === chatItems.length - 1 && chatPending
 
                 return (
                     <Stack key={i} className={`max-w-[75%] px-3 py-2 rounded-lg gap-5 ${isUser
                         ? "self-end"
                         : "self-start"
                         }`}>
-
-                        <CollapsableContainer>
-                            <AiChatMessage
-                                message={chatItem.thinking}
-                                alignMessage={isUser}
-                                showMessage={!isUser} />
-                        </CollapsableContainer>
+                        {!isUser &&
+                            <CollapsableContainer
+                                text={t(translations.aiChat.thinking)}
+                                isLoading={isLast}
+                            >
+                                <AiChatMessage
+                                    message={chatItem.thinking}
+                                    alignRight={isUser}
+                                />
+                            </CollapsableContainer>
+                        }
                         <AiChatMessage
                             message={chatItem.content}
-                            alignMessage={isUser}
-                            showMessage
+                            alignRight={isUser}
                         />
                     </Stack>
                 )

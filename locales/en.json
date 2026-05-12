@@ -33,6 +33,10 @@
     "downloadFile": "Download file"
   },
 
+  "aiChat": {
+    "thinking": "Thinking..."
+  },
+
   "errors": {
     "isRequired": "{{field}} is required",
     "invalidEmail": "Invalid email",

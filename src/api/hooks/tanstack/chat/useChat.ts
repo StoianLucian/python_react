@@ -1,9 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { chat } from '../../../chatApi';
+import type { History } from '../../../../components/AiChat/AiChat';
 
 type ChatProps = {
     obj: {
-        prompt: string,
+        history: History[],
         model: string
     },
     handleChunk: (chunk: string, isResponse: boolean) => void,

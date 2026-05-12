@@ -1,4 +1,4 @@
-import { MenuItem, Select } from "@mui/material";
+import { Box, CircularProgress, MenuItem, Select } from "@mui/material";
 import { type Dispatch, type SetStateAction } from "react";
 
 type Option = {
@@ -10,25 +10,28 @@ type SelectProps = {
     options: Option[];
     onChange: Dispatch<SetStateAction<string>>;
     value: string | number;
-    itemKey: string;
+    itemKey?: string;
+    isLoading: boolean
 };
 
-export default function SelectComponent({ options, onChange, value, itemKey }: SelectProps) {
+export default function SelectComponent({ options, onChange, value, itemKey = "id", isLoading }: SelectProps) {
 
     return (
-        <Select
-            className="w-auto"
-            value={value}
-            onChange={(e) => {
-                const newValue = e.target.value as string;
-                onChange(newValue);
-            }}
-        >
-            {options.map((option) => (
-                <MenuItem key={option[itemKey]} value={option[itemKey]}>
-                    {option.name}
-                </MenuItem>
-            ))}
-        </Select>
+        <Box>
+            {isLoading ? <CircularProgress size={50} /> : <Select
+                className="w-full"
+                value={value}
+                onChange={(e) => {
+                    const newValue = e.target.value as string;
+                    onChange(newValue);
+                }}
+            >
+                {options.map((option) => (
+                    <MenuItem key={option[itemKey]} value={option[itemKey]}>
+                        {option.name}
+                    </MenuItem>
+                ))}
+            </Select>}
+        </Box>
     );
 }

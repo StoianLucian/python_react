@@ -1,13 +1,14 @@
-import { Box, Button } from '@mui/material'
+import { Box, Button, Grid } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
-import { options, toggleIcon } from '../../pages/files/helper'
+import { toggleIcon } from '../../pages/files/helper'
 import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
-import { usePingModel } from '../../api/hooks/tanstack/usePingChat'
+import { usePingModel } from '../../api/hooks/tanstack/chat/usePingChat'
 import { useChatModel } from '../../api/hooks/tanstack/chat/useChat'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
+import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
 
 export enum Role {
     AGENT = "assistant",
@@ -26,14 +27,17 @@ export type History = Pick<ChatResponse, "role" | "content">
 export default function AiChat() {
     const [query, setQuery] = useState("")
     const [status, setStatus] = useState<boolean>(false)
-    const [model, setModel] = useState<string>(options[1].id)
+    const [model, setModel] = useState<string>("")
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const controllerRef = useRef<AbortController | null>(null);
+
+
 
     const aiIndexRef = useRef<number | null>(null);
 
     const { mutateAsync: pingModel, isPending: pingPending } = usePingModel(setStatus);
     const { mutateAsync: startChat, isPending: chatPending } = useChatModel();
+    const { data: options = [], isLoading: loadingOptions, isSuccess: isModelsLoaded } = useChatModels()
 
     function showAiResponse(chunk: string, isResponse: boolean, isLoading: boolean = false, time: number = 0) {
 
@@ -119,34 +123,43 @@ export default function AiChat() {
     }
 
     useEffect(() => {
-        pingModel(model)
+        if (model)
+            pingModel(model)
     }, [model])
+
+    useEffect(() => {
+        if (isModelsLoaded && options[0]?.id) {
+            setModel(options[0].id)
+        }
+    }, [isModelsLoaded])
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
             <StatusDot status={status} statusPending={pingPending} />
             <AiChatContainer chatItems={chatResponse} chatPending={chatPending} />
-            <Box className="flex gap-4">
-                <SelectComponent
-                    onChange={setModel}
-                    value={model}
-                    options={options}
-                    itemKey="id"
-                />
-                <InputComponent
-                    // isDisabled={pingPending}
-                    classNames='w-full'
-                    value={query}
-                    onChange={(value) => setQuery(value)}
-                    endIcon={
-                        <Button onClick={() => handleButton(chatPending)}>
-                            <Icon
-                                iconName={toggleIcon(chatPending)}
-                                className='mx-1'
-                            />
-                        </Button>
-                    }
-                />
-            </Box>
+            <Grid className="grid grid-cols-4 gap-4">
+                <Box className="col-span-1">
+                    <SelectComponent
+                        onChange={setModel}
+                        value={model}
+                        options={options}
+                        isLoading={loadingOptions}
+                    />
+                </Box>
+                <Box className="col-span-3">
+                    <InputComponent
+                        value={query}
+                        onChange={(value) => setQuery(value)}
+                        endIcon={
+                            <Button onClick={() => handleButton(chatPending)}>
+                                <Icon
+                                    iconName={toggleIcon(chatPending)}
+                                    className="mx-1"
+                                />
+                            </Button>
+                        }
+                    />
+                </Box>
+            </Grid>
         </Box>
     )
 }

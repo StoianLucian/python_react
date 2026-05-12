@@ -6,7 +6,7 @@ type StatusDotProps = {
     status: boolean;
     statusPending: boolean
 }
-export default function StatusDot({ status, statusPending }: StatusDotProps) {
+export default function StatusDot({ status, statusPending = true }: StatusDotProps) {
     const color = status ? "green" : "red"
     const text = status ? "Active" : "Inactive"
     return (
@@ -14,7 +14,10 @@ export default function StatusDot({ status, statusPending }: StatusDotProps) {
             {statusPending
                 ?
                 <>
-                    <CircularProgress size={20} /> Loading...
+                    <CircularProgress size={20} />
+                    <Typography className={`overflow-hidden ${statusPending ? "animate-loading" : ""} `}>
+                        Loading...
+                    </Typography>
                 </>
                 :
                 (<>

@@ -50,7 +50,7 @@ function InputComponent({
     return (
         <TextField
             disabled={isDisabled}
-            className={classNames}
+            className={`w-full ${classNames}`}
             label={label}
             type={inputType}
             onChange={(e) => onChange(e.target.value)}

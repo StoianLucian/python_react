@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { pingModel } from '../../chatApi';
+import { pingModel } from '../../../chatApi';
 
 export function usePingModel(statusHandler: React.Dispatch<React.SetStateAction<boolean>>) {
     return useMutation({

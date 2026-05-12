@@ -1,10 +1,10 @@
-import axios from "axios";
-import { ApiMethod, baseURL } from "./axiosConfig";
+import { ApiMethod, baseURL, request } from "./axiosConfig";
 import type { History } from "../components/AiChat/AiChat";
 
-const enum CHAT_ROUTES_ENUM {
+export enum CHAT_ROUTES_ENUM {
     CHAT = "/chat",
-    CHAT_PING = "/chat/ping"
+    CHAT_PING = "/chat/ping",
+    CHAT_MODELS = "/chat/models",
 }
 
 export async function chat(
@@ -79,18 +79,12 @@ export async function chat(
     } catch (error) {
         throw error
     }
-
 }
 
-export async function pingModel(
-    model: string
-) {
-    try {
-        const res = await axios.post(baseURL + CHAT_ROUTES_ENUM.CHAT_PING, { model });
+export async function pingModel(model: string) {
+    return request({ method: ApiMethod.POST, url: CHAT_ROUTES_ENUM.CHAT_PING, data: { model } })
+}
 
-        return res
-    } catch (error) {
-        console.log(error)
-        throw error
-    }
+export async function getAvailableModels() {
+    return request({ method: ApiMethod.GET, url: CHAT_ROUTES_ENUM.CHAT_MODELS })
 }

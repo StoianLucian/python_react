@@ -1,5 +1,8 @@
 import { Box } from '@mui/material'
 import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
+import remarkGfm from 'remark-gfm'
 
 type AiChatMessageProps = {
     message: string;
@@ -21,7 +24,23 @@ export default function AiChatMessage({ message, alignRight }: AiChatMessageProp
                 : alignStart
                 } `}
         >
-            <ReactMarkdown>{message}</ReactMarkdown>
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                components={{
+                    code(props) {
+                        const { children, className } = props
+
+                        if (className === "language-html") {
+                            return <div dangerouslySetInnerHTML={{ __html: String(children) }} />
+                        }
+
+                        return <code className={className}>{children}</code>
+                    }
+                }}
+            >
+                {message}
+            </ReactMarkdown>
         </Box>
     )
 }

@@ -7,7 +7,11 @@ const enum CHAT_ROUTES_ENUM {
     CHAT_PING = "/chat/ping"
 }
 
-export async function chat(obj: { model: string, history: History[] }, handleChunk: (chunk: string, isResponse: boolean) => void, signal: AbortSignal) {
+export async function chat(
+    obj: { model: string, history: History[] },
+    handleChunk: (chunk: string, isResponse: boolean, isThinking?: boolean, thinkingTime?: number) => void,
+    signal: AbortSignal
+) {
     try {
         const res = await fetch(baseURL + CHAT_ROUTES_ENUM.CHAT, {
             method: ApiMethod.POST,
@@ -31,6 +35,9 @@ export async function chat(obj: { model: string, history: History[] }, handleChu
         const decoder = new TextDecoder();
         // const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
         let buffer = "";
+        let thinkingLoading = true;
+        let thinkingStart: number | null = null;
+        let thinkingEnd: number | null = null;
 
         while (true) {
             const { done, value } = await reader!.read();
@@ -57,7 +64,15 @@ export async function chat(obj: { model: string, history: History[] }, handleChu
                 }
 
                 if (parsed.thinking) {
-                    handleChunk(parsed.thinking, false);
+                    if (thinkingStart === null) {
+                        thinkingStart = Date.now(); // initiate once
+                    }
+                    handleChunk(parsed.thinking, false, thinkingLoading)
+                } else if (parsed.thinking == null && thinkingLoading) { // use thinkingLoading to only trigger once
+                    thinkingLoading = false
+                    thinkingEnd = Date.now()
+                    const thinkingTime = (thinkingEnd - thinkingStart!) / 1000;
+                    handleChunk("", false, thinkingLoading, thinkingTime)
                 }
             }
         }

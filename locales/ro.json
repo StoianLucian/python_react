@@ -34,7 +34,8 @@
   },
 
   "aiChat": {
-    "thinking": "Gândește..."
+    "thinking": "Gândește...",
+    "thinkingTime": "AI-ul a gândit pentru {{value}} secunde"
   },
 
   "errors": {

@@ -55,6 +55,7 @@ export const translations = {
     },
     aiChat: {
         thinking: `${TranslationKey.AI_CHAT}.thinking`,
+        thinkingTime: `${TranslationKey.AI_CHAT}.thinkingTime`
     },
     errors: {
         isRequired: `${TranslationKey.ERRORS}.isRequired`,

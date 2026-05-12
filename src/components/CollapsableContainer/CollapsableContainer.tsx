@@ -1,4 +1,4 @@
-import { Button, Collapse, Stack } from '@mui/material'
+import { Box, Button, Collapse, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import Icon, { IconsEnum } from '../Icons/Icon'
 
@@ -6,26 +6,37 @@ type CollapsableContainerProps = {
     children: React.ReactNode
     isLoading?: boolean
     icon?: IconsEnum
+    loadingText?: string
     text?: string
 }
 
-export default function CollapsableContainer({ children, text, icon = IconsEnum.ARROW, isLoading }: CollapsableContainerProps) {
+export default function CollapsableContainer({ children, loadingText, text, icon = IconsEnum.ARROW, isLoading }: CollapsableContainerProps) {
     const [open, setOpen] = useState(false)
+    const loading = Boolean(isLoading && loadingText)
     return (
         <Stack direction="column">
-            <Button onClick={() => setOpen((prev) => !prev)}>
-                <Icon iconName={icon} size={20} className={`
+            <Box className="flex items-center">
+                <Button onClick={() => setOpen((prev) => !prev)}>
+                    <Icon iconName={icon} size={20} className={`
                             transition-transform duration-700
                              ${open ? "-rotate-90" : "rotate-90"}`
-                } />
-                {(isLoading && text) && <span className={`inline-block overflow-hidden whitespace-nowrap ${isLoading ? "animate-loading" : ""} `}>
+                    } />
+
+                </Button>
+                {loading &&
+                    <Typography className={`overflow-hidden ${isLoading ? "animate-loading" : ""} `}>
+                        {loadingText}
+                    </Typography>
+                }
+                {(text && !loading) && <Typography >
                     {text}
-                </span>}
-            </Button>
+                </Typography>
+                }
+            </Box>
             <Collapse in={open} orientation="vertical">
                 {children}
             </Collapse>
-        </Stack>
+        </Stack >
 
     )
 }

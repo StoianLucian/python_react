@@ -17,6 +17,8 @@ export type ChatResponse = {
     content: string
     thinking: string
     role: Role
+    isThinking?: boolean
+    thinkingTime?: number
 }
 
 export type History = Pick<ChatResponse, "role" | "content">
@@ -33,7 +35,7 @@ export default function AiChat() {
     const { mutateAsync: pingModel, isPending: pingPending } = usePingModel(setStatus);
     const { mutateAsync: startChat, isPending: chatPending } = useChatModel();
 
-    function showAiResponse(chunk: string, isResponse: boolean) {
+    function showAiResponse(chunk: string, isResponse: boolean, isLoading: boolean = false, time: number = 0) {
 
         setChatResponse((prev) => {
             let updated = [...prev];
@@ -43,7 +45,7 @@ export default function AiChat() {
                 updated.push({
                     content: "",
                     thinking: "",
-                    role: Role.AGENT,
+                    role: Role.AGENT
                 });
             }
 
@@ -61,6 +63,8 @@ export default function AiChat() {
                     : {
                         thinking:
                             (prevThinking || "") + chunk,
+                        isThinking: isLoading,
+                        thinkingTime: time
                     }),
 
                 role: Role.AGENT,

@@ -34,7 +34,8 @@
   },
 
   "aiChat": {
-    "thinking": "Thinking..."
+    "thinking": "Thinking...",
+    "thinkingTime": "The AI thought for {{value}} seconds"
   },
 
   "errors": {

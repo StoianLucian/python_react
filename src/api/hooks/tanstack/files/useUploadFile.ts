@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { uploadFile } from '../../../fileApi';
+import { translations } from '../../../../../i18n';
 
 
 export function useUploadFile() {
@@ -23,6 +24,7 @@ export function useUploadFile() {
         },
         onSuccess() {
             queryClient.invalidateQueries({ queryKey: ['files'] });
+            toast(translations.filesPage.fileUploaded, { type: "success" })
         }
     });
 }

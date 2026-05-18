@@ -30,12 +30,17 @@
   },
 
   "filesPage": {
-    "downloadFile": "Descarcă fisierul"
+    "downloadFile": "Descarcă fisierul",
+    "dragFile": "Trage fisierul",
+    "files": "Fisiere",
+    "noAvailableFiles": "Nu există fișiere disponibile",
+    "fileUploaded": "Fisier incarcat"
   },
 
   "aiChat": {
     "thinking": "Gândește...",
-    "thinkingTime": "AI-ul a gândit pentru {{value}} secunde"
+    "thinkingTime": "AI-ul a gândit pentru {{value}} secunde",
+    "chatHistory": "Istorie chat"
   },
 
   "errors": {

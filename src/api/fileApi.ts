@@ -1,4 +1,5 @@
 import { request, ApiMethod } from "./axiosConfig";
+import type { File as FileType } from "./hooks/tanstack/files/useGetFIles";
 
 const enum FILE_ROUTES_ENUM {
     FILES = "/files",
@@ -16,7 +17,7 @@ export async function uploadFile(file: File) {
     return await request({ method: ApiMethod.POST, url: FILE_ROUTES.FILES, data: formData })
 }
 
-export async function getFIles() {
+export async function getFIles(): Promise<FileType[]> {
     return await request({ method: ApiMethod.GET, url: FILE_ROUTES.FILES })
 }
 

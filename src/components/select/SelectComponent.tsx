@@ -18,20 +18,31 @@ export default function SelectComponent({ options, onChange, value, itemKey = "i
 
     return (
         <Box>
-            {isLoading ? <CircularProgress size={50} /> : <Select
-                className="w-full"
-                value={value}
-                onChange={(e) => {
-                    const newValue = e.target.value as string;
-                    onChange(newValue);
-                }}
-            >
-                {options.map((option) => (
-                    <MenuItem key={option[itemKey]} value={option[itemKey]}>
-                        {option.name}
-                    </MenuItem>
-                ))}
-            </Select>}
+            {isLoading
+                ?
+                <CircularProgress size={50} />
+                :
+                <Select
+                    className="w-full"
+                    value={value}
+                    onChange={(e) => {
+                        const newValue = e.target.value as string;
+                        onChange(newValue);
+                    }}
+                    sx={{
+                        position: "absolute",
+                        opacity: 0,
+                        width: 0,
+                        height: 0,
+                        pointerEvents: "none",
+                    }}
+                >
+                    {options.map((option) => (
+                        <MenuItem key={option[itemKey]} value={option[itemKey]}>
+                            {option.name}
+                        </MenuItem>
+                    ))}
+                </Select>}
         </Box>
     );
 }

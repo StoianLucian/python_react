@@ -14,6 +14,7 @@ type InputComponentProps = {
     endIcon?: React.ReactNode,
     classNames?: string,
     isDisabled?: boolean
+    isTextAria?: boolean
 }
 
 export enum InputComponentTypes {
@@ -39,7 +40,8 @@ function InputComponent({
     frontIcon,
     endIcon,
     classNames,
-    isDisabled
+    isDisabled,
+    isTextAria = false
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -48,7 +50,9 @@ function InputComponent({
     }
 
     return (
+
         <TextField
+            multiline={isTextAria}
             disabled={isDisabled}
             className={`w-full ${classNames}`}
             label={label}

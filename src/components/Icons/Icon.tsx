@@ -5,6 +5,7 @@ import pdfIcon from "../../assets/svgs/pdf_icon.png"
 import CogIcon from "../../assets/svgs/cogwheel_icon.png"
 import ArrowIcon from "../../assets/svgs/arrow_icon.png"
 import ChevronIcon from "../../assets/svgs/chevron_icon.png"
+import DownloadIcon from "../../assets/svgs/download_icon.png"
 
 export enum IconsEnum {
     HOME = "home_icon",
@@ -12,7 +13,8 @@ export enum IconsEnum {
     PDF = "pdf_icon",
     COG = "cogwheel_icon",
     ARROW = "arrow_icon",
-    CHEVRON = "chevron_icon"
+    CHEVRON = "chevron_icon",
+    DOWNLOAD = "download_icon"
 }
 
 const srcMap: Record<IconsEnum, string> = {
@@ -21,7 +23,8 @@ const srcMap: Record<IconsEnum, string> = {
     [IconsEnum.PDF]: pdfIcon,
     [IconsEnum.COG]: CogIcon,
     [IconsEnum.ARROW]: ArrowIcon,
-    [IconsEnum.CHEVRON]: ChevronIcon
+    [IconsEnum.CHEVRON]: ChevronIcon,
+    [IconsEnum.DOWNLOAD]: DownloadIcon
 };
 
 type IconsProps = {
@@ -30,7 +33,7 @@ type IconsProps = {
     className?: string
 }
 
-function Icon({ iconName, size = 30, className }: IconsProps) {
+function Icon({ iconName = IconsEnum.HOME, size = 30, className }: IconsProps) {
 
     return <img className={`${className}`} style={{ height: size + "px", width: size + "px" }} src={srcMap[iconName]} alt={iconName} />;
 }

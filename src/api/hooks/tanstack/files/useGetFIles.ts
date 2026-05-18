@@ -1,10 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { getFIles } from "../../../fileApi";
 
+export type File = {
+  id: string,
+  file_name: string,
+  file_size: number,
+  file_type: string,
+  created_at: Date
+}
 
 const useGetFiles = () => {
 
-  return useQuery({
+  return useQuery<File[], any>({
     queryFn: () => getFIles(),
     queryKey: ["files"],
   });

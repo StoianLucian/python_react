@@ -30,12 +30,17 @@
   },
 
   "filesPage": {
-    "downloadFile": "Download file"
+    "downloadFile": "Download file",
+    "dragFile": "Drag file",
+    "files": "Files",
+    "noAvailableFiles": "No files available",
+    "fileUploaded": "File uploaded"
   },
 
   "aiChat": {
     "thinking": "Thinking...",
-    "thinkingTime": "The AI thought for {{value}} seconds"
+    "thinkingTime": "The AI thought for {{value}} seconds",
+    "chatHistory": "Chat history"
   },
 
   "errors": {

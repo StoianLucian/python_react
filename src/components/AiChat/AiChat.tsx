@@ -133,7 +133,7 @@ export default function AiChat() {
         }
     }, [isModelsLoaded])
     return (
-        <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10'>
+        <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-[100vh]'>
             <StatusDot status={status} statusPending={pingPending} />
             <AiChatContainer chatItems={chatResponse} chatPending={chatPending} />
             <Grid className="grid grid-cols-4 gap-4">

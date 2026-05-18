@@ -52,10 +52,15 @@ export const translations = {
 
     filesPage: {
         downloadFile: `${TranslationKey.FILES_PAGE}.downloadFile`,
+        dragFile: `${TranslationKey.FILES_PAGE}.dragFile`,
+        files: `${TranslationKey.FILES_PAGE}.files`,
+        noAvailableFiles: `${TranslationKey.FILES_PAGE}.noAvailableFiles`,
+        fileUploaded: `${TranslationKey.FILES_PAGE}.fileUploaded`
     },
     aiChat: {
         thinking: `${TranslationKey.AI_CHAT}.thinking`,
-        thinkingTime: `${TranslationKey.AI_CHAT}.thinkingTime`
+        thinkingTime: `${TranslationKey.AI_CHAT}.thinkingTime`,
+        chatHistory: `${TranslationKey.AI_CHAT}.chatHistory`
     },
     errors: {
         isRequired: `${TranslationKey.ERRORS}.isRequired`,

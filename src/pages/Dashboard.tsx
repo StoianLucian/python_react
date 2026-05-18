@@ -51,13 +51,8 @@ const newItems = items.map(item => ({ ...item, gradient: getRandomGradient() }))
 function Dashboard() {
     const { t } = useTranslation()
     return (
-        <Box
-            className="w-screen min-h-screen flex flex-wrap justify-center content-center gap-4  "
-            sx={{
-                backgroundImage: `url(${backgroundImage})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-            }}
+        <Box className="w-screen min-h-screen flex flex-wrap justify-center content-center gap-4 bg-cover bg-center bg-no-repeat"
+            style={{ backgroundImage: `url(${backgroundImage})`, }}
         >
             {newItems.map((item) => (
                 <Link key={item.title} to={item.route}>

@@ -9,6 +9,8 @@ import { useChatModel } from '../../api/hooks/tanstack/chat/useChat'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
+// import useGetSession from '../../api/hooks/tanstack/chat/useGetSession'
+// import { useParams } from 'react-router-dom'
 
 export enum Role {
     AGENT = "assistant",
@@ -30,6 +32,14 @@ export default function AiChat() {
     const [model, setModel] = useState<string>("")
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const controllerRef = useRef<AbortController | null>(null);
+
+    // const { id } = useParams();
+
+    // console.log(id)
+
+    // // const sessionId = useMemo(() => id === null ? id : null, [id])
+
+    // // const { data } = useGetSession(sessionId!);
 
 
 

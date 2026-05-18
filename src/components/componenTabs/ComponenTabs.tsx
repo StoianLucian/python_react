@@ -34,7 +34,7 @@ export default function ComponenTabs({ items }: ComponentTabsProps) {
 
         const tabComponents = items.map((item, i) => {
             return (
-                <Box>
+                <Box key={i}>
                     {currentTab == i && item.element}
                 </Box>
             )

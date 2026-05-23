@@ -6,8 +6,9 @@ import { useTranslation } from 'react-i18next';
 import AiChat from '../../components/AiChat/AiChat';
 import ComponenTabs from '../../components/componenTabs/ComponenTabs';
 import FileManagement from '../../components/fileManagement/FileManagement';
+import AiChatHistory from '../../components/AiChat/AiChatHistory/AiChatHistory';
 
-function FilesPage() {
+function ChatPage() {
     const { t } = useTranslation()
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [open, setOpen] = useState(true)
@@ -19,7 +20,7 @@ function FilesPage() {
 
     const items = [
         { label: t(translations.filesPage.files), element: <FileManagement isDragging={isDragging} /> },
-        { label: t(translations.aiChat.chatHistory), element: <div>second tab</div> }
+        { label: t(translations.aiChat.chatHistory), element: <AiChatHistory /> }
     ]
 
     return (
@@ -52,4 +53,4 @@ function FilesPage() {
     )
 }
 
-export default FilesPage
+export default ChatPage

@@ -46,7 +46,9 @@ export async function chat(
                 break
             }
 
-            if (done) break;
+            if (done) {
+                break
+            };
 
             buffer += decoder.decode(value, { stream: true });
 

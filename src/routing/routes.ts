@@ -6,5 +6,5 @@ export enum APP_PATHS {
   PROFILE = "/profile",
   SETTINGS = "/settings",
   NOT_FOUND = "*",
-  FILES = "/files"
+  CHAT = "/chat"
 }

@@ -34,7 +34,7 @@ export default function ComponenTabs({ items }: ComponentTabsProps) {
 
         const tabComponents = items.map((item, i) => {
             return (
-                <Box key={i}>
+                <Box key={i} className="w-full">
                     {currentTab == i && item.element}
                 </Box>
             )
@@ -43,11 +43,11 @@ export default function ComponenTabs({ items }: ComponentTabsProps) {
         return tabComponents
     }
     return (
-        <Box className="flex justify-center items-center flex-col min-w-[20rem]">
+        <Box className="flex justify-center items-center flex-col min-w-[25vw]">
             <Tabs value={currentTab} onChange={handleCurrentTab}>
                 {renderTabs(items)}
             </Tabs>
-            <Box>
+            <Box className="w-full p-5">
                 {renderElements(items)}
             </Box>
         </Box>

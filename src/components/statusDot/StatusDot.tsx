@@ -1,21 +1,31 @@
 import { Box, CircularProgress, Typography } from '@mui/material'
 import { BsCircleFill } from 'react-icons/bs'
+import { usePingModel } from '../../api/hooks/tanstack/chat/usePingChat';
+import { useEffect, useState } from 'react';
 
 
 type StatusDotProps = {
-    status: boolean;
-    statusPending: boolean
+    model: string;
 }
-export default function StatusDot({ status, statusPending = true }: StatusDotProps) {
+export default function StatusDot({ model }: StatusDotProps) {
+    const [status, setStatus] = useState(false);
+
+    useEffect(() => {
+        if (model)
+            pingModel(model)
+    }, [model])
+
+    const { mutateAsync: pingModel, isSuccess } = usePingModel(setStatus);
     const color = status ? "green" : "red"
     const text = status ? "Active" : "Inactive"
+
     return (
         <Box className="flex justify-start items-center gap-2">
-            {statusPending
+            {!isSuccess
                 ?
                 <>
                     <CircularProgress size={20} />
-                    <Typography className={`overflow-hidden ${statusPending ? "animate-loading" : ""} `}>
+                    <Typography className={`overflow-hidden ${!isSuccess ? "animate-loading" : ""} `}>
                         Loading...
                     </Typography>
                 </>

@@ -82,7 +82,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
             </Box>
             <Stack
                 direction="column"
-                className='h-[20rem]'
+                className='h-80'
             >
                 <Typography variant="h6" >Recently uploaded documents</Typography>
                 {renderFiles(files, isLoading)}

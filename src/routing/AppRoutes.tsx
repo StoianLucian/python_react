@@ -3,15 +3,15 @@ import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
 import { useAuthContext } from '../authContext/AuthContext'
 import Dashboard from '../pages/Dashboard'
-import FilesPage from '../pages/files/FilesPage'
 import LoginPage from '../pages/login/LoginPage'
 import RegisterPage from '../pages/register/RegisterPage'
+import ChatPage from '../pages/chat/ChatPage'
 
 const routes = [
     { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
     { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
     { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
-    { path: APP_PATHS.FILES, element: <FilesPage />, isPrivate: true },
+    { path: APP_PATHS.CHAT + "/:id", element: <ChatPage />, isPrivate: true },
     { path: "*", element: <>Page not found</>, isPrivate: false },
 ];
 

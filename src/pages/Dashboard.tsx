@@ -41,7 +41,7 @@ const items = [{
 },
 {
     title: "PDF",
-    route: APP_PATHS.FILES,
+    route: `${APP_PATHS.CHAT}/new`,
     icon: IconsEnum.PDF
 },
 ]

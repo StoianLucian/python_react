@@ -1,17 +1,15 @@
 import { Box, Button, Grid } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
-import { toggleIcon } from '../../pages/files/helper'
+import { toggleIcon } from '../../pages/chat/helper'
 import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
-import { usePingModel } from '../../api/hooks/tanstack/chat/usePingChat'
 import { useChatModel } from '../../api/hooks/tanstack/chat/useChat'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
-// import useGetSession from '../../api/hooks/tanstack/chat/useGetSession'
-// import { useParams } from 'react-router-dom'
-
+import { useCreateSession } from '../../api/hooks/tanstack/chat/useCreateSession'
+import { useParams } from 'react-router-dom'
 export enum Role {
     AGENT = "assistant",
     USER = "user",
@@ -28,26 +26,26 @@ export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
     const [query, setQuery] = useState("")
-    const [status, setStatus] = useState<boolean>(false)
     const [model, setModel] = useState<string>("")
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const controllerRef = useRef<AbortController | null>(null);
 
-    // const { id } = useParams();
+    const { id } = useParams();
 
-    // console.log(id)
-
-    // // const sessionId = useMemo(() => id === null ? id : null, [id])
-
-    // // const { data } = useGetSession(sessionId!);
-
-
+    const sessionId = id === "new" ? "" : id
 
     const aiIndexRef = useRef<number | null>(null);
 
-    const { mutateAsync: pingModel, isPending: pingPending } = usePingModel(setStatus);
     const { mutateAsync: startChat, isPending: chatPending } = useChatModel();
+    const { mutateAsync: createSession } = useCreateSession()
+
     const { data: options = [], isLoading: loadingOptions, isSuccess: isModelsLoaded } = useChatModels()
+
+    useEffect(() => {
+        return () => {
+            controllerRef.current?.abort();
+        };
+    }, []);
 
     function showAiResponse(chunk: string, isResponse: boolean, isLoading: boolean = false, time: number = 0) {
 
@@ -109,6 +107,15 @@ export default function AiChat() {
         ];
         setChatResponse(updatedHistory);
 
+
+
+        if (sessionId) {
+            // console.log(sessionId);
+            // await createSession()
+        } else {
+            await createSession({ query })
+        }
+
         const obj = {
             model,
             history: updatedHistory.map((response) => ({
@@ -133,18 +140,14 @@ export default function AiChat() {
     }
 
     useEffect(() => {
-        if (model)
-            pingModel(model)
-    }, [model])
-
-    useEffect(() => {
         if (isModelsLoaded && options[0]?.id) {
             setModel(options[0].id)
         }
     }, [isModelsLoaded])
+
     return (
-        <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-[100vh]'>
-            <StatusDot status={status} statusPending={pingPending} />
+        <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
+            <StatusDot model={model} />
             <AiChatContainer chatItems={chatResponse} chatPending={chatPending} />
             <Grid className="grid grid-cols-4 gap-4">
                 <Box className="col-span-1">
@@ -167,9 +170,18 @@ export default function AiChat() {
                                 />
                             </Button>
                         }
+                        frontIcon={
+                            <Button onClick={() => handleButton(chatPending)}>
+                                <Icon
+                                    iconName={toggleIcon(chatPending)}
+                                    className="mx-1"
+                                />
+                            </Button>
+                        }
                     />
                 </Box>
             </Grid>
         </Box>
     )
 }
+

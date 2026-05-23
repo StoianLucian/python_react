@@ -1,12 +1,5 @@
 import axios from "axios"
 
-// const baseURL = import.meta.env.VITE_API_BASE_URL?.trim()
-//   ? import.meta.env.VITE_API_BASE_URL
-//   : import.meta.env.DEV
-//     ? '/api'
-//     : 'http://127.0.0.1:8000'
-
-
 const isDev = import.meta.env.VITE_IS_DEV;
 const apiUrl = import.meta.env.VITE_API_URL;
 

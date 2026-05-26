@@ -21,7 +21,7 @@ export default function AiChatContainer({ chatItems, chatPending }: AiChatBoxPro
                         ? "self-end"
                         : "self-start"
                         }`}>
-                        {!isUser &&
+                        {(!isUser && chatItem.thinking) &&
                             <CollapsableContainer
                                 loadingText={t(translations.aiChat.thinking)}
                                 text={t(translations.aiChat.thinkingTime, { value: chatItem?.thinkingTime || 0 })}

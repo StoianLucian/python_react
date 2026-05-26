@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Button } from '@mui/material'
 // import { useTranslation } from 'react-i18next'
 import useGetSessions from '../../../api/hooks/tanstack/chat/useGetSessions'
 import LoadingRows from '../../LoadingRows/LoadingRows'
@@ -25,6 +25,7 @@ export default function AiChatHistory({ }: AiChatHistoryProps) {
     }
     return (
         <Box>
+            <Button>newChat</Button>
             {renderSessions(sessions)}
         </Box>
 

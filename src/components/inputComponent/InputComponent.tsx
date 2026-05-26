@@ -45,7 +45,6 @@ function InputComponent({
     classNames,
     isDisabled,
     isTextAria = false,
-    ref = null,
     onKeyDown,
     hotKey
 }: InputComponentProps) {
@@ -60,13 +59,10 @@ function InputComponent({
         <TextField
             onKeyDown={(e) => {
                 if (matchHotkey(e, hotKey!)) {
-
-                    console.log(hotKey)
                     e.preventDefault();
                     onKeyDown?.()
                 }
             }}
-            ref={ref}
             multiline={isTextAria}
             disabled={isDisabled}
             className={`w-full ${classNames}`}

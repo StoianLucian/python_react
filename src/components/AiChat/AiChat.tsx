@@ -1,5 +1,5 @@
 import { Box, Button, Grid } from '@mui/material'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toggleIcon } from '../../pages/chat/helper'
 import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'

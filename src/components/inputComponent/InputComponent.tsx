@@ -1,6 +1,7 @@
 import { TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
+import { matchHotkey } from './helper';
 
 type InputComponentProps = {
     value: string
@@ -15,6 +16,8 @@ type InputComponentProps = {
     classNames?: string,
     isDisabled?: boolean
     isTextAria?: boolean
+    onKeyDown?: () => void
+    hotKey?: string
 }
 
 export enum InputComponentTypes {
@@ -41,7 +44,10 @@ function InputComponent({
     endIcon,
     classNames,
     isDisabled,
-    isTextAria = false
+    isTextAria = false,
+    ref = null,
+    onKeyDown,
+    hotKey
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -52,6 +58,15 @@ function InputComponent({
     return (
 
         <TextField
+            onKeyDown={(e) => {
+                if (matchHotkey(e, hotKey!)) {
+
+                    console.log(hotKey)
+                    e.preventDefault();
+                    onKeyDown?.()
+                }
+            }}
+            ref={ref}
             multiline={isTextAria}
             disabled={isDisabled}
             className={`w-full ${classNames}`}
@@ -62,13 +77,6 @@ function InputComponent({
             helperText={helperText}
             variant={variant}
             error={!!error}
-            // autoComplete={
-            //     type === InputComponentTypes.PASSWORD
-            //         ? 'current-password'
-            //         : type === InputComponentTypes.EMAIL
-            //             ? 'email'
-            //             : undefined
-            // }
             slotProps={{
                 formHelperText: {
                     sx: {

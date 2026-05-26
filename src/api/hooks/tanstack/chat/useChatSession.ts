@@ -32,8 +32,6 @@ export function useChatSession(model: string, sessionId?: string) {
         controllerRef.current?.abort()
     }
 
-    console.log(model, "model")
-
     function showAiResponse(
         chunk: string,
         isResponse: boolean,

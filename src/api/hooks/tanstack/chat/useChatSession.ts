@@ -1,8 +1,9 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
-
-
+import { useParams } from "react-router-dom"
+import { useCreateMessage } from "./useCreateMessage"
+import useGetSession from "./useGetSession"
 
 export enum Role {
     AGENT = "assistant",
@@ -17,20 +18,43 @@ export type ChatResponse = {
     thinkingTime?: number
 }
 
-
-export function useChatSession(model: string, sessionId?: string) {
+export function useChatSession(model: string) {
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const [query, setQuery] = useState("")
+
+    const { id } = useParams();
+
+    const isNewChat = id === "new";
+
 
     const controllerRef = useRef<AbortController | null>(null)
     const aiIndexRef = useRef<number | null>(null)
 
     const { mutateAsync: startChat, isPending: isChatPending } = useChatModel()
     const { mutateAsync: createSession } = useCreateSession()
+    const { mutateAsync: createMessage } = useCreateMessage()
+    const { data: sessionData, isFetching: isSessionFetching } = useGetSession(id!)
 
     function stopChat() {
         controllerRef.current?.abort()
     }
+
+    useEffect(() => {
+        if (isNewChat) {
+            setChatResponse([])
+            setQuery("")
+            aiIndexRef.current = null
+            controllerRef.current?.abort()
+        } else {
+            const messages = sessionData?.chat_messages.map((message) => ({
+                content: message.text,
+                thinking: "",
+                role: message.created_by === 1 ? Role.USER : Role.AGENT
+            })) || [];
+
+            setChatResponse(messages)
+        }
+    }, [id])
 
     function showAiResponse(
         chunk: string,
@@ -65,7 +89,6 @@ export function useChatSession(model: string, sessionId?: string) {
                         thinkingTime: time,
                     }),
             }
-
             return updated
         })
     }
@@ -90,13 +113,11 @@ export function useChatSession(model: string, sessionId?: string) {
         ];
         setChatResponse(updatedHistory);
 
-
-
-        if (sessionId) {
-            // console.log(sessionId);
-            // await createSession()
+        if (isNewChat) {
+            const createdSessionId = await createSession({ query })
+            await createMessage({ id: createdSessionId, message: { content: query, role: Role.USER } })
         } else {
-            await createSession({ query })
+            await createMessage({ id: id!, message: { content: query, role: Role.USER } })
         }
 
         const obj = {
@@ -117,5 +138,6 @@ export function useChatSession(model: string, sessionId?: string) {
         sendMessage,
         stopChat,
         isChatPending,
+        isSessionFetching
     }
 }

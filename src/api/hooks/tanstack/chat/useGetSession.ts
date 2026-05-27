@@ -20,7 +20,7 @@ const useGetSession = (id: string) => {
     return useQuery({
         queryKey: ["session", id],
         queryFn: () => getSession(id),
-        enabled: !!id,
+        enabled: !!Number(id),
     });
 };
 

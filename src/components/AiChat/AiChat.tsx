@@ -7,7 +7,6 @@ import StatusDot from '../statusDot/StatusDot'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
-import { useParams } from 'react-router-dom'
 import { keyboardShortcuts } from '../inputComponent/helper'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
 
@@ -27,12 +26,8 @@ export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
     const [model, setModel] = useState<string>("")
-    // const controllerRef = useRef<AbortController | null>(null);
 
-    const { id } = useParams();
-
-
-    const { chatResponse, sendMessage, stopChat, isChatPending, query, setQuery } = useChatSession(model, id)
+    const { chatResponse, sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions, isSuccess: isModelsLoaded } = useChatModels()
 
@@ -64,7 +59,7 @@ export default function AiChat() {
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
             <StatusDot model={model} />
-            <AiChatContainer chatItems={chatResponse} chatPending={isChatPending} />
+            <AiChatContainer chatItems={chatResponse} chatPending={isChatPending} sessionFetching={isSessionFetching} />
             <Grid className="grid grid-cols-4 gap-4">
                 <Box className="col-span-1">
                     <SelectComponent

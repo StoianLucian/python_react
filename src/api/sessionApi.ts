@@ -13,8 +13,7 @@ export const SESSION_ROUTES = {
     GET_SESSION: (id: string) => `${SESSION_ROUTES_ENUM.SESSION}/${id}`,
 }
 
-export async function createSession({ query}: CreateSessionProps) {
-
+export async function createSession({ query }: CreateSessionProps) {
     return await request({ method: ApiMethod.POST, url: SESSION_ROUTES.SESSION, data: { query } })
 }
 

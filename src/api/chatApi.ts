@@ -1,10 +1,10 @@
 import { ApiMethod, baseURL, request } from "./axiosConfig";
 import type { History } from "../components/AiChat/AiChat";
 
-export enum CHAT_ROUTES_ENUM {
-    CHAT = "/chat",
-    CHAT_PING = "/chat/ping",
-    CHAT_MODELS = "/chat/models",
+export const CHAT_ROUTES_ENUM = {
+    CHAT: "/chat",
+    CHAT_PING: "/chat/ping",
+    CHAT_MODELS: "/chat/models",
 }
 
 export async function chat(
@@ -39,6 +39,8 @@ export async function chat(
         let thinkingStart: number | null = null;
         let thinkingEnd: number | null = null;
 
+        let aiMessage = "";
+
         while (true) {
             const { done, value } = await reader!.read();
 
@@ -63,6 +65,7 @@ export async function chat(
 
                 if (parsed.content) {
                     handleChunk(parsed.content, true);
+                    aiMessage += parsed.content;
                 }
 
                 if (parsed.thinking) {
@@ -78,6 +81,8 @@ export async function chat(
                 }
             }
         }
+
+        return aiMessage;
     } catch (error) {
         throw error
     }

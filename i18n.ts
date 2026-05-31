@@ -6,15 +6,15 @@ import en from './locales/en.json';
 import ro from './locales/ro.json';
 
 
-export enum TranslationKey {
-    DASHBOARD = "dashboard",
-    PROFILE_MENU = "profileMenu",
-    LOGIN_PAGE = "loginPage",
-    REGISTER_PAGE = "registerPage",
-    FILES_PAGE = "filesPage",
-    AI_CHAT = "aiChat",
-    ERRORS = "errors",
-    SUCCESS = "success",
+export const TranslationKey = {
+    DASHBOARD: "dashboard",
+    PROFILE_MENU: "profileMenu",
+    LOGIN_PAGE: "loginPage",
+    REGISTER_PAGE: "registerPage",
+    FILES_PAGE: "filesPage",
+    AI_CHAT: "aiChat",
+    ERRORS: "errors",
+    SUCCESS: "success",
 }
 
 export const translations = {

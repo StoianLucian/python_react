@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { TextField, type TextFieldVariants } from '@mui/material'
 import React, { useState } from 'react'
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { matchHotkey } from './helper';
@@ -9,7 +9,7 @@ type InputComponentProps = {
     label?: string
     type?: string
     helperText?: string
-    variant?: InputComponentVariants
+    variant?: InputComponentVariantType
     error?: boolean
     frontIcon?: React.ReactNode,
     endIcon?: React.ReactNode,
@@ -20,25 +20,29 @@ type InputComponentProps = {
     hotKey?: string
 }
 
-export enum InputComponentTypes {
-    TEXT = "text",
-    PASSWORD = "password",
-    EMAIL = "email"
+export const InputComponentEnum = {
+    TEXT: "text",
+    PASSWORD: "password",
+    EMAIL: "email"
 }
 
-export enum InputComponentVariants {
-    FILLED = "filled",
-    OUTLINE = "outlined",
-    STANDARD = "standard"
+export type InputComponentType = typeof InputComponentEnum[keyof typeof InputComponentEnum]
+
+export const InputComponentVariantsEnum = {
+    FILLED: "filled",
+    OUTLINE: "outlined",
+    STANDARD: "standard"
 }
+
+export type InputComponentVariantType = typeof InputComponentVariantsEnum[keyof typeof InputComponentVariantsEnum]
 
 function InputComponent({
     value,
     onChange,
     label,
-    type = InputComponentTypes.TEXT,
+    type = InputComponentEnum.TEXT,
     helperText,
-    variant = InputComponentVariants.OUTLINE,
+    variant = InputComponentVariantsEnum.OUTLINE,
     error,
     frontIcon,
     endIcon,
@@ -50,7 +54,7 @@ function InputComponent({
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
-    function handleInputType(type: InputComponentTypes) {
+    function handleInputType(type: InputComponentType) {
         setInputType(type)
     }
 
@@ -71,7 +75,7 @@ function InputComponent({
             onChange={(e) => onChange(e.target.value)}
             value={value}
             helperText={helperText}
-            variant={variant}
+            variant={variant as TextFieldVariants}
             error={!!error}
             slotProps={{
                 formHelperText: {
@@ -81,20 +85,20 @@ function InputComponent({
                         fontWeight: error ? 600 : 400,
                     },
                 },
-                ...(type === InputComponentTypes.PASSWORD && {
+                ...(type === InputComponentEnum.PASSWORD && {
                     input: {
                         endAdornment:
-                            inputType === InputComponentTypes.PASSWORD ? (
+                            inputType === InputComponentEnum.PASSWORD ? (
                                 <BsEye
                                     tabIndex={0}
                                     cursor="pointer"
-                                    onClick={() => handleInputType(InputComponentTypes.TEXT)}
+                                    onClick={() => handleInputType(InputComponentEnum.TEXT)}
                                 />
                             ) : (
                                 <BsEyeSlash
                                     tabIndex={0}
                                     cursor="pointer"
-                                    onClick={() => handleInputType(InputComponentTypes.PASSWORD)}
+                                    onClick={() => handleInputType(InputComponentEnum.PASSWORD)}
                                 />
                             ),
                         "aria-current": "true"

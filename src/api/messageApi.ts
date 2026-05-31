@@ -1,8 +1,8 @@
 import { ApiMethod, request } from "./axiosConfig";
 import type { PartialChatResponse } from "./hooks/tanstack/chat/useCreateMessage";
 
-const enum MESSAGE_ROUTES_ENUM {
-    SESSION = "/message",
+const MESSAGE_ROUTES_ENUM = {
+    SESSION: "/message",
 }
 
 export const MESSAGE_ROUTES = {

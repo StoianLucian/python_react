@@ -3,9 +3,9 @@ import type { LoginCredentials } from "../pages/login/LoginPage";
 import { api, ApiMethod, request } from "./axiosConfig"
 
 
-const enum AUTH_ROUTES {
-    LOGIN = "/auth/login",
-    LOGOUT = "/auth/logout"
+const AUTH_ROUTES = {
+    LOGIN: "/auth/login",
+    LOGOUT: "/auth/logout"
 }
 
 export async function login(credentials: LoginCredentials) {

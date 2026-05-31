@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
 import { useRegister } from '../../api/hooks/tanstack/useRegister'
 import AuthFrom from '../../components/Auth/AuthFrom'
-import InputComponent, { InputComponentTypes } from '../../components/inputComponent/InputComponent'
+import InputComponent, { InputComponentEnum } from '../../components/inputComponent/InputComponent'
 import NavigationLink from '../../components/navigationLink/NavigationLink'
 import { APP_PATHS } from '../../routing/routes'
 import { translations } from '../../../i18n'
@@ -79,7 +79,7 @@ function RegisterPage() {
                         onChange={field.onChange}
                         helperText={error?.message}
                         error={!!error?.message}
-                        type={InputComponentTypes.EMAIL}
+                        type={InputComponentEnum.EMAIL}
                     />
                 )} />
             <Controller
@@ -92,7 +92,7 @@ function RegisterPage() {
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
-                        type={InputComponentTypes.PASSWORD}
+                        type={InputComponentEnum.PASSWORD}
                         error={!!error?.message}
                     />
                 )}
@@ -114,7 +114,7 @@ function RegisterPage() {
                         value={field.value}
                         onChange={field.onChange}
                         helperText={error?.message}
-                        type={InputComponentTypes.PASSWORD}
+                        type={InputComponentEnum.PASSWORD}
                         error={!!error?.message}
                     />
                 )}

@@ -1,9 +1,9 @@
 import { Box, CircularProgress, Stack } from '@mui/material'
 import AiChatMessage from '../AiChatMessage/AiChatMessage'
 import CollapsableContainer from '../../CollapsableContainer/CollapsableContainer'
-import { Role, type ChatResponse } from '../AiChat'
 import { useTranslation } from 'react-i18next'
 import { translations } from '../../../../i18n'
+import { RoleEnum, type ChatResponse } from '../AiChat'
 
 export type AiChatBoxProps = {
     chatItems: ChatResponse[]
@@ -20,7 +20,7 @@ export default function AiChatContainer({ chatItems, chatPending, sessionFetchin
                 <CircularProgress />
             ) : (
                 chatItems.map((chatItem, i) => {
-                    const isUser = chatItem.role === Role.USER
+                    const isUser = chatItem.role === RoleEnum.USER
 
                     return (
                         <Stack

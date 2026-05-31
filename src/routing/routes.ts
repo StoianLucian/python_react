@@ -1,10 +1,11 @@
-export enum APP_PATHS {
-  LOGIN = "/login",
-  REGISTER = "/register",
-  HOME = "/",
-  DASHBOARD = "/dashboard",
-  PROFILE = "/profile",
-  SETTINGS = "/settings",
-  NOT_FOUND = "*",
-  CHAT = "/chat"
+export const APP_PATHS = {
+  LOGIN: "/login",
+  REGISTER: "/register",
+  HOME: "/",
+  DASHBOARD: "/dashboard",
+  PROFILE: "/profile",
+  SETTINGS: "/settings",
+  NOT_FOUND: "*",
+  CHAT: "/chat",
+  CHAT_NEW: "/chat/new"
 }

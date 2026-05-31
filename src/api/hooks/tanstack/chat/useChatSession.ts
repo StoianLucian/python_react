@@ -1,13 +1,16 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
+import { useParams } from "react-router-dom"
+import { useCreateMessage } from "./useCreateMessage"
+import useGetSession from "./useGetSession"
 
-
-
-export enum Role {
-    AGENT = "assistant",
-    USER = "user",
+export const RoleEnum = {
+    AGENT: "assistant",
+    USER: "user",
 }
+
+export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 
 export type ChatResponse = {
     content: string
@@ -17,19 +20,59 @@ export type ChatResponse = {
     thinkingTime?: number
 }
 
-
-export function useChatSession(model: string, sessionId?: string) {
+export function useChatSession(model: string) {
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
     const [query, setQuery] = useState("")
+
+    const { id } = useParams();
+
+    const isNewChat = id === "new";
 
     const controllerRef = useRef<AbortController | null>(null)
     const aiIndexRef = useRef<number | null>(null)
 
     const { mutateAsync: startChat, isPending: isChatPending } = useChatModel()
     const { mutateAsync: createSession } = useCreateSession()
+    const { mutateAsync: createMessage } = useCreateMessage()
+    const { data: sessionData, isFetching: isSessionFetching } = useGetSession(id!)
 
     function stopChat() {
         controllerRef.current?.abort()
+    }
+
+    useEffect(() => {
+        if (isNewChat) {
+            setChatResponse([]);
+            setQuery("");
+            aiIndexRef.current = null;
+            controllerRef.current?.abort();
+            return;
+        }
+
+        if (!sessionData?.chat_messages) return;
+
+        const messages = sessionData.chat_messages.map((message) => ({
+            content: message.text,
+            thinking: "",
+            role: message.role,
+        }));
+
+
+        setChatResponse(messages);
+    }, [id, sessionData]);
+
+    function attachHistory(query: string) {
+        const message = {
+            content: query,
+            thinking: "",
+            role: RoleEnum.USER,
+        };
+
+        const history = [...chatResponse, message];
+
+        setChatResponse(history);
+
+        return history;
     }
 
     function showAiResponse(
@@ -46,7 +89,7 @@ export function useChatSession(model: string, sessionId?: string) {
                 updated.push({
                     content: "",
                     thinking: "",
-                    role: Role.AGENT,
+                    role: RoleEnum.AGENT,
                 })
             }
 
@@ -54,7 +97,7 @@ export function useChatSession(model: string, sessionId?: string) {
 
             updated[idx] = {
                 ...updated[idx],
-                role: Role.AGENT,
+                role: RoleEnum.AGENT,
                 ...(isResponse
                     ? {
                         content: (updated[idx]?.content || "") + chunk,
@@ -65,9 +108,19 @@ export function useChatSession(model: string, sessionId?: string) {
                         thinkingTime: time,
                     }),
             }
-
             return updated
         })
+    }
+
+    async function handleUserMessage(query: string) {
+        if (isNewChat) {
+            const sessionId = await createSession({ query });
+            await createMessage({ id: sessionId, message: { content: query, role: RoleEnum.USER } })
+            return sessionId
+        } else {
+            await createMessage({ id: id!, message: { content: query, role: RoleEnum.USER } })
+            return id
+        }
     }
 
     const sendMessage = async (query: string) => {
@@ -78,36 +131,27 @@ export function useChatSession(model: string, sessionId?: string) {
         const signal = controllerRef.current.signal;
         setQuery("");
 
-        const newMessage = {
-            content: query,
-            thinking: "",
-            role: Role.USER
-        }
+        const updatedHistory = attachHistory(query)
 
-        const updatedHistory = [
-            ...chatResponse,
-            newMessage
-        ];
-        setChatResponse(updatedHistory);
-
-
-
-        if (sessionId) {
-            // console.log(sessionId);
-            // await createSession()
-        } else {
-            await createSession({ query })
-        }
-
-        const obj = {
+        const history = {
             model,
-            history: updatedHistory.map((response) => ({
-                role: response.role,
-                content: response.content
+            history: updatedHistory.map((message) => ({
+                role: message.role,
+                content: message.content
             }))
         };
 
-        await startChat({ obj, handleChunk: showAiResponse, signal })
+        const sessionId = await handleUserMessage(query)
+
+        const aiMessage = await startChat({
+            obj: history,
+            handleChunk: showAiResponse,
+            signal,
+        });
+
+        if (sessionId && aiMessage) {
+            await createMessage({ id: sessionId, message: { content: aiMessage, role: RoleEnum.AGENT } })
+        }
     };
 
     return {
@@ -117,5 +161,6 @@ export function useChatSession(model: string, sessionId?: string) {
         sendMessage,
         stopChat,
         isChatPending,
+        isSessionFetching
     }
 }

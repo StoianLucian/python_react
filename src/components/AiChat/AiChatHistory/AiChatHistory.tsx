@@ -4,6 +4,8 @@ import useGetSessions from '../../../api/hooks/tanstack/chat/useGetSessions'
 import LoadingRows from '../../LoadingRows/LoadingRows'
 import SessionCard from '../SessionCard/SessionCard'
 import type { ChatSession } from '../../../api/hooks/tanstack/chat/useGetSession'
+import { useNavigate } from 'react-router-dom'
+import { APP_PATHS } from '../../../routing/routes'
 
 export type AiChatHistoryProps = {
     // chatItems: ChatResponse[]
@@ -12,6 +14,8 @@ export type AiChatHistoryProps = {
 
 export default function AiChatHistory({ }: AiChatHistoryProps) {
     // const { t } = useTranslation()
+
+    const navigate = useNavigate();
 
     const { data: sessions = [], isLoading } = useGetSessions();
 
@@ -25,7 +29,7 @@ export default function AiChatHistory({ }: AiChatHistoryProps) {
     }
     return (
         <Box>
-            <Button>newChat</Button>
+            <Button onClick={() => navigate(APP_PATHS.CHAT_NEW, { replace: true })}>newChat</Button>
             {renderSessions(sessions)}
         </Box>
 

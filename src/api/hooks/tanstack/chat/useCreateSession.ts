@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createSession } from '../../../sessionApi';
 import { APP_PATHS } from '../../../../routing/routes';
@@ -9,14 +9,15 @@ export type CreateSessionProps = {
 
 export function useCreateSession() {
     // const { t } = useTranslation();
+    const client = useQueryClient();
     const navigate = useNavigate();
     return useMutation({
         mutationFn: async ({ query }: CreateSessionProps) => {
-            const response = await createSession({ query });
-            return response;
+            return await createSession({ query });
         },
         onSuccess(id) {
             navigate(`${APP_PATHS.CHAT}/${id}`, { replace: true })
+            client.invalidateQueries({ queryKey: ['sessions'] })
         }
     });
 }

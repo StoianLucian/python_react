@@ -1,8 +1,8 @@
 import type { RegisterCredentials } from "../pages/register/RegisterPage";
 import { api } from "./axiosConfig";
 
-const enum USER_ROUTES {
-    CREATE_USER = "/users",
+const USER_ROUTES = {
+    CREATE_USER: "/users",
 }
 
 export async function register(credentials: RegisterCredentials) {

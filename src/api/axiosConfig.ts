@@ -12,16 +12,18 @@ export const api = axios.create({
   withCredentials: true,
 })
 
-export enum ApiMethod {
-  POST = "post",
-  PUT = "put",
-  DELETE = "delete",
-  GET = "get"
+export const ApiMethod = {
+  POST: "post",
+  PUT: "put",
+  DELETE: "delete",
+  GET: "get"
 }
+
+export type ApiMethodTYpe = typeof ApiMethod[keyof typeof ApiMethod];
 
 
 interface RequestType {
-  method: ApiMethod,
+  method: ApiMethodTYpe,
   url: string
   data?: any
   responseType?: "arraybuffer" | "blob" | "document" | "json" | "text" | "stream"

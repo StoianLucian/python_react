@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import AuthFrom from '../../components/Auth/AuthFrom'
-import InputComponent, { InputComponentTypes } from '../../components/inputComponent/InputComponent'
+import InputComponent, { InputComponentEnum } from '../../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../api/hooks/tanstack/useLogin';
 import { APP_PATHS } from '../../routing/routes';
@@ -77,7 +77,7 @@ function LoginPage() {
                         onChange={field.onChange}
                         helperText={error?.message}
                         error={!!error?.message}
-                        type={InputComponentTypes.PASSWORD}
+                        type={InputComponentEnum.PASSWORD}
                     />
                 )}
             />

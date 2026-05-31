@@ -1,5 +1,5 @@
 import { Box, Button, Grid } from '@mui/material'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toggleIcon } from '../../pages/chat/helper'
 import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'
@@ -7,14 +7,16 @@ import StatusDot from '../statusDot/StatusDot'
 import Icon from '../Icons/Icon'
 import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
-import { useParams } from 'react-router-dom'
 import { keyboardShortcuts } from '../inputComponent/helper'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
 
-export enum Role {
-    AGENT = "assistant",
-    USER = "user",
+export const RoleEnum = {
+    AGENT: "assistant",
+    USER: "user",
 }
+
+export type Role = typeof RoleEnum[keyof typeof RoleEnum];
+
 export type ChatResponse = {
     content: string
     thinking: string
@@ -27,14 +29,10 @@ export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
     const [model, setModel] = useState<string>("")
-    // const controllerRef = useRef<AbortController | null>(null);
 
-    const { id } = useParams();
+    const { chatResponse, sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching } = useChatSession(model)
 
-
-    const { chatResponse, sendMessage, stopChat, isChatPending, query, setQuery } = useChatSession(model, id)
-
-    const { data: options = [], isLoading: loadingOptions, isSuccess: isModelsLoaded } = useChatModels()
+    const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 
     function handleButton(bool: boolean) {
         if (bool) {
@@ -43,12 +41,6 @@ export default function AiChat() {
             sendMessage(query)
         }
     }
-
-    useEffect(() => {
-        if (isModelsLoaded && options[0]?.id) {
-            setModel(options[0].id)
-        }
-    }, [isModelsLoaded])
 
     const endIcon = useMemo(() => {
         return (
@@ -63,8 +55,14 @@ export default function AiChat() {
 
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
-            <StatusDot model={model} />
-            <AiChatContainer chatItems={chatResponse} chatPending={isChatPending} />
+            <StatusDot
+                model={model}
+            />
+            <AiChatContainer
+                chatItems={chatResponse}
+                chatPending={isChatPending}
+                sessionFetching={isSessionFetching}
+            />
             <Grid className="grid grid-cols-4 gap-4">
                 <Box className="col-span-1">
                     <SelectComponent

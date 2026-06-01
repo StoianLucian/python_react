@@ -13,7 +13,6 @@ export function useDeleteSession() {
             return await deleteSession(id);
         },
         onSuccess() {
-            // navigate(`${APP_PATHS.CHAT}/${id}`, { replace: true })
             client.invalidateQueries({ queryKey: ['sessions'] })
         }
     });

@@ -1,11 +1,11 @@
 import { Box, Button, Collapse, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import Icon, { IconsEnum } from '../Icons/Icon'
+import Icon, { IconsEnum, type IconsType } from '../Icons/Icon'
 
 type CollapsableContainerProps = {
     children: React.ReactNode
     isLoading?: boolean
-    icon?: IconsEnum
+    icon?: IconsType
     loadingText?: string
     text?: string
 }

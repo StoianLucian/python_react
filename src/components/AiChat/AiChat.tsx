@@ -30,7 +30,7 @@ export type History = Pick<ChatResponse, "role" | "content">
 export default function AiChat() {
     const [model, setModel] = useState<string>("")
 
-    const { chatResponse, sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching } = useChatSession(model)
+    const { chatResponse = [], sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 

@@ -3,7 +3,7 @@ import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
 import { useParams } from "react-router-dom"
 import { useCreateMessage } from "./useCreateMessage"
-import useGetSession from "./useGetSession"
+import { useChatContext } from "../../../../chatContext/ChatContext"
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -21,7 +21,7 @@ export type ChatResponse = {
 }
 
 export function useChatSession(model: string) {
-    const [chatResponse, setChatResponse] = useState<ChatResponse[]>([]);
+    const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
     const [query, setQuery] = useState("")
 
     const { id } = useParams();
@@ -34,7 +34,6 @@ export function useChatSession(model: string) {
     const { mutateAsync: startChat, isPending: isChatPending } = useChatModel()
     const { mutateAsync: createSession } = useCreateSession()
     const { mutateAsync: createMessage } = useCreateMessage()
-    const { data: sessionData, isFetching: isSessionFetching } = useGetSession(id!)
 
     function stopChat() {
         controllerRef.current?.abort()
@@ -42,24 +41,12 @@ export function useChatSession(model: string) {
 
     useEffect(() => {
         if (isNewChat) {
-            setChatResponse([]);
             setQuery("");
             aiIndexRef.current = null;
             controllerRef.current?.abort();
             return;
         }
-
-        if (!sessionData?.chat_messages) return;
-
-        const messages = sessionData.chat_messages.map((message) => ({
-            content: message.text,
-            thinking: "",
-            role: message.role,
-        }));
-
-
-        setChatResponse(messages);
-    }, [id, sessionData]);
+    }, [isNewChat]);
 
     function attachHistory(query: string) {
         const message = {
@@ -70,7 +57,7 @@ export function useChatSession(model: string) {
 
         const history = [...chatResponse, message];
 
-        setChatResponse(history);
+        setChatResponse?.(history);
 
         return history;
     }
@@ -81,7 +68,7 @@ export function useChatSession(model: string) {
         isLoading = false,
         time = 0
     ) {
-        setChatResponse((prev) => {
+        setChatResponse?.((prev) => {
             const updated = [...prev]
 
             if (aiIndexRef.current === null) {

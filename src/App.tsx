@@ -2,13 +2,16 @@ import { BrowserRouter } from "react-router-dom"
 import AppRoutes from "./routing/AppRoutes";
 
 import ProfileMenu from "./components/profileMenu/ProfileMenu";
+import { ChatContextProvider } from "./chatContext/ChatContext";
 
 
 function App() {
   return (
     <BrowserRouter>
-      <ProfileMenu />
-      <AppRoutes />
+      <ChatContextProvider>
+        <ProfileMenu />
+        <AppRoutes />
+      </ChatContextProvider>
     </BrowserRouter>
   )
 }

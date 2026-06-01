@@ -1,9 +1,9 @@
-import { Stack, Button } from "@mui/material";
+import { Stack, Button, Typography } from "@mui/material";
 import type { ChatSession } from "../../../api/hooks/tanstack/chat/useGetSessions";
-import { useNavigate } from "react-router-dom";
-import { APP_PATHS } from "../../../routing/routes";
 import { useDeleteSession } from "../../../api/hooks/tanstack/chat/useDeleteSesion";
 import Icon, { IconsEnum } from "../../Icons/Icon";
+import { useChatContext } from "../../../chatContext/ChatContext";
+import Popover from "../../Popover/Popover";
 
 type SessionCardProps = {
     session: ChatSession
@@ -11,21 +11,23 @@ type SessionCardProps = {
 
 export default function SessionCard({ session }: SessionCardProps) {
     const { title, id } = session
-    const navigate = useNavigate();
     const { mutateAsync: deleteSession } = useDeleteSession()
-
-    function handleClick() {
-        navigate(`${APP_PATHS.CHAT}/${id}`)
-    }
-
+    const { changeSession } = useChatContext();
     return (
         <Stack direction="row" className="items-center rounded-xl p-1.5 bg-[#F5F9FB] border border-[#a4a4a4]">
-            <Button onClick={handleClick}>
+            <Button onClick={() => changeSession(id)}>
                 {title}
             </Button>
-            <Button onClick={async () => { await deleteSession(id) }}>
-                <Icon iconName={IconsEnum.COG} />
-            </Button>
+            <Typography>
+                <Popover trigger={<Icon iconName={IconsEnum.DOTS} />}
+                    items={[
+                        {
+                            label: "Delete",
+                            onClick: async () => { await deleteSession(id) }
+                        }
+                    ]}
+                />
+            </Typography>
         </Stack>
     )
 }

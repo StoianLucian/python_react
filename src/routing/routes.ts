@@ -7,5 +7,9 @@ export const APP_PATHS = {
   SETTINGS: "/settings",
   NOT_FOUND: "*",
   CHAT: "/chat",
-  CHAT_NEW: "/chat/new"
+}
+
+export const PATHS = {
+  CHAT_ID: (id: string) => `${APP_PATHS.CHAT}/${id}`,
+  CHAT_NEW: `${APP_PATHS.CHAT}/new`
 }

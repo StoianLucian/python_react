@@ -24,6 +24,5 @@ export async function getSessions(): Promise<ChatSession[]> {
 }
 
 export async function getSession(id: string): Promise<ChatSession> {
-    console.log("trigger")
     return await request({ method: ApiMethod.GET, url: SESSION_ROUTES.SESSION_ID(id) })
 }

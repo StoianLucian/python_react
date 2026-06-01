@@ -43,7 +43,7 @@ export default function ComponenTabs({ items }: ComponentTabsProps) {
         return tabComponents
     }
     return (
-        <Box className="flex justify-center items-center flex-col min-w-[25vw]">
+        <Box className="flex justify-center items-center flex-col w-70">
             <Tabs value={currentTab} onChange={handleCurrentTab}>
                 {renderTabs(items)}
             </Tabs>

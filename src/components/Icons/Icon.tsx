@@ -6,29 +6,35 @@ import CogIcon from "../../assets/svgs/cogwheel_icon.png"
 import ArrowIcon from "../../assets/svgs/arrow_icon.png"
 import ChevronIcon from "../../assets/svgs/chevron_icon.png"
 import DownloadIcon from "../../assets/svgs/download_icon.png"
+import DotsIcon from "../../assets/svgs/three_dots_icon.png"
 
-export enum IconsEnum {
-    HOME = "home_icon",
-    PROFILE = "profile_icon",
-    PDF = "pdf_icon",
-    COG = "cogwheel_icon",
-    ARROW = "arrow_icon",
-    CHEVRON = "chevron_icon",
-    DOWNLOAD = "download_icon"
+
+export const IconsEnum = {
+    HOME: "home_icon",
+    PROFILE: "profile_icon",
+    PDF: "pdf_icon",
+    COG: "cogwheel_icon",
+    ARROW: "arrow_icon",
+    CHEVRON: "chevron_icon",
+    DOWNLOAD: "download_icon",
+    DOTS: "three_dots_icon"
 }
 
-const srcMap: Record<IconsEnum, string> = {
+export type IconsType = typeof IconsEnum[keyof typeof IconsEnum];
+
+const srcMap: Record<IconsType, string> = {
     [IconsEnum.HOME]: homeIcon,
     [IconsEnum.PROFILE]: profileIcon,
     [IconsEnum.PDF]: pdfIcon,
     [IconsEnum.COG]: CogIcon,
     [IconsEnum.ARROW]: ArrowIcon,
     [IconsEnum.CHEVRON]: ChevronIcon,
-    [IconsEnum.DOWNLOAD]: DownloadIcon
+    [IconsEnum.DOWNLOAD]: DownloadIcon,
+    [IconsEnum.DOTS]: DotsIcon
 };
 
 type IconsProps = {
-    iconName: IconsEnum
+    iconName: IconsType
     size?: number
     className?: string
 }

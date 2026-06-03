@@ -1,5 +1,5 @@
 import { Box, Button, Grid } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { toggleIcon } from '../../pages/chat/helper'
 import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'
@@ -9,6 +9,7 @@ import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
 import { keyboardShortcuts } from '../inputComponent/helper'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
+import type { ChatResponse } from '../../chatContext/ChatContext'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -16,14 +17,6 @@ export const RoleEnum = {
 }
 
 export type Role = typeof RoleEnum[keyof typeof RoleEnum];
-
-export type ChatResponse = {
-    content: string
-    thinking: string
-    role: Role
-    isThinking?: boolean
-    thinkingTime?: number
-}
 
 export type History = Pick<ChatResponse, "role" | "content">
 
@@ -33,6 +26,8 @@ export default function AiChat() {
     const { chatResponse = [], sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching, setFile, file } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
+
+    const [preview, setPreview] = useState<string | null>(null);
 
     function handleButton(bool: boolean) {
         if (bool) {
@@ -66,6 +61,19 @@ export default function AiChat() {
         };
     }
 
+    useEffect(() => {
+        if (!file) {
+            setPreview(null);
+            return;
+        }
+
+        const objectUrl = URL.createObjectURL(file);
+        setPreview(objectUrl);
+
+        // cleanup to avoid memory leaks
+        return () => URL.revokeObjectURL(objectUrl);
+    }, [file]);
+
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
             <StatusDot
@@ -89,9 +97,17 @@ export default function AiChat() {
                     {file && (
                         <div>
                             <p>File ready to be sent: {file.name}</p>
+                            {preview && (
+                                <img
+                                    src={preview}
+                                    alt="Preview"
+                                    style={{ width: 200, height: "auto", marginTop: 10 }}
+                                />
+                            )}
                         </div>
+
                     )}
-                <InputComponent
+                    <InputComponent
                         onDropHandler={handleDrop}
                         hotKey={keyboardShortcuts.submit}
                         onKeyDown={() => sendMessage(query)}

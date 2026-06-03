@@ -16,7 +16,7 @@ type SessionCardProps = {
 
 export default function SessionCard({ session }: SessionCardProps) {
     const { title, id } = session
-    const { mutateAsync: deleteSession } = useDeleteSession()
+    const { mutateAsync: deleteSession } = useDeleteSession(id)
     const { mutateAsync: changeSessionTitle } = useSetSessionTitle();
     const { changeSession } = useChatContext();
     const { id: sessionId } = useParams();

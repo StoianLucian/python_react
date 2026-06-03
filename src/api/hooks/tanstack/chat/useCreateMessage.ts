@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { sendMessage } from '../../../messageApi';
-import type { ChatResponse } from './useChatSession';
+import type { ChatResponse } from '../../../../chatContext/ChatContext';
 
 type CreateMessageProps = {
     id: string,

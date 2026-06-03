@@ -12,14 +12,6 @@ export const RoleEnum = {
 
 export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 
-export type ChatResponse = {
-    content: string
-    thinking: string
-    role: Role
-    isThinking?: boolean
-    thinkingTime?: number
-}
-
 export function useChatSession(model: string) {
     const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
     const [query, setQuery] = useState("")
@@ -54,11 +46,30 @@ export function useChatSession(model: string) {
         }
     }, [isNewChat]);
 
-    function attachHistory(query: string) {
+    const toBase64 = (file: File) =>
+        new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+        });
+
+    function removeBeforeComma(str: string) {
+        return str.substring(str.indexOf(",") + 1);
+    }
+
+    async function attachHistory(query: string) {
+        const base64Image: string = file ? await toBase64(file) : ""
+
+        // console.log(removeBeforeComma(base64Image))
+
+        // return
         const message = {
             content: query,
             thinking: "",
-            role: RoleEnum.USER
+            role: RoleEnum.USER,
+            images: base64Image ? [removeBeforeComma(base64Image)] : []
+
         };
 
         const history = [...chatResponse, message];
@@ -126,15 +137,19 @@ export function useChatSession(model: string) {
 
         const signal = controllerRef.current.signal;
 
-        const updatedHistory = attachHistory(query)
+        const updatedHistory = await attachHistory(query)
 
         const history = {
             model,
             history: updatedHistory.map((message) => ({
                 role: message.role,
-                content: message.content
+                content: message.content,
+                images: message.images
             }))
         };
+
+
+        console.log(history, "history")
 
         const sessionId = await handleUserMessage(query)
 

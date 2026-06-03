@@ -28,7 +28,7 @@ export type ChatResponse = {
     role: Role
     isThinking?: boolean
     thinkingTime?: number
-    image?: any
+    images?: string[]
 }
 
 export function ChatContextProvider({ children }: { children: React.ReactNode }) {

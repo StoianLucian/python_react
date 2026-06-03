@@ -3,7 +3,8 @@ import AiChatMessage from '../AiChatMessage/AiChatMessage'
 import CollapsableContainer from '../../CollapsableContainer/CollapsableContainer'
 import { useTranslation } from 'react-i18next'
 import { translations } from '../../../../i18n'
-import { RoleEnum, type ChatResponse } from '../AiChat'
+import { RoleEnum } from '../AiChat'
+import type { ChatResponse } from '../../../chatContext/ChatContext'
 
 export type AiChatBoxProps = {
     chatItems: ChatResponse[]
@@ -49,6 +50,25 @@ export default function AiChatContainer({ chatItems, chatPending, sessionFetchin
                                 message={chatItem.content}
                                 alignRight={isUser}
                             />
+                            <Box className="flex flex-wrap gap-2 mb-2">
+                                {(chatItem?.images || []).map((img, idx) => {
+                                    const imageSrc = `data:image/png;base64,${img}`;
+
+                                    return (
+                                        <a
+                                            key={idx}
+                                            href={imageSrc}
+                                            download={`attachment-${idx}.png`}
+                                        >
+                                            <img
+                                                src={imageSrc}
+                                                alt="attachment"
+                                                className="max-w-50 max-h-50 rounded-lg border cursor-pointer"
+                                            />
+                                        </a>
+                                    );
+                                })}
+                            </Box>
                         </Stack>
                     )
                 })

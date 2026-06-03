@@ -34,8 +34,11 @@ export default function ComponenTabs({ items }: ComponentTabsProps) {
 
         const tabComponents = items.map((item, i) => {
             return (
-                <Box key={i} className="w-full">
-                    {currentTab == i && item.element}
+                <Box
+                    key={i}
+                    className={`${currentTab === i ? "block" : "hidden"}`}
+                >
+                    {item.element}
                 </Box>
             )
         })

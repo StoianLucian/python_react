@@ -17,7 +17,7 @@ export default function AiChatHistory({ }: AiChatHistoryProps) {
 
     function renderSessions(sessions: ChatSession[]) {
 
-        if (isLoading || isFetching || sessions == undefined) return <LoadingRows rows={20} />
+        if (isLoading || isFetching) return <LoadingRows rows={20} />
 
         const sessionsData = sessions.map((session) => <SessionCard key={session.id} session={session} />)
 

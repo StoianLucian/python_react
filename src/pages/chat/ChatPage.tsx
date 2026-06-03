@@ -1,5 +1,5 @@
 import { Box, Button, Collapse, Grid } from '@mui/material'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Icon, { IconsEnum } from '../../components/Icons/Icon';
 import { translations } from '../../../i18n';
 import { useTranslation } from 'react-i18next';
@@ -18,10 +18,19 @@ function ChatPage() {
         setIsDragging(toggle);
     }
 
-    const items = [
-        { label: t(translations.filesPage.files), element: <FileManagement isDragging={isDragging} /> },
-        { label: t(translations.aiChat.chatHistory), element: <AiChatHistory /> }
-    ]
+    const items = useMemo(
+        () => [
+            {
+                label: t(translations.filesPage.files),
+                element: <FileManagement isDragging={isDragging} />
+            },
+            {
+                label: t(translations.aiChat.chatHistory),
+                element: <AiChatHistory />
+            }
+        ],
+        [t, isDragging]
+    );
 
     return (
         <Grid

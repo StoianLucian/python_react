@@ -4,6 +4,7 @@ import { getSession } from "../api/sessionApi";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../routing/routes";
 import { useQueryClient } from "@tanstack/react-query";
+import { queryKeys } from "../enums/queryKeys";
 
 type AuthContext = {
     changeSession: (id: string) => void
@@ -27,6 +28,7 @@ export type ChatResponse = {
     role: Role
     isThinking?: boolean
     thinkingTime?: number
+    image?: any
 }
 
 export function ChatContextProvider({ children }: { children: React.ReactNode }) {
@@ -44,7 +46,7 @@ export function ChatContextProvider({ children }: { children: React.ReactNode })
     async function changeSession(id: string) {
         setIsSessionFetching(true);
         const session = await queryClient.fetchQuery({
-            queryKey: ["session", id],
+            queryKey: queryKeys.session_id(id),
             queryFn: () => getSession(id),
         });
 

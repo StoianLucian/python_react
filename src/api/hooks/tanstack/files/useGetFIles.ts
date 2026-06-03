@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getFIles } from "../../../fileApi";
+import { queryKeys } from "../../../../enums/queryKeys";
 
 export type File = {
   id: string,
@@ -13,7 +14,7 @@ const useGetFiles = () => {
 
   return useQuery<File[], any>({
     queryFn: () => getFIles(),
-    queryKey: ["files"],
+    queryKey: queryKeys.files,
   });
 };
 

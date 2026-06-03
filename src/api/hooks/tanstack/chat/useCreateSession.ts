@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { createSession } from '../../../sessionApi';
 import { APP_PATHS } from '../../../../routing/routes';
+import { queryKeys } from '../../../../enums/queryKeys';
 
 export type CreateSessionProps = {
     query: string,
@@ -17,7 +18,7 @@ export function useCreateSession() {
         },
         onSuccess(id) {
             navigate(`${APP_PATHS.CHAT}/${id}`, { replace: true })
-            client.invalidateQueries({ queryKey: ['sessions'] })
+            client.invalidateQueries({ queryKey: queryKeys.sessions })
         }
     });
 }

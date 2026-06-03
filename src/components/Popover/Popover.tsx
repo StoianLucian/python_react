@@ -1,4 +1,4 @@
-import { Menu, MenuItem } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
 import React, { useState } from 'react'
 
 type PopoverProps = {
@@ -19,9 +19,9 @@ function Popover({ trigger, items }: PopoverProps) {
 
     return (
         <>
-            <div onClick={handleClick}>
+            <Box className='min-w-7.5 cursor-pointer' onClick={handleClick}>
                 {trigger}
-            </div>
+            </Box>
             <Menu
                 anchorEl={anchorEl}
                 open={!!anchorEl}

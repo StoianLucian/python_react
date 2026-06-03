@@ -18,6 +18,10 @@ type InputComponentProps = {
     isTextAria?: boolean
     onKeyDown?: () => void
     hotKey?: string
+    onDropHandler?: (e: React.DragEvent<HTMLDivElement>) => void
+    placeholder?: string
+    onBlur?: () => void,
+    inputRef?: React.Ref<HTMLInputElement>
 }
 
 export const InputComponentEnum = {
@@ -50,7 +54,11 @@ function InputComponent({
     isDisabled,
     isTextAria = false,
     onKeyDown,
-    hotKey
+    hotKey,
+    onDropHandler,
+    placeholder,
+    onBlur,
+    inputRef
 }: InputComponentProps) {
     const [inputType, setInputType] = useState(type)
 
@@ -61,12 +69,14 @@ function InputComponent({
     return (
 
         <TextField
+            inputRef={inputRef}
             onKeyDown={(e) => {
                 if (matchHotkey(e, hotKey!)) {
                     e.preventDefault();
                     onKeyDown?.()
                 }
             }}
+            onDrop={(e) => { onDropHandler?.(e) }}
             multiline={isTextAria}
             disabled={isDisabled}
             className={`w-full ${classNames}`}
@@ -77,6 +87,8 @@ function InputComponent({
             helperText={helperText}
             variant={variant as TextFieldVariants}
             error={!!error}
+            placeholder={placeholder}
+            onBlur={onBlur}
             slotProps={{
                 formHelperText: {
                     sx: {

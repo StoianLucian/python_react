@@ -1,17 +1,17 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteSession } from '../../../sessionApi';
+import { changeSessionTitle } from '../../../sessionApi';
 import { queryKeys } from '../../../../enums/queryKeys';
 
-
-export type CreateSessionProps = {
-    query: string,
+export type SetSessionTitleProps = {
+    id: string,
+    title: string
 }
 
-export function useDeleteSession() {
+export function useSetSessionTitle() {
     const client = useQueryClient();
     return useMutation({
-        mutationFn: async (id: string) => {
-            return await deleteSession(id);
+        mutationFn: async ({ id, title }: SetSessionTitleProps) => {
+            return await changeSessionTitle({ id, title });
         },
         onSuccess() {
             client.invalidateQueries({ queryKey: queryKeys.sessions })

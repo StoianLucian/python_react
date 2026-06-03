@@ -30,7 +30,7 @@ export type History = Pick<ChatResponse, "role" | "content">
 export default function AiChat() {
     const [model, setModel] = useState<string>("")
 
-    const { chatResponse = [], sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching } = useChatSession(model)
+    const { chatResponse = [], sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching, setFile, file } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 
@@ -53,6 +53,19 @@ export default function AiChat() {
         )
     }, [isChatPending, query])
 
+    const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+
+        const files = Array.from(e.dataTransfer.files);
+
+        console.log(files[0]);
+
+        if (files.length > 0) {
+            const file = files[0];
+            setFile(file);
+        };
+    }
+
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
             <StatusDot
@@ -73,7 +86,13 @@ export default function AiChat() {
                     />
                 </Box>
                 <Box className="col-span-3">
-                    <InputComponent
+                    {file && (
+                        <div>
+                            <p>File ready to be sent: {file.name}</p>
+                        </div>
+                    )}
+                <InputComponent
+                        onDropHandler={handleDrop}
                         hotKey={keyboardShortcuts.submit}
                         onKeyDown={() => sendMessage(query)}
                         value={query}
@@ -85,4 +104,6 @@ export default function AiChat() {
         </Box>
     )
 }
+
+
 

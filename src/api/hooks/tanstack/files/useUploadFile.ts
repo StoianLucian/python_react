@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { uploadFile } from '../../../fileApi';
 import { translations } from '../../../../../i18n';
+import { queryKeys } from '../../../../enums/queryKeys';
 
 
 export function useUploadFile() {
@@ -23,7 +24,7 @@ export function useUploadFile() {
             }
         },
         onSuccess() {
-            queryClient.invalidateQueries({ queryKey: ['files'] });
+            queryClient.invalidateQueries({ queryKey: queryKeys.files });
             toast(translations.filesPage.fileUploaded, { type: "success" })
         }
     });

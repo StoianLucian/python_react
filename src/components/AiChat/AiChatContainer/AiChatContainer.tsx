@@ -15,7 +15,7 @@ export default function AiChatContainer({ chatItems, chatPending, sessionFetchin
     const { t } = useTranslation()
 
     return (
-        <Box className="h-[80vh] overflow-y-scroll bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
+        <Box className="h-[80vh] overflow-y-auto bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
             {sessionFetching ? (
                 <CircularProgress />
             ) : (

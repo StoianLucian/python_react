@@ -3,6 +3,7 @@ import { getSession } from "../../../sessionApi";
 import type { Role } from "./useChatSession";
 import { useNavigate } from "react-router-dom";
 import { APP_PATHS } from "../../../../routing/routes";
+import { queryKeys } from "../../../../enums/queryKeys";
 
 export type ChatSession = {
     id: string,
@@ -23,7 +24,7 @@ export type ChatMessage = {
 const useGetSession = (id: string) => {
     const navigate = useNavigate();
     const query = useQuery({
-        queryKey: ["session", id],
+        queryKey: queryKeys.session_id(id),
         queryFn: () => getSession(id),
         enabled: !!Number(id)
     });

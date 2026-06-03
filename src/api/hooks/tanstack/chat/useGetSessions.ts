@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSessions } from "../../../sessionApi";
+import { queryKeys } from "../../../../enums/queryKeys";
 
 export type ChatSession = {
     id: string,
@@ -18,7 +19,7 @@ export type ChatMessage = {
 
 const useGetSessions = () => {
     return useQuery<ChatSession[]>({
-        queryKey: ["session"],
+        queryKey: queryKeys.sessions,
         queryFn: () => getSessions()
     });
 };

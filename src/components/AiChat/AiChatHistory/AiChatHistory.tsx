@@ -11,13 +11,13 @@ export type AiChatHistoryProps = {
 
 export default function AiChatHistory({ }: AiChatHistoryProps) {
 
-    const { data: sessions = [], isLoading } = useGetSessions();
+    const { data: sessions = [], isLoading, isFetching } = useGetSessions();
 
     const { startSession } = useChatContext();
 
     function renderSessions(sessions: ChatSession[]) {
 
-        if (isLoading && sessions == undefined) return <LoadingRows rows={50} />
+        if (isLoading || isFetching || sessions == undefined) return <LoadingRows rows={20} />
 
         const sessionsData = sessions.map((session) => <SessionCard key={session.id} session={session} />)
 

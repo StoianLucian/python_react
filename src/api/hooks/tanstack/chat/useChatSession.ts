@@ -23,6 +23,12 @@ export type ChatResponse = {
 export function useChatSession(model: string) {
     const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
     const [query, setQuery] = useState("")
+    const [file, setFile] = useState<File | null>(null)
+
+    function resetInputs() {
+        setQuery("");
+        setFile(null);
+    }
 
     const { id } = useParams();
 
@@ -52,12 +58,14 @@ export function useChatSession(model: string) {
         const message = {
             content: query,
             thinking: "",
-            role: RoleEnum.USER,
+            role: RoleEnum.USER
         };
 
         const history = [...chatResponse, message];
 
         setChatResponse?.(history);
+
+        resetInputs();
 
         return history;
     }
@@ -112,11 +120,11 @@ export function useChatSession(model: string) {
 
     const sendMessage = async (query: string) => {
         if (query.trim() === "") return
+        controllerRef.current?.abort();
         controllerRef.current = new AbortController();
         aiIndexRef.current = null;
 
         const signal = controllerRef.current.signal;
-        setQuery("");
 
         const updatedHistory = attachHistory(query)
 
@@ -148,6 +156,8 @@ export function useChatSession(model: string) {
         sendMessage,
         stopChat,
         isChatPending,
-        isSessionFetching
+        isSessionFetching,
+        setFile,
+        file
     }
 }

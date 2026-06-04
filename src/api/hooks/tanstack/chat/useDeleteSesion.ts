@@ -3,6 +3,7 @@ import { deleteSession } from '../../../sessionApi';
 import { queryKeys } from '../../../../enums/queryKeys';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../../../../routing/routes';
+import { useChatContext } from '../../../../chatContext/ChatContext';
 
 
 export type CreateSessionProps = {
@@ -10,6 +11,7 @@ export type CreateSessionProps = {
 }
 
 export function useDeleteSession(sessionId?: string) {
+    const { setChatResponse } = useChatContext()
     const client = useQueryClient();
     const { id } = useParams();
     const navigate = useNavigate();
@@ -21,6 +23,7 @@ export function useDeleteSession(sessionId?: string) {
             client.invalidateQueries({ queryKey: queryKeys.sessions })
             if (id == sessionId) {
                 navigate(PATHS.CHAT_NEW)
+                setChatResponse?.([])
             }
         }
     });

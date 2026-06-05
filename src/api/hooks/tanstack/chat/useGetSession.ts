@@ -12,11 +12,19 @@ export type ChatSession = {
     chat_messages: ChatMessage[]
 }
 
+export type ChatImage = {
+    id: number,
+    message_id: number,
+    text: string
+}
+
+
 export type ChatMessage = {
     id: string,
     text: string,
     session_id: number,
     role: Role
+    images?: ChatImage[]
     created_at: Date,
     created_by: number,
 }

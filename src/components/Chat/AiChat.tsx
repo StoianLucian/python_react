@@ -5,11 +5,12 @@ import InputComponent from '../inputComponent/InputComponent'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
 import Icon from '../Icons/Icon'
-import AiChatContainer from './AiChatContainer/AiChatContainer'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
 import { keyboardShortcuts } from '../inputComponent/helper'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
-import type { ChatResponse } from '../../chatContext/ChatContext'
+import { useChatContext, type ChatResponse } from '../../chatContext/ChatContext'
+import { useParams } from 'react-router-dom'
+import ChatContainer from './ChatContainer/ChatContainer'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -21,13 +22,32 @@ export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
+    const { changeSession } = useChatContext()
     const [model, setModel] = useState<string>("")
 
-    const { chatResponse = [], sendMessage, stopChat, isChatPending, query, setQuery, isSessionFetching, setFile, file } = useChatSession(model)
+    const { id } = useParams();
+
+    const {
+        chatResponse,
+        sendMessage,
+        stopChat,
+        isChatPending,
+        query,
+        setQuery,
+        isSessionFetching,
+        setFile,
+        file
+    } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 
     const [preview, setPreview] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (id && id !== "new") {
+            changeSession(id)
+        }
+    }, [])
 
     function handleButton(bool: boolean) {
         if (bool) {
@@ -79,7 +99,7 @@ export default function AiChat() {
             <StatusDot
                 model={model}
             />
-            <AiChatContainer
+            <ChatContainer
                 chatItems={chatResponse}
                 chatPending={isChatPending}
                 sessionFetching={isSessionFetching}

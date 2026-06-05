@@ -1,5 +1,5 @@
 import { ApiMethod, baseURL, request } from "./axiosConfig";
-import type { History } from "../components/AiChat/AiChat";
+import type { History } from "../components/Chat/AiChat";
 
 export const CHAT_ROUTES_ENUM = {
     CHAT: "/chat",

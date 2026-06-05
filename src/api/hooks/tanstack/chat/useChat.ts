@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { chat } from '../../../chatApi';
-import type { History } from '../../../../components/AiChat/AiChat';
+import type { History } from '../../../../components/Chat/AiChat';
 
 type ChatProps = {
     obj: {

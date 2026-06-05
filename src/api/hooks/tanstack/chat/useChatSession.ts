@@ -3,7 +3,7 @@ import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
 import { useParams } from "react-router-dom"
 import { useCreateMessage } from "./useCreateMessage"
-import { useChatContext } from "../../../../chatContext/ChatContext"
+import { useChatContext, type ChatResponse } from "../../../../chatContext/ChatContext"
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -58,19 +58,19 @@ export function useChatSession(model: string) {
         return str.substring(str.indexOf(",") + 1);
     }
 
-    async function attachHistory(query: string) {
+    async function returnCreatedMessage(): Promise<ChatResponse> {
         const base64Image: string = file ? await toBase64(file) : ""
-
-        // console.log(removeBeforeComma(base64Image))
-
-        // return
         const message = {
             content: query,
             thinking: "",
             role: RoleEnum.USER,
             images: base64Image ? [removeBeforeComma(base64Image)] : []
-
         };
+
+        return message
+    }
+
+    function attachHistory(message: ChatResponse) {
 
         const history = [...chatResponse, message];
 
@@ -118,13 +118,13 @@ export function useChatSession(model: string) {
         })
     }
 
-    async function handleUserMessage(query: string) {
+    async function handleUserMessage(userMessage: ChatResponse) {
         if (isNewChat) {
             const sessionId = await createSession({ query });
-            await createMessage({ id: sessionId, message: { content: query, role: RoleEnum.USER } })
+            await createMessage({ id: sessionId, message: userMessage })
             return sessionId
         } else {
-            await createMessage({ id: id!, message: { content: query, role: RoleEnum.USER } })
+            await createMessage({ id: id!, message: userMessage })
             return id
         }
     }
@@ -137,7 +137,9 @@ export function useChatSession(model: string) {
 
         const signal = controllerRef.current.signal;
 
-        const updatedHistory = await attachHistory(query)
+        const message = await returnCreatedMessage()
+
+        const updatedHistory = attachHistory(message)
 
         const history = {
             model,
@@ -148,10 +150,7 @@ export function useChatSession(model: string) {
             }))
         };
 
-
-        console.log(history, "history")
-
-        const sessionId = await handleUserMessage(query)
+        const sessionId = await handleUserMessage(message)
 
         const aiMessage = await startChat({
             obj: history,

@@ -7,7 +7,7 @@ type CreateMessageProps = {
     message: PartialChatResponse,
 }
 
-export type PartialChatResponse = Pick<ChatResponse, "content" | "role">
+export type PartialChatResponse = Pick<ChatResponse, "content" | "role" | "images">
 
 export function useCreateMessage() {
     return useMutation({
@@ -15,7 +15,7 @@ export function useCreateMessage() {
             return await sendMessage({ id, message });
         },
         onError(e) {
-                console.log(e)
+            console.log(e)
         }
     });
 }

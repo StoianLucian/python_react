@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import type { Role } from "../components/AiChat/AiChat";
+import type { Role } from "../components/Chat/AiChat";
 import { getSession } from "../api/sessionApi";
 import { useNavigate } from "react-router-dom";
 import { PATHS } from "../routing/routes";
@@ -37,7 +37,6 @@ export function ChatContextProvider({ children }: { children: React.ReactNode })
     const [chatResponse, setChatResponse] = useState<ChatResponse[]>([])
     const [isSessionFetching, setIsSessionFetching] = useState(false);
 
-
     function startSession() {
         navigate(PATHS.CHAT_NEW, { replace: true })
         setChatResponse([]);
@@ -49,12 +48,12 @@ export function ChatContextProvider({ children }: { children: React.ReactNode })
             queryKey: queryKeys.session_id(id),
             queryFn: () => getSession(id),
         });
-
         setChatResponse(
             session.chat_messages.map((message) => ({
                 content: message.text,
                 thinking: "",
                 role: message.role,
+                images: message.images?.map((image) => image.text)
             }))
         );
 

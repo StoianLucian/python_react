@@ -57,7 +57,7 @@ export default function SessionCard({ session }: SessionCardProps) {
                 <>
                     <Button
                         variant="text"
-                        className="w-[300px]"
+                        className="w-75"
                         onClick={handleChangeSession}
                         onDoubleClick={() => { setIsEditing(true) }}
                     >

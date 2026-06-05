@@ -4,12 +4,12 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import remarkGfm from 'remark-gfm'
 
-type AiChatMessageProps = {
+type ChatMessageProps = {
     message: string;
     alignRight: boolean;
 }
 
-export default function AiChatMessage({ message, alignRight }: AiChatMessageProps) {
+export default function ChatMessage({ message, alignRight }: ChatMessageProps) {
 
     if (message == "") return
 

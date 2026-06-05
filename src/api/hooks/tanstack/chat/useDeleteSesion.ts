@@ -5,7 +5,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PATHS } from '../../../../routing/routes';
 import { useChatContext } from '../../../../chatContext/ChatContext';
 
-
 export type CreateSessionProps = {
     query: string,
 }

@@ -4,12 +4,12 @@ import LoadingRows from '../../LoadingRows/LoadingRows'
 import SessionCard from '../SessionCard/SessionCard'
 import { useChatContext } from '../../../chatContext/ChatContext'
 
-export type AiChatHistoryProps = {
+export type ChatHistoryProps = {
     // chatItems: ChatResponse[]
     // chatPending: boolean
 }
 
-export default function AiChatHistory({ }: AiChatHistoryProps) {
+export default function ChatHistory({ }: ChatHistoryProps) {
 
     const { data: sessions = [], isLoading, isFetching } = useGetSessions();
 

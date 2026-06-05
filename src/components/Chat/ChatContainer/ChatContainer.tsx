@@ -1,10 +1,10 @@
 import { Box, CircularProgress, Stack } from '@mui/material'
-import AiChatMessage from '../AiChatMessage/AiChatMessage'
 import CollapsableContainer from '../../CollapsableContainer/CollapsableContainer'
 import { useTranslation } from 'react-i18next'
 import { translations } from '../../../../i18n'
 import { RoleEnum } from '../AiChat'
 import type { ChatResponse } from '../../../chatContext/ChatContext'
+import ChatMessage from '../ChatMessage/ChatMessage'
 
 export type AiChatBoxProps = {
     chatItems: ChatResponse[]
@@ -12,7 +12,7 @@ export type AiChatBoxProps = {
     sessionFetching?: boolean
 }
 
-export default function AiChatContainer({ chatItems, chatPending, sessionFetching }: AiChatBoxProps) {
+export default function ChatContainer({ chatItems, chatPending, sessionFetching }: AiChatBoxProps) {
     const { t } = useTranslation()
 
     return (
@@ -39,14 +39,14 @@ export default function AiChatContainer({ chatItems, chatPending, sessionFetchin
                                     })}
                                     isLoading={chatItem?.isThinking}
                                 >
-                                    <AiChatMessage
+                                    <ChatMessage
                                         message={chatItem.thinking}
                                         alignRight={isUser}
                                     />
                                 </CollapsableContainer>
                             )}
 
-                            <AiChatMessage
+                            <ChatMessage
                                 message={chatItem.content}
                                 alignRight={isUser}
                             />

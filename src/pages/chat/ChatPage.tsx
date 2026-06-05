@@ -3,10 +3,10 @@ import { useMemo, useState } from 'react'
 import Icon, { IconsEnum } from '../../components/Icons/Icon';
 import { translations } from '../../../i18n';
 import { useTranslation } from 'react-i18next';
-import AiChat from '../../components/AiChat/AiChat';
+import AiChat from '../../components/Chat/AiChat';
 import ComponenTabs from '../../components/componenTabs/ComponenTabs';
 import FileManagement from '../../components/fileManagement/FileManagement';
-import AiChatHistory from '../../components/AiChat/AiChatHistory/AiChatHistory';
+import ChatHistory from '../../components/Chat/ChatHistory/ChatHistory';
 
 function ChatPage() {
     const { t } = useTranslation()
@@ -26,7 +26,7 @@ function ChatPage() {
             },
             {
                 label: t(translations.aiChat.chatHistory),
-                element: <AiChatHistory />
+                element: <ChatHistory />
             }
         ],
         [t, isDragging]

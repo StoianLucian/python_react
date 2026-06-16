@@ -1,6 +1,6 @@
 
 import type { LoginCredentials } from "../pages/login/LoginPage";
-import { api, ApiMethod, request } from "./axiosConfig"
+import { ApiMethod, request } from "./axiosConfig"
 
 
 const AUTH_ROUTES = {
@@ -9,20 +9,10 @@ const AUTH_ROUTES = {
 }
 
 export async function login(credentials: LoginCredentials) {
-
     return await request({ method: ApiMethod.POST, url: AUTH_ROUTES.LOGIN, data: credentials })
 }
 
 
-export function logout() {
-
-    try {
-        const response = api.post(AUTH_ROUTES.LOGOUT, {});
-
-        return response
-    } catch (error) {
-
-    }
-
-
+export async function logout() {
+    return await request({ method: ApiMethod.POST, url: AUTH_ROUTES.LOGOUT })
 }

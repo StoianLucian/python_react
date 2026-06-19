@@ -58,7 +58,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
 
         const files = Array.from(e.dataTransfer.files);
         if (files.length > 0) {
-            const response = await uploadFile({ file: files[0], onUploadProgress: test });
+            const response = await uploadFile(files[0]);
             console.log(response);
         }
 

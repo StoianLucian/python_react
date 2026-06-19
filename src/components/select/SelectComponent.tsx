@@ -29,13 +29,6 @@ export default function SelectComponent({ options, onChange, value, itemKey = "i
                         const newValue = e.target.value as string;
                         onChange(newValue);
                     }}
-                    // sx={{
-                    //     position: "absolute",
-                    //     opacity: 0,
-                    //     width: 0,
-                    //     height: 0,
-                    //     pointerEvents: "none",
-                    // }}
                 >
                     {options.map((option) => (
                         <MenuItem key={option[itemKey]} value={option[itemKey]}>

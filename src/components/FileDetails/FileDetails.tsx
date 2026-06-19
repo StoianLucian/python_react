@@ -12,7 +12,7 @@ export default function FileDetails({ file }: FileProps) {
     const { mutateAsync: getFile } = useGetFile();
     const size = (file.file_size / 1000000).toFixed(2)
     return (
-        <Stack direction="row" className="items-center rounded-xl p-1.5 bg-[#F5F9FB] border border-[#a4a4a4]">
+        <Stack direction="row" className="items-center rounded-xl p-1.5 bg-[#F5F9FB] border border-[#a4a4a4] m-2">
             <Icon iconName={IconsEnum.PDF} size={60} />
             <Box>
                 <Box className="max-w-40 truncate" title={file.file_name}>

@@ -17,7 +17,7 @@ export default function ChatHistory({ }: ChatHistoryProps) {
 
     function renderSessions(sessions: ChatSession[]) {
 
-        if (isLoading || isFetching) return <LoadingRows rows={20} />
+        if (isLoading || isFetching) return <LoadingRows rows={1 * sessions.length} />
 
         const sessionsData = sessions.map((session) => <SessionCard key={session.id} session={session} />)
 

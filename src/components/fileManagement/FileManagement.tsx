@@ -52,10 +52,6 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
     const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
 
-        function test() {
-            console.log("test")
-        }
-
         const files = Array.from(e.dataTransfer.files);
         if (files.length > 0) {
             const response = await uploadFile(files[0]);

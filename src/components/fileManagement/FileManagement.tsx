@@ -3,7 +3,7 @@ import { translations } from '../../../i18n'
 import Icon, { IconsEnum } from '../Icons/Icon'
 import InputComponent from '../inputComponent/InputComponent'
 import { useState } from 'react'
-import useGetFiles, { type File } from '../../api/hooks/tanstack/files/useGetFIles'
+import useGetFiles from '../../api/hooks/tanstack/files/useGetFIles'
 import { useUploadFile } from '../../api/hooks/tanstack/files/useUploadFile'
 import { useTranslation } from 'react-i18next'
 import { Files } from './Files'
@@ -65,12 +65,6 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
             <InputComponent
                 value={search}
                 onChange={(value) => handleSearch(value)}
-                endIcon={
-                    <Icon
-                        iconName={IconsEnum.PROFILE}
-                        className='mx-1'
-                    />
-                }
             />
             <DropZone
                 isPending={isPending}
@@ -79,7 +73,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
             <Stack
                 direction="column"
             >
-                <Typography variant="h6" >Recently uploaded documents</Typography>
+                <Typography variant="h6" className='text-center' >Recent files</Typography>
                 <Stack direction="column" className='h-80 overflow-y-auto'>
                     <Files files={files} isLoading={isLoading || filesPending} />
                 </Stack>

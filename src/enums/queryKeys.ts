@@ -10,5 +10,6 @@ export const queryKeys = {
     session_id: (id: string) => [baseQueryKeys.sessions, id],
     models: [baseQueryKeys.models],
     files: [baseQueryKeys.files],
+    file: (id: string) => [baseQueryKeys.files, id]
 
 } as const;

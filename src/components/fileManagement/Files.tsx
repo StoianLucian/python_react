@@ -13,7 +13,7 @@ export function Files({ files, isLoading }: FileProps) {
 
     const { t } = useTranslation()
     if (isLoading) {
-        return <LoadingRows rows={10} />;
+        return <LoadingRows rows={2 * files.length} />;
     }
 
     if (!files || files.length === 0) {

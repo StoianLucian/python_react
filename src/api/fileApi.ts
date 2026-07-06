@@ -42,3 +42,11 @@ export async function getFile(id: string, filename: string) {
 
     downloadFile(fileData, filename)
 }
+
+export async function previewFile(id: string) {
+    return await request({
+        method: ApiMethod.GET,
+        url: FILE_ROUTES.GET_FILE(id),
+        responseType: "blob"
+    })
+}

@@ -31,12 +31,13 @@ export default function AiChat() {
         chatResponse,
         sendMessage,
         stopChat,
-        isChatPending,
+        chatPending,
         query,
         setQuery,
         isSessionFetching,
         setFile,
-        file
+        file,
+        loading
     } = useChatSession(model)
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
@@ -59,14 +60,14 @@ export default function AiChat() {
 
     const endIcon = useMemo(() => {
         return (
-            <Button onClick={() => handleButton(isChatPending)}>
+            <Button onClick={() => handleButton(chatPending)}>
                 <Icon
-                    iconName={toggleIcon(isChatPending)}
+                    iconName={toggleIcon(chatPending)}
                     className="mx-1"
                 />
             </Button>
         )
-    }, [isChatPending, query])
+    }, [chatPending, query])
 
     const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -101,7 +102,7 @@ export default function AiChat() {
             />
             <ChatContainer
                 chatItems={chatResponse}
-                chatPending={isChatPending}
+                chatPending={loading}
                 sessionFetching={isSessionFetching}
             />
             <Grid className="grid grid-cols-4 gap-4">

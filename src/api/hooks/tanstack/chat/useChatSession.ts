@@ -29,9 +29,9 @@ export function useChatSession(model: string) {
     const controllerRef = useRef<AbortController | null>(null)
     const aiIndexRef = useRef<number | null>(null)
 
-    const { mutateAsync: startChat, isPending: isChatPending } = useChatModel()
-    const { mutateAsync: createSession } = useCreateSession()
-    const { mutateAsync: createMessage } = useCreateMessage()
+    const { mutateAsync: startChat, isPending: chatPending } = useChatModel()
+    const { mutateAsync: createSession, isPending: sessionPending } = useCreateSession()
+    const { mutateAsync: createMessage, isPending: messagePending } = useCreateMessage()
 
     function stopChat() {
         controllerRef.current?.abort()
@@ -129,6 +129,8 @@ export function useChatSession(model: string) {
         }
     }
 
+    const loading = messagePending || sessionPending || chatPending;
+
     const sendMessage = async (query: string) => {
         if (query.trim() === "") return
         controllerRef.current?.abort();
@@ -150,6 +152,8 @@ export function useChatSession(model: string) {
             }))
         };
 
+
+
         const sessionId = await handleUserMessage(message)
 
         const aiMessage = await startChat({
@@ -168,8 +172,9 @@ export function useChatSession(model: string) {
         query,
         setQuery,
         sendMessage,
+        loading,
         stopChat,
-        isChatPending,
+        chatPending,
         isSessionFetching,
         setFile,
         file

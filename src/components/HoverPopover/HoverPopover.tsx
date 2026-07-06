@@ -162,10 +162,8 @@ export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: 
 
 
                 </Worker> */}
-                {/* <Box className="w-[100vw] h-[100vh]"> */}
                 {/* {pdfUrl && <PdfViewer pdfUrl={pdfUrl} />} */}
                 <PdfPreview pdfUrl={pdfUrl} loading={isFetching} pageNumber={item.page_number} />
-                {/* </Box> */}
 
 
             </Popover>

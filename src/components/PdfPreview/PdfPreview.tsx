@@ -25,12 +25,11 @@ export default function PdfPreview({ pdfUrl, pageNumber }: { pdfUrl?: string | n
     const paramMappings: Record<string, any> = {
         page: pageNumber,
     };
-
     return (
-        <Box className="w-screen h-[90vh] rounded">
+        <Box className="rounded">
             {pdfUrl ? (
                 <iframe
-                    className="w-screen h-[90vh] rounded"
+                    className="w-[99vw] h-[90vh] rounded"
                     src={`${pdfUrl}#${setParams(paramMappings)}`}
                     title="PDF Preview"
                 />

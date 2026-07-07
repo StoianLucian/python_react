@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
 import { useAuthContext } from '../authContext/AuthContext'
@@ -16,22 +16,27 @@ const routes = [
 ];
 
 const returnRoutes = () => {
-
     const { isAuthenticated, loading } = useAuthContext()
 
-    if (!loading) {
-        const appRoutes = routes.map((route) => {
-            const element = route.isPrivate ? (<PrivateRoute>{route.element}</PrivateRoute>) : (route.element)
-            if (route.path === APP_PATHS.LOGIN && isAuthenticated) {
-                return
-            }
-
-            return (<Route key={route.path} path={route.path} element={element} />)
-        })
-        return appRoutes
-    } else {
+    if (loading) {
         return [<Route key="loading" path="*" element={<>Loading...</>} />]
     }
+
+    return routes.map((route) => {
+        if (isAuthenticated && (route.path === APP_PATHS.LOGIN || route.path === APP_PATHS.REGISTER)) {
+            return (
+                <Route
+                    key={route.path}
+                    path={route.path}
+                    element={<Navigate to={APP_PATHS.HOME} replace />}
+                />
+            )
+        }
+
+        const element = route.isPrivate ? <PrivateRoute>{route.element}</PrivateRoute> : route.element
+
+        return <Route key={route.path} path={route.path} element={element} />
+    })
 }
 
 function AppRoutes() {

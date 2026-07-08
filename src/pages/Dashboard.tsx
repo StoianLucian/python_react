@@ -44,6 +44,11 @@ const items = [{
     route: `${APP_PATHS.CHAT}/new`,
     icon: IconsEnum.PDF
 },
+{
+    title: "BOT",
+    route: `${APP_PATHS.BOT}`,
+    icon: IconsEnum.ROBOT
+},
 ]
 
 const newItems = items.map(item => ({ ...item, gradient: getRandomGradient() }))

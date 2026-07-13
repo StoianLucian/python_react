@@ -1,5 +1,5 @@
 import { Button, Popover } from "@mui/material";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import usePreviewFile from "../../api/hooks/tanstack/files/usePreviewFile";
 import type { Entity } from "../../types/chat";
 import PdfPreview from "../PdfPreview/PdfPreview";
@@ -107,12 +107,16 @@ import PdfPreview from "../PdfPreview/PdfPreview";
 export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: string }) {
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     // const defaultLayout = useMemo(() => defaultLayoutPlugin(), []);
+    const ref = useRef(0)
 
     const open = (e: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(e.currentTarget);
     };
 
     console.log(fileId)
+    ref.current++
+
+    console.log(ref.current, "ref")
 
     const { data: files = "", isFetching } = usePreviewFile(fileId!)
 

@@ -1,7 +1,8 @@
 import { Alert, Box, Button } from '@mui/material'
 import HoverPopover from '../../HoverPopover/HoverPopover'
-import { EntityType, type Entity } from '../../../types/chat';
+import { EntityType } from '../../../types/chat';
 import { jsonrepair } from "jsonrepair";
+import { useMemo } from 'react';
 
 
 type ChatMessageProps = {
@@ -10,7 +11,7 @@ type ChatMessageProps = {
 }
 
 
-export default function ChatMessage({ message, alignRight }: ChatMessageProps) {
+function ChatMessage({ message, alignRight }: ChatMessageProps) {
 
 
     function safeParseJson(input: string) {
@@ -37,8 +38,6 @@ export default function ChatMessage({ message, alignRight }: ChatMessageProps) {
         return safeParseJson(extracted);
     }
 
-    const cleaned = parseLLMJson(message);
-
     function extractJsonBlock(text: string) {
         const firstBracket = text.indexOf("[");
         const firstBrace = text.indexOf("{");
@@ -50,48 +49,52 @@ export default function ChatMessage({ message, alignRight }: ChatMessageProps) {
         return text.slice(start).trim();
     }
 
-    // const parsed = maybeParseStreamingJson(cleaned);
+    const data = useMemo(() => {
+        const cleaned = parseLLMJson(message);
 
-    let data: Entity[];
+        if (cleaned) {
+            return Array.isArray(cleaned) ? cleaned : [cleaned];
+        }
 
-    if (cleaned) {
-        data = Array.isArray(cleaned) ? cleaned : [cleaned];
-    } else {
-        data = [
+        return [
             {
                 type: "message",
                 content: message,
             },
         ];
-    }
+    }, [message]);
 
-    function returnMessageType(entity: Entity[]) {
-
-
-        console.log(entity)
-
-        const message = entity.map((item) => {
+    const renderedMessage = useMemo(() => {
+        return data.map((item, index) => {
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p>{item.content}</p>;
+                    return <p key={index}>{item.content}</p>;
 
                 case EntityType.BUTTON:
-                    return <Button onMouseEnter={() => { console.log("click") }}>{item.content}</Button>;
+                    return (
+                        <Button key={index}>
+                            {item.content}
+                        </Button>
+                    );
 
                 case EntityType.POPOVER:
-                    return <HoverPopover item={item} fileId={item.source_id} />;
+                    return (
+                        <HoverPopover
+                            key={index}
+                            item={item}
+                            fileId={item.source_id}
+                        />
+                    );
 
                 case EntityType.ERROR:
-                    return <Alert severity="error">
-                        {item.content}
-                    </Alert>
+                    return (
+                        <Alert key={index} severity="error">
+                            {item.content}
+                        </Alert>
+                    );
             }
-        })
-
-        return message
-    }
-
-    // const { } = useGetFile()
+        });
+    }, [data]);
 
     const alignEnd = "bg-blue-500 text-white self-end"
     const alignStart = "bg-white self-start"
@@ -104,7 +107,9 @@ export default function ChatMessage({ message, alignRight }: ChatMessageProps) {
                 : alignStart
                 } `}
         >
-            {returnMessageType(data)}
+            {renderedMessage}
         </Box>
     )
 }
+
+export default ChatMessage;

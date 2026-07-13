@@ -50,3 +50,7 @@ export async function previewFile(id: string) {
         responseType: "blob"
     })
 }
+
+export async function resetFiles() {
+    return await request({ method: ApiMethod.DELETE, url: FILE_ROUTES.FILES })
+}

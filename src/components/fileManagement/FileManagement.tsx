@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
 import { translations } from '../../../i18n'
 import Icon, { IconsEnum } from '../Icons/Icon'
 import InputComponent from '../inputComponent/InputComponent'
@@ -7,6 +7,7 @@ import useGetFiles from '../../api/hooks/tanstack/files/useGetFIles'
 import { useUploadFile } from '../../api/hooks/tanstack/files/useUploadFile'
 import { useTranslation } from 'react-i18next'
 import { Files } from './Files'
+import useResetFiles from '../../api/hooks/tanstack/files/useResetFiles'
 
 type FileManagementProps = {
     isDragging: boolean
@@ -49,6 +50,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
 
     const { data: files = [], isLoading, isPending: filesPending } = useGetFiles();
     const { mutateAsync: uploadFile, isPending } = useUploadFile();
+    const { mutateAsync: resetFiles, isPending: resetFilesPending } = useResetFiles();
     const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
 
@@ -66,6 +68,12 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
                 value={search}
                 onChange={(value) => handleSearch(value)}
             />
+            <Button
+                disabled={resetFilesPending}
+                onClick={() => resetFiles()}
+            >
+                {resetFilesPending ? <CircularProgress /> : "X"}
+            </Button>
             <DropZone
                 isPending={isPending}
                 isDragging={isDragging}

@@ -40,6 +40,8 @@ export default function AiChat() {
         loading
     } = useChatSession(model)
 
+    const test = useMemo(() => chatResponse, [chatResponse])
+
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 
     const [preview, setPreview] = useState<string | null>(null);
@@ -101,7 +103,7 @@ export default function AiChat() {
                 model={model}
             />
             <ChatContainer
-                chatItems={chatResponse}
+                chatItems={test}
                 chatPending={loading}
                 sessionFetching={isSessionFetching}
             />

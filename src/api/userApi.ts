@@ -1,17 +1,14 @@
 import type { RegisterCredentials } from "../pages/register/RegisterPage";
-import { api } from "./axiosConfig";
+import { ApiMethod, request } from "./axiosConfig";
 
 const USER_ROUTES = {
-    CREATE_USER: "/users",
+    USERS: "/users",
 }
 
 export async function register(credentials: RegisterCredentials) {
+    return await request({ method: ApiMethod.POST, url: USER_ROUTES.USERS, data: credentials })
+}
 
-    try {
-        const response = await api.post(USER_ROUTES.CREATE_USER, credentials);
-
-        return response.data
-    } catch (error: any) {
-        throw error
-    }
+export async function getUsers() {
+    return await request({ method: ApiMethod.GET, url: USER_ROUTES.USERS })
 }

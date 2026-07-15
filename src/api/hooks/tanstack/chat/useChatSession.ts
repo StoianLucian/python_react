@@ -14,11 +14,9 @@ export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 
 export function useChatSession(model: string) {
     const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
-    const [query, setQuery] = useState("")
     const [file, setFile] = useState<File | null>(null)
 
     function resetInputs() {
-        setQuery("");
         setFile(null);
     }
 
@@ -39,7 +37,6 @@ export function useChatSession(model: string) {
 
     useEffect(() => {
         if (isNewChat) {
-            setQuery("");
             aiIndexRef.current = null;
             controllerRef.current?.abort();
             return;
@@ -58,7 +55,7 @@ export function useChatSession(model: string) {
         return str.substring(str.indexOf(",") + 1);
     }
 
-    async function returnCreatedMessage(): Promise<ChatResponse> {
+    async function returnCreatedMessage(query: string): Promise<ChatResponse> {
         const base64Image: string = file ? await toBase64(file) : ""
         const message = {
             content: query,
@@ -120,7 +117,7 @@ export function useChatSession(model: string) {
 
     async function handleUserMessage(userMessage: ChatResponse) {
         if (isNewChat) {
-            const sessionId = await createSession({ query });
+            const sessionId = await createSession({ query: userMessage.content });
             await createMessage({ id: sessionId, message: userMessage })
             return sessionId
         } else {
@@ -139,7 +136,7 @@ export function useChatSession(model: string) {
 
         const signal = controllerRef.current.signal;
 
-        const message = await returnCreatedMessage()
+        const message = await returnCreatedMessage(query)
 
         const updatedHistory = attachHistory(message)
 
@@ -169,8 +166,6 @@ export function useChatSession(model: string) {
 
     return {
         chatResponse,
-        query,
-        setQuery,
         sendMessage,
         loading,
         stopChat,

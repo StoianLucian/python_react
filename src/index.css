@@ -26,3 +26,8 @@ body {
 .animate-loading {
   animation: loading 2.5s ease-in-out infinite;
 }
+
+.tiptap.ProseMirror {
+  padding: 15px;
+  border: 1px solid beige;
+}

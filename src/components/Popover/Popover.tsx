@@ -10,11 +10,11 @@ function Popover({ trigger, items }: PopoverProps) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     function handleClick(event: any) {
-        setAnchorEl(event.currentTarget); // anchor the menu to this button
+        setAnchorEl(event.currentTarget);
     }
 
     function handleClose() {
-        setAnchorEl(null); // close menu
+        setAnchorEl(null);
     }
 
     return (

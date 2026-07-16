@@ -1,6 +1,6 @@
 import { Box, Button, Grid, } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
-import { toggleIcon } from '../../pages/chat/helper'``
+import { toggleIcon } from '../../pages/chat/helper'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
 import Icon from '../Icons/Icon'

@@ -2,7 +2,7 @@ import { Box, Button } from '@mui/material'
 import useGetSessions, { type ChatSession } from '../../../api/hooks/tanstack/chat/useGetSessions'
 import LoadingRows from '../../LoadingRows/LoadingRows'
 import SessionCard from '../SessionCard/SessionCard'
-import { useChatContext } from '../../../chatContext/ChatContext'
+import { useChatContext } from '../../../api/context/chatContext/ChatContext'
 
 export type ChatHistoryProps = {
     // chatItems: ChatResponse[]

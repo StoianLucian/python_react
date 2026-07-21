@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { api } from "../api/axiosConfig";
+import { api } from "../../axiosConfig";
 
 type AuthUser = {
     email: string

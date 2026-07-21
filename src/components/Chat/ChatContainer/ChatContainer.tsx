@@ -3,7 +3,7 @@ import CollapsableContainer from '../../CollapsableContainer/CollapsableContaine
 import { useTranslation } from 'react-i18next'
 import { translations } from '../../../../i18n'
 import { RoleEnum } from '../AiChat'
-import type { ChatResponse } from '../../../chatContext/ChatContext'
+import type { ChatResponse } from '../../../api/context/chatContext/ChatContext'
 import ChatMessage from '../ChatMessage/ChatMessage'
 
 export type AiChatBoxProps = {

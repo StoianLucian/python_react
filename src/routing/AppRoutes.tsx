@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { APP_PATHS } from './routes'
 import PrivateRoute from './PrivateRoute'
-import { useAuthContext } from '../authContext/AuthContext'
 import Dashboard from '../pages/Dashboard'
 import LoginPage from '../pages/login/LoginPage'
 import RegisterPage from '../pages/register/RegisterPage'
 import ChatPage from '../pages/chat/ChatPage'
 import BotPage from '../pages/bot/BotPage'
+import { useAuthContext } from '../api/context/authContext/AuthContext'
 
 const routes = [
     { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
@@ -17,7 +17,7 @@ const routes = [
     { path: "*", element: <>Page not found</>, isPrivate: false },
 ];
 
-const returnRoutes = () => {
+const useReturnRoutes = () => {
     const { isAuthenticated, loading } = useAuthContext()
 
     if (loading) {
@@ -42,9 +42,11 @@ const returnRoutes = () => {
 }
 
 function AppRoutes() {
+    const routes = useReturnRoutes()
+
     return (
         <Routes>
-            {returnRoutes()}
+            {routes}
         </Routes>
     )
 }

@@ -52,6 +52,8 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
     const data = useMemo(() => {
         const cleaned = parseLLMJson(message);
 
+        console.log(cleaned, "cleaned")
+
         if (cleaned) {
             return Array.isArray(cleaned) ? cleaned : [cleaned];
         }

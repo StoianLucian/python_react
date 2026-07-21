@@ -2,7 +2,7 @@ import { Stack, Button, Box } from "@mui/material";
 import type { ChatSession } from "../../../api/hooks/tanstack/chat/useGetSessions";
 import { useDeleteSession } from "../../../api/hooks/tanstack/chat/useDeleteSesion";
 import Icon, { IconsEnum } from "../../Icons/Icon";
-import { useChatContext } from "../../../chatContext/ChatContext";
+import { useChatContext } from "../../../api/context/chatContext/ChatContext";
 import Popover from "../../Popover/Popover";
 import { useParams } from "react-router-dom";
 import InputComponent, { InputComponentVariantsEnum } from "../../inputComponent/InputComponent";

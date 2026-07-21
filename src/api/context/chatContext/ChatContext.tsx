@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
-import type { Role } from "../components/Chat/AiChat";
-import { getSession } from "../api/sessionApi";
+import type { Role } from "../../../components/Chat/AiChat";
+import { getSession } from "../../sessionApi";
 import { useNavigate } from "react-router-dom";
-import { PATHS } from "../routing/routes";
+import { PATHS } from "../../../routing/routes";
 import { useQueryClient } from "@tanstack/react-query";
-import { queryKeys } from "../enums/queryKeys";
+import { queryKeys } from "../../../enums/queryKeys";
 
 type AuthContext = {
     changeSession: (id: string) => void

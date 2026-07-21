@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../api/hooks/tanstack/useLogin';
 import { APP_PATHS } from '../../routing/routes';
 import NavigationLink from '../../components/navigationLink/NavigationLink';
-import { useAuthContext } from '../../authContext/AuthContext';
 import { translations } from '../../../i18n';
+import { useAuthContext } from '../../api/context/authContext/AuthContext';
 
 
 export type LoginCredentials = {

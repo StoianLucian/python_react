@@ -1,21 +1,19 @@
 import { List, ListItemButton, Paper, Popper } from '@mui/material';
 
-type MentionContainerProps<T extends { id: string }> = {
+type MentionItem = {
+    id: string;
+    label: string;
+};
+
+type MentionContainerProps = {
     anchor: any;
-    items: T[];
-    clickHandler: (item: T) => void
-    displayKey: keyof T;
+    items: MentionItem[] | null;
+    onSelect: (item: MentionItem) => void;
+    firstItemRef: any;
+};
 
-}
+function MentionContainer({ anchor, items, onSelect, firstItemRef }: MentionContainerProps) {
 
-function MentionContainer<T extends { id: string }>({ anchor, items, clickHandler, displayKey }: MentionContainerProps<T>) {
-
-
-    function returnItemLabel(displayKey: keyof T, item: T) {
-        const label = displayKey ? String(item[displayKey]) : "no label"
-
-        return label
-    }
     return (
         <Popper
             open={!!anchor}
@@ -24,13 +22,13 @@ function MentionContainer<T extends { id: string }>({ anchor, items, clickHandle
         >
             <Paper>
                 <List>
-                    {items.map((item) => (
+                    {items?.map((item, index) => (
                         <ListItemButton
                             key={item.id}
-                            onClick={() => clickHandler(item)}
-
+                            onClick={() => onSelect(item)}
+                            ref={index === 0 ? firstItemRef : null}
                         >
-                            {returnItemLabel(displayKey, item)}
+                            {item.label}
                         </ListItemButton>
                     ))}
                 </List>

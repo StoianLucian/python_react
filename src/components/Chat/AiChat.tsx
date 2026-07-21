@@ -6,13 +6,13 @@ import StatusDot from '../statusDot/StatusDot'
 import Icon from '../Icons/Icon'
 import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
-import { useChatContext, type ChatResponse } from '../../chatContext/ChatContext'
+import { useChatContext, type ChatResponse } from '../../api/context/chatContext/ChatContext'
 import { useParams } from 'react-router-dom'
 import ChatContainer from './ChatContainer/ChatContainer'
-import useGetUsers from '../../api/hooks/tanstack/users/useGetUsers'
 import MentionContainer from '../MentionContainer/MentionContainer'
 import { useChatEditor } from '../../api/hooks/useChatEditor'
 import { EditorContent } from '@tiptap/react'
+import { useMentionItems, type MentionType } from '../../api/hooks/useMentionItems'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -24,11 +24,14 @@ export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
+    const [mentionType, setMentionType] = useState<MentionType | null>(null);
     const { changeSession } = useChatContext()
     const [model, setModel] = useState<string>("")
 
     const [virtualAnchor, setVirtualAnchor] = useState<any>(null)
     const editorRef = useRef<HTMLDivElement>(null);
+
+    const firstItemRef = useRef(null)
 
     const { id } = useParams();
 
@@ -42,8 +45,6 @@ export default function AiChat() {
         file,
         loading
     } = useChatSession(model)
-
-    const { data: users = [] } = useGetUsers();
 
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
 
@@ -65,19 +66,6 @@ export default function AiChat() {
         }
     }
 
-
-    // const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
-    //     e.preventDefault();
-
-    //     const files = Array.from(e.dataTransfer.files);
-
-    //     console.log(files[0]);
-
-    //     if (files.length > 0) {
-    //         const file = files[0];
-    //         setFile(file);
-    //     };
-    // }
 
     useEffect(() => {
         if (!file) {
@@ -110,13 +98,29 @@ export default function AiChat() {
     useEffect(() => {
         if (!editor) return;
 
-        const handleUpdate = () => {
+        const openMention = () => {
 
             const { from } = editor.state.selection;
 
             const textBefore = editor.state.doc.textBetween(0, from, "\n");
 
-            const match = textBefore.match(/@(\w*)$/);
+            const match = textBefore.match(/([@/])(\w*)$/);
+
+            if (!match) {
+                setMentionType(null);
+                setVirtualAnchor(null);
+                return;
+            }
+
+            const trigger = match[1];
+            const query = match[2];
+
+            // You can use `query` to filter the list
+            console.log(query);
+
+            setMentionType(trigger === "@" ? "users" : "skills");
+
+            // const match = textBefore.match(/([@/])(\w*)$/);
 
             if (match) {
                 const coords = editor.view.coordsAtPos(from);
@@ -138,13 +142,16 @@ export default function AiChat() {
             }
         };
 
-        editor.on("update", handleUpdate);
+        editor.on("update", openMention);
 
         return () => {
-            editor.off("update", handleUpdate);
+            editor.off("update", openMention);
         };
     }, [editor])
 
+    const { items } = useMentionItems(mentionType)
+
+    console.log(items)
 
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
@@ -179,19 +186,11 @@ export default function AiChat() {
                         </div>
 
                     )}
-                    {/* <InputComponent
-                        inputRef={textarea}
-                        onDropHandler={handleDrop}
-                        hotKey={keyboardShortcuts.submit}
-                        onKeyDown={() => sendMessage(query)}
-                        value={query}
-                        onChange={handleChange}
-                    /> */}
                     <MentionContainer
                         anchor={virtualAnchor}
-                        items={users}
-                        displayKey="username"
-                        clickHandler={(item) => handleMention(item.email)}
+                        items={items}
+                        onSelect={(item) => handleMention(item.id)}
+                        firstItemRef={firstItemRef}
                     />
                     <EditorContent ref={editorRef} className="w-full" editor={editor} />
                     <Button onClick={() => handleButton(chatPending)}>

@@ -3,7 +3,7 @@ import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
 import { useParams } from "react-router-dom"
 import { useCreateMessage } from "./useCreateMessage"
-import { useChatContext, type ChatResponse } from "../../../../chatContext/ChatContext"
+import { useChatContext, type ChatResponse } from "../../../context/chatContext/ChatContext"
 
 export const RoleEnum = {
     AGENT: "assistant",

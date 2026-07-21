@@ -1,9 +1,9 @@
 import { Button, FormControlLabel, Menu, Radio, RadioGroup, Stack } from "@mui/material"
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAuthContext } from "../../authContext/AuthContext";
 import { useLogout } from "../../api/hooks/tanstack/useLogout";
 import ChevronDownIcon from '@mui/icons-material/ExpandMore';
+import { useAuthContext } from "../../api/context/authContext/AuthContext";
 
 function ProfileMenu() {
     const { t, i18n } = useTranslation();

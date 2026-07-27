@@ -41,7 +41,8 @@
   "aiChat": {
     "thinking": "Gândește...",
     "thinkingTime": "AI-ul a gândit pentru {{value}} secunde",
-    "chatHistory": "Istorie chat"
+    "chatHistory": "Istorie chat",
+    "newChat": "Chat nou"
   },
 
   "errors": {

@@ -23,6 +23,9 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                 chatItems.map((chatItem, i) => {
                     const isUser = chatItem.role === RoleEnum.USER
 
+                    const test = { type: "text", text: chatItem.thinking}
+
+
                     return (
                         <Stack
                             key={i}
@@ -40,7 +43,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                                     isLoading={chatItem?.isThinking}
                                 >
                                     <ChatMessage
-                                        message={chatItem.thinking}
+                                        message={JSON.stringify(test)}
                                         alignRight={isUser}
                                     />
                                 </CollapsableContainer>

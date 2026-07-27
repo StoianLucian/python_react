@@ -5,13 +5,13 @@ import { getSkills } from "../../../skillsApi";
 export type Skill = {
     id: string,
     name: string
+    key: string
 }
 
-const useGetSkills = () => {
-
+const useGetSkills = (search: string) => {
     return useQuery<Skill[], any>({
-        queryFn: () => getSkills(),
-        queryKey: queryKeys.skills,
+        queryFn: () => getSkills(search),
+        queryKey: queryKeys.skills(search)
     });
 };
 

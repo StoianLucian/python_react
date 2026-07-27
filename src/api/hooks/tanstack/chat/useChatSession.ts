@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useChatModel } from "./useChat"
 import { useCreateSession } from "./useCreateSession"
 import { useParams } from "react-router-dom"
-import { useCreateMessage } from "./useCreateMessage"
+import { useStoreMessage } from "./useCreateMessage"
 import { useChatContext, type ChatResponse } from "../../../context/chatContext/ChatContext"
 
 export const RoleEnum = {
@@ -29,7 +29,7 @@ export function useChatSession(model: string) {
 
     const { mutateAsync: startChat, isPending: chatPending } = useChatModel()
     const { mutateAsync: createSession, isPending: sessionPending } = useCreateSession()
-    const { mutateAsync: createMessage, isPending: messagePending } = useCreateMessage()
+    const { mutateAsync: storeMessage, isPending: messagePending } = useStoreMessage()
 
     function stopChat() {
         controllerRef.current?.abort()
@@ -118,10 +118,10 @@ export function useChatSession(model: string) {
     async function handleUserMessage(userMessage: ChatResponse) {
         if (isNewChat) {
             const sessionId = await createSession({ query: userMessage.content });
-            await createMessage({ id: sessionId, message: userMessage })
+            await storeMessage({ id: sessionId, message: userMessage })
             return sessionId
         } else {
-            await createMessage({ id: id!, message: userMessage })
+            await storeMessage({ id: id!, message: userMessage })
             return id
         }
     }
@@ -129,7 +129,7 @@ export function useChatSession(model: string) {
     const loading = messagePending || sessionPending || chatPending;
 
     const sendMessage = async (query: string) => {
-        if (query.trim() === "") return
+        // if (query.trim() === "") return
         controllerRef.current?.abort();
         controllerRef.current = new AbortController();
         aiIndexRef.current = null;
@@ -149,18 +149,16 @@ export function useChatSession(model: string) {
             }))
         };
 
-
-
-        const sessionId = await handleUserMessage(message)
-
         const aiMessage = await startChat({
             obj: history,
             handleChunk: showAiResponse,
             signal,
         });
 
+        const sessionId = await handleUserMessage(message)
+
         if (sessionId && aiMessage) {
-            await createMessage({ id: sessionId, message: { content: aiMessage, role: RoleEnum.AGENT } })
+            await storeMessage({ id: sessionId, message: { content: aiMessage, role: RoleEnum.AGENT } })
         }
     };
 

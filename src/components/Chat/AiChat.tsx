@@ -12,7 +12,7 @@ import ChatContainer from './ChatContainer/ChatContainer'
 import MentionContainer from '../MentionContainer/MentionContainer'
 import { useChatEditor } from '../../api/hooks/useChatEditor'
 import { EditorContent } from '@tiptap/react'
-import { useMentionItems, type MentionType } from '../../api/hooks/useMentionItems'
+import { MENTION_TYPES, useMentionItems } from '../../api/hooks/useMentionItems'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -24,7 +24,8 @@ export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
-    const [mentionType, setMentionType] = useState<MentionType | null>(null);
+    const { editor, clearText, focusInput, getJson } = useChatEditor()
+    const { items, setSearch, setMentionType, mentionType } = useMentionItems()
     const { changeSession } = useChatContext()
     const [model, setModel] = useState<string>("")
 
@@ -60,7 +61,7 @@ export default function AiChat() {
         if (bool) {
             stopChat()
         } else {
-            sendMessage(getText())
+            sendMessage(JSON.stringify(getJson().content[0].content))
             clearText()
             focusInput()
         }
@@ -79,20 +80,38 @@ export default function AiChat() {
         return () => URL.revokeObjectURL(objectUrl);
     }, [file]);
 
-    const { editor, getText, clearText, focusInput, setContent } = useChatEditor()
 
-    function handleMention(item: string) {
-        setVirtualAnchor(null)
 
-        const editorText = getText()
+    function handleMention(item: { id: string; label: string, slug: string }) {
+        if (!editor) return;
 
-        const indexOfMention = editorText.lastIndexOf("@");
+        setVirtualAnchor(null);
 
-        const mentionText = editorText.slice(0, indexOfMention)
+        const { from } = editor.state.selection;
+        const textBefore = editor.state.doc.textBetween(0, from, "\n");
 
-        setContent(mentionText + item)
+        const match = textBefore.match(/([@/])(\w*)$/);
 
-        focusInput()
+        if (!match) return;
+
+        const query = match[2];
+        if (mentionType) {
+            editor
+                .chain()
+                // .focus()
+                .deleteRange({
+                    from: from - query.length - 1,
+                    to: from,
+                })
+                .insertContent({
+                    type: mentionType, // or whatever your node name is
+                    attrs: {
+                        id: item.id,
+                        label: item.slug,
+                    },
+                })
+                .run();
+        }
     }
 
     useEffect(() => {
@@ -115,12 +134,9 @@ export default function AiChat() {
             const trigger = match[1];
             const query = match[2];
 
-            // You can use `query` to filter the list
-            console.log(query);
+            setSearch(query)
 
-            setMentionType(trigger === "@" ? "users" : "skills");
-
-            // const match = textBefore.match(/([@/])(\w*)$/);
+            setMentionType(trigger === "@" ? MENTION_TYPES.USERS : MENTION_TYPES.SKILLS);
 
             if (match) {
                 const coords = editor.view.coordsAtPos(from);
@@ -149,9 +165,7 @@ export default function AiChat() {
         };
     }, [editor])
 
-    const { items } = useMentionItems(mentionType)
 
-    console.log(items)
 
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
@@ -189,7 +203,7 @@ export default function AiChat() {
                     <MentionContainer
                         anchor={virtualAnchor}
                         items={items}
-                        onSelect={(item) => handleMention(item.id)}
+                        onSelect={(item) => handleMention(item)}
                         firstItemRef={firstItemRef}
                     />
                     <EditorContent ref={editorRef} className="w-full" editor={editor} />

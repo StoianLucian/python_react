@@ -41,7 +41,8 @@
   "aiChat": {
     "thinking": "Thinking...",
     "thinkingTime": "The AI thought for {{value}} seconds",
-    "chatHistory": "Chat history"
+    "chatHistory": "Chat history",
+    "newChat": "New chat"
   },
 
   "errors": {

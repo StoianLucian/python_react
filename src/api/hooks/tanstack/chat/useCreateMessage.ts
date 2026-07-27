@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { sendMessage } from '../../../messageApi';
+import { storeMessage } from '../../../messageApi';
 import type { ChatResponse } from '../../../context/chatContext/ChatContext';
 
 type CreateMessageProps = {
@@ -9,10 +9,10 @@ type CreateMessageProps = {
 
 export type PartialChatResponse = Pick<ChatResponse, "content" | "role" | "images">
 
-export function useCreateMessage() {
+export function useStoreMessage() {
     return useMutation({
         mutationFn: async ({ id, message }: CreateMessageProps) => {
-            return await sendMessage({ id, message });
+            return await storeMessage({ id, message });
         },
         onError(e) {
             console.log(e)

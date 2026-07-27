@@ -1,15 +1,17 @@
 
 export type Entity = {
     type: string,
-    content: string
+    text: string
     action?: string
     source_id?: string
     page_number?: string
 }
 
 export const EntityType = {
-    TEXT: "message",
+    TEXT: "text",
     BUTTON: "button",
     ERROR: "error",
-    POPOVER: "popover"
+    POPOVER: "popover",
+    SKILL_MENTION: "skill-mention",
+    USER_MENTION: 'user-mention'
 }

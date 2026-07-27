@@ -3,6 +3,8 @@ import useGetSessions, { type ChatSession } from '../../../api/hooks/tanstack/ch
 import LoadingRows from '../../LoadingRows/LoadingRows'
 import SessionCard from '../SessionCard/SessionCard'
 import { useChatContext } from '../../../api/context/chatContext/ChatContext'
+import { translations } from '../../../../i18n'
+import { useTranslation } from 'react-i18next'
 
 export type ChatHistoryProps = {
     // chatItems: ChatResponse[]
@@ -10,6 +12,8 @@ export type ChatHistoryProps = {
 }
 
 export default function ChatHistory({ }: ChatHistoryProps) {
+
+    const { t } = useTranslation()
 
     const { data: sessions = [], isLoading, isFetching } = useGetSessions();
 
@@ -26,7 +30,7 @@ export default function ChatHistory({ }: ChatHistoryProps) {
 
     return (
         <Box>
-            <Button onClick={startSession}>New Chat</Button>
+            <Button  className='normal-case!' onClick={startSession}>{t(translations.aiChat.newChat)}</Button>
             {renderSessions(sessions)}
         </Box>
 

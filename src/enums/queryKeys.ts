@@ -13,7 +13,6 @@ export const queryKeys = {
     models: [baseQueryKeys.models],
     files: [baseQueryKeys.files],
     file: (id: string) => [baseQueryKeys.files, id],
-    users: [baseQueryKeys.users],
-    skills: [baseQueryKeys.skills]
-
+    users: (search: string) => [baseQueryKeys.users, search],
+    skills: (search: string) => [baseQueryKeys.skills, search]
 } as const;

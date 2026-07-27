@@ -8,11 +8,11 @@ export type User = {
     email: string
 }
 
-const useGetUsers = () => {
+const useGetUsers = (search: string) => {
 
     return useQuery<User[], any>({
-        queryFn: () => getUsers(),
-        queryKey: queryKeys.users,
+        queryFn: () => getUsers(search),
+        queryKey: queryKeys.users(search),
     });
 };
 

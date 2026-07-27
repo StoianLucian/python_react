@@ -113,10 +113,7 @@ export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: 
         setAnchorEl(e.currentTarget);
     };
 
-    console.log(fileId)
     ref.current++
-
-    console.log(ref.current, "ref")
 
     const { data: files = "", isFetching } = usePreviewFile(fileId!)
 
@@ -140,7 +137,7 @@ export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: 
             <Button
                 onClick={open}
             >
-                {item.content}
+                {item.text}
             </Button>
 
             <Popover className="text-right" slotProps={{

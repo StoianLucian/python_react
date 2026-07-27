@@ -3,6 +3,8 @@ import HoverPopover from '../../HoverPopover/HoverPopover'
 import { EntityType } from '../../../types/chat';
 import { jsonrepair } from "jsonrepair";
 import { useMemo } from 'react';
+import { SkillMentionComponent } from '../../ChatEditor/components/SkillMention';
+import { UserMentionComponent } from '../../ChatEditor/components/UserMention';
 
 
 type ChatMessageProps = {
@@ -12,7 +14,6 @@ type ChatMessageProps = {
 
 
 function ChatMessage({ message, alignRight }: ChatMessageProps) {
-
 
     function safeParseJson(input: string) {
         try {
@@ -27,41 +28,43 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
     }
 
     function parseLLMJson(message: string) {
+
         const cleaned = message
             .replace(/```json/g, "")
             .replace(/```/g, "")
             .trim();
 
-        const extracted = extractJsonBlock(cleaned);
-        if (!extracted) return null;
+        // const extracted = extractJsonBlock(cleaned);
+        // if (!extracted) return null;
 
-        return safeParseJson(extracted);
+        return safeParseJson(cleaned);
     }
 
-    function extractJsonBlock(text: string) {
-        const firstBracket = text.indexOf("[");
-        const firstBrace = text.indexOf("{");
+    // function extractJsonBlock(text: string) {
+    //     const firstBracket = text.indexOf("[");
+    //     const firstBrace = text.indexOf("{");
 
-        const startCandidates = [firstBracket, firstBrace].filter(i => i !== -1);
-        if (!startCandidates.length) return null;
+    //     const startCandidates = [firstBracket, firstBrace].filter(i => i !== -1);
+    //     if (!startCandidates.length) return null;
 
-        const start = Math.min(...startCandidates);
-        return text.slice(start).trim();
-    }
+    //     const start = Math.min(...startCandidates);
+    //     return text.slice(start).trim();
+    // }
 
     const data = useMemo(() => {
         const cleaned = parseLLMJson(message);
-
-        console.log(cleaned, "cleaned")
 
         if (cleaned) {
             return Array.isArray(cleaned) ? cleaned : [cleaned];
         }
 
+
+        console.log(message)
+
         return [
             {
-                type: "message",
-                content: message,
+                type: "text",
+                text: message,
             },
         ];
     }, [message]);
@@ -70,14 +73,19 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
         return data.map((item, index) => {
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p key={index}>{item.content}</p>;
+                    return <p key={index}>{item.text}</p>;
 
                 case EntityType.BUTTON:
                     return (
                         <Button key={index}>
-                            {item.content}
+                            {item.text}
                         </Button>
                     );
+                case EntityType.SKILL_MENTION:
+                    return (<SkillMentionComponent label={item.attrs.label} />)
+
+                case EntityType.USER_MENTION:
+                    return (<UserMentionComponent label={item.attrs.label} />)
 
                 case EntityType.POPOVER:
                     return (
@@ -91,9 +99,12 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
                 case EntityType.ERROR:
                     return (
                         <Alert key={index} severity="error">
-                            {item.content}
+                            {item.text}
                         </Alert>
                     );
+
+                default:
+                    return message
             }
         });
     }, [data]);

@@ -98,7 +98,7 @@ export default function AiChat() {
         if (mentionType) {
             editor
                 .chain()
-                // .focus()
+                .focus()
                 .deleteRange({
                     from: from - query.length - 1,
                     to: from,

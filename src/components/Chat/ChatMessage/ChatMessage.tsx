@@ -34,22 +34,8 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
             .replace(/```/g, "")
             .trim();
 
-        // const extracted = extractJsonBlock(cleaned);
-        // if (!extracted) return null;
-
         return safeParseJson(cleaned);
     }
-
-    // function extractJsonBlock(text: string) {
-    //     const firstBracket = text.indexOf("[");
-    //     const firstBrace = text.indexOf("{");
-
-    //     const startCandidates = [firstBracket, firstBrace].filter(i => i !== -1);
-    //     if (!startCandidates.length) return null;
-
-    //     const start = Math.min(...startCandidates);
-    //     return text.slice(start).trim();
-    // }
 
     const data = useMemo(() => {
         const cleaned = parseLLMJson(message);
@@ -57,9 +43,6 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
         if (cleaned) {
             return Array.isArray(cleaned) ? cleaned : [cleaned];
         }
-
-
-        console.log(message)
 
         return [
             {
@@ -70,27 +53,28 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
     }, [message]);
 
     const renderedMessage = useMemo(() => {
-        return data.map((item, index) => {
+        return data.map((item) => {
+            const id = crypto.randomUUID()
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p key={index}>{item.text}</p>;
+                    return <p key={id}>{item.text}</p>;
 
                 case EntityType.BUTTON:
                     return (
-                        <Button key={index}>
+                        <Button key={id}>
                             {item.text}
                         </Button>
                     );
                 case EntityType.SKILL_MENTION:
-                    return (<SkillMentionComponent label={item.attrs.label} />)
+                    return (<SkillMentionComponent key={id} label={item.attrs.label} />)
 
                 case EntityType.USER_MENTION:
-                    return (<UserMentionComponent label={item.attrs.label} />)
+                    return (<UserMentionComponent key={id} label={item.attrs.label} />)
 
                 case EntityType.POPOVER:
                     return (
                         <HoverPopover
-                            key={index}
+                            key={id}
                             item={item}
                             fileId={item.source_id}
                         />
@@ -98,13 +82,13 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
 
                 case EntityType.ERROR:
                     return (
-                        <Alert key={index} severity="error">
+                        <Alert key={id} severity="error">
                             {item.text}
                         </Alert>
                     );
 
                 default:
-                    return message
+                    return
             }
         });
     }, [data]);

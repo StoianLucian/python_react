@@ -88,7 +88,7 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
                     );
 
                 default:
-                    return
+                    return message
             }
         });
     }, [data]);

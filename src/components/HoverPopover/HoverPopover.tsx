@@ -114,8 +114,8 @@ export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: 
     };
 
     ref.current++
-
-    const { data: files = "", isFetching } = usePreviewFile(fileId!)
+    // console.log(item)
+    const { data: files = "", isFetching } = usePreviewFile(item.source_id!)
 
     const pdfUrl = useMemo(() => {
         if (!files) return null;

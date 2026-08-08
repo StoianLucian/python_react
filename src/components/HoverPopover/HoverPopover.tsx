@@ -104,7 +104,7 @@ import PdfPreview from "../PdfPreview/PdfPreview";
 
 
 
-export default function HoverPopover({ item, fileId }: { item: Entity, fileId?: string }) {
+export default function HoverPopover({ item }: { item: Entity }) {
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     // const defaultLayout = useMemo(() => defaultLayoutPlugin(), []);
     const ref = useRef(0)

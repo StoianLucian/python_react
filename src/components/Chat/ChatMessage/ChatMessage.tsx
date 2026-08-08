@@ -76,7 +76,6 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
                         <HoverPopover
                             key={id}
                             item={item}
-                            fileId={item.source_id}
                         />
                     );
 

@@ -69,7 +69,7 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
                     return (<SkillMentionComponent key={id} label={item.attrs.label} />)
 
                 case EntityType.USER_MENTION:
-                    return (<UserMentionComponent key={id} label={item.attrs.label} />)
+                    return (<UserMentionComponent key={id} label={item.attrs.label || "<User>"} />)
 
                 case EntityType.POPOVER:
                     return (

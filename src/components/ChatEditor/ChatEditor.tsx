@@ -9,6 +9,7 @@ type ChatEditorProps<T> = {
 }
 
 export default function ChatEditor<T>({ onChange, items, displayKey }: ChatEditorProps<T>) {
+    "testing"
     const editor = useEditor({
         extensions: [
             StarterKit,

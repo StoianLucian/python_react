@@ -81,7 +81,7 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
 
                 case EntityType.ERROR:
                     return (
-                        <Alert key={id} severity="error">
+                        <Alert key={id} severity="error asd">
                             {item.text}
                         </Alert>
                     );

@@ -3,7 +3,7 @@ import LoadingRows from "../LoadingRows/LoadingRows";
 import { translations } from "../../../i18n";
 import FileDetails from "../FileDetails/FileDetails";
 
-import { type File } from '../../api/hooks/tanstack/files/useGetFIles'
+import { type File } from '../../api/hooks/tanstack/files/useGetFiles'
 
 type FileProps = {
     files: File[]

@@ -7,6 +7,7 @@ export const APP_PATHS = {
   SETTINGS: "/settings",
   NOT_FOUND: "*",
   CHAT: "/chat",
+  video: "/video",
   BOT: "/bot"
 }
 

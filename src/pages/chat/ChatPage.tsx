@@ -4,7 +4,7 @@ import Icon, { IconsEnum } from '../../components/Icons/Icon';
 import { translations } from '../../../i18n';
 import { useTranslation } from 'react-i18next';
 import AiChat from '../../components/Chat/AiChat';
-import ComponenTabs from '../../components/componenTabs/ComponenTabs';
+import ComponentTabs from '../../components/componentTabs/ComponentTabs';
 import FileManagement from '../../components/fileManagement/FileManagement';
 import ChatHistory from '../../components/Chat/ChatHistory/ChatHistory';
 
@@ -43,7 +43,7 @@ function ChatPage() {
         >
             <Box className="flex flex-row items-start">
                 <Collapse in={open} orientation="horizontal">
-                    <ComponenTabs items={items} />
+                    <ComponentTabs items={items} />
                 </Collapse>
             </Box>
             <Box className="w-0">

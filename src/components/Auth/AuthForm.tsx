@@ -8,7 +8,7 @@ type AuthFormProps = {
     btnText: string,
     isPending: boolean
 }
-function AuthFrom({ children, onSubmit, btnText, isPending }: AuthFormProps) {
+function AuthForm({ children, onSubmit, btnText, isPending }: AuthFormProps) {
 
     return (
         <Container maxWidth="lg" className='flex justify-center items-center'>
@@ -25,4 +25,4 @@ function AuthFrom({ children, onSubmit, btnText, isPending }: AuthFormProps) {
     )
 }
 
-export default AuthFrom
+export default AuthForm

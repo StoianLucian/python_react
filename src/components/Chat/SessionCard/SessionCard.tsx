@@ -1,6 +1,6 @@
 import { Stack, Button, Box } from "@mui/material";
 import type { ChatSession } from "../../../api/hooks/tanstack/chat/useGetSessions";
-import { useDeleteSession } from "../../../api/hooks/tanstack/chat/useDeleteSesion";
+import { useDeleteSession } from "../../../api/hooks/tanstack/chat/useDeleteSession";
 import Icon, { IconsEnum } from "../../Icons/Icon";
 import { useChatContext } from "../../../api/context/chatContext/ChatContext";
 import Popover from "../../Popover/Popover";

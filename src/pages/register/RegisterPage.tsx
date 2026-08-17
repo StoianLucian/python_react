@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form'
 import Stack from '@mui/material/Stack'
 import { useTranslation } from 'react-i18next'
 import { useRegister } from '../../api/hooks/tanstack/useRegister'
-import AuthFrom from '../../components/Auth/AuthFrom'
+import AuthForm from '../../components/Auth/AuthForm'
 import InputComponent, { InputComponentEnum } from '../../components/inputComponent/InputComponent'
 import NavigationLink from '../../components/navigationLink/NavigationLink'
 import { APP_PATHS } from '../../routing/routes'
@@ -44,7 +44,7 @@ function RegisterPage() {
     }
 
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t(translations.registerPage.register)} isPending={isPending}>
+        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t(translations.registerPage.register)} isPending={isPending}>
             <Controller
                 name="username"
                 control={control}
@@ -122,7 +122,7 @@ function RegisterPage() {
             <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <NavigationLink to={APP_PATHS.LOGIN} linkText={t(translations.registerPage.alreadyHaveAccount)} />
             </Stack>
-        </AuthFrom>
+        </AuthForm>
     )
 }
 

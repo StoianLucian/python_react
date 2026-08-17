@@ -9,7 +9,7 @@ type ComponentTabItem = {
 type ComponentTabsProps = {
     items: ComponentTabItem[]
 }
-export default function ComponenTabs({ items }: ComponentTabsProps) {
+export default function ComponentTabs({ items }: ComponentTabsProps) {
 
     const [currentTab, setCurrentTab] = useState(0)
 

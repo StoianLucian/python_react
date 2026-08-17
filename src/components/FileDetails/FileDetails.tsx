@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from '@mui/material'
 import useGetFile from '../../api/hooks/tanstack/files/useGetFile';
 import Icon, { IconsEnum } from '../Icons/Icon';
-import type { File } from '../../api/hooks/tanstack/files/useGetFIles';
+import type { File } from '../../api/hooks/tanstack/files/useGetFiles';
 
 type FileProps = {
     file: File

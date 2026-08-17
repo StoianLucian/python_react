@@ -18,6 +18,7 @@ export async function chat(
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify({
                 model: obj.model,
                 messages: obj.history

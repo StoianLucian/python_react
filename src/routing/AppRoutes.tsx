@@ -6,12 +6,14 @@ import LoginPage from '../pages/login/LoginPage'
 import RegisterPage from '../pages/register/RegisterPage'
 import ChatPage from '../pages/chat/ChatPage'
 import { useAuthContext } from '../api/context/authContext/AuthContext'
+import VideoPage from '../pages/video/VideoPage'
 
 const routes = [
     { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
     { path: APP_PATHS.REGISTER, element: <RegisterPage />, isPrivate: false },
     { path: APP_PATHS.HOME, element: <Dashboard />, isPrivate: true },
     { path: `${APP_PATHS.CHAT}/:id`, element: <ChatPage />, isPrivate: true },
+    { path: `${APP_PATHS.video}`, element: <VideoPage />, isPrivate: true },
     { path: "*", element: <>Page not found</>, isPrivate: false },
 ];
 

@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
-import AuthFrom from '../../components/Auth/AuthFrom'
+import AuthForm from '../../components/Auth/AuthForm'
 import InputComponent, { InputComponentEnum } from '../../components/inputComponent/InputComponent'
 import { useTranslation } from 'react-i18next';
 import { useLogin } from '../../api/hooks/tanstack/useLogin';
@@ -52,7 +52,7 @@ function LoginPage() {
     }
 
     return (
-        <AuthFrom onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} isPending={isPending} >
+        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} isPending={isPending} >
             <Controller
                 name="account"
                 control={control}
@@ -97,7 +97,7 @@ function LoginPage() {
                 />
                 <NavigationLink to={APP_PATHS.REGISTER} linkText={t(translations.loginPage.registerNewAccount)} />
             </Stack>
-        </AuthFrom>
+        </AuthForm>
     )
 }
 

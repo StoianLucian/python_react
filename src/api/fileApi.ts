@@ -1,5 +1,5 @@
 import { request, ApiMethod } from "./axiosConfig";
-import type { File as FileType } from "./hooks/tanstack/files/useGetFIles";
+import type { File as FileType } from "./hooks/tanstack/files/useGetFiles";
 
 const FILE_ROUTES_ENUM = {
     FILES: "/files",

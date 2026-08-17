@@ -22,6 +22,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
             ) : (
                 chatItems.map((chatItem, i) => {
                     const isUser = chatItem.role === RoleEnum.USER
+                    const isStreaming = chatPending && !isUser && i === chatItems.length - 1
 
                     const test = { type: "text", text: chatItem.thinking}
 
@@ -52,6 +53,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                             <ChatMessage
                                 message={chatItem.content}
                                 alignRight={isUser}
+                                isStreaming={isStreaming}
                             />
                             <Box className="flex flex-wrap gap-2 mb-2">
                                 {(chatItem?.images || []).map((img, idx) => {

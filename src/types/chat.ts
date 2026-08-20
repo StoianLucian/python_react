@@ -5,6 +5,7 @@ export type Entity = {
     action?: string
     source_id?: string
     page_number?: string
+    url?: string
 }
 
 export const EntityType = {
@@ -12,6 +13,7 @@ export const EntityType = {
     BUTTON: "button",
     ERROR: "error",
     POPOVER: "popover",
+    URL: "url",
     SKILL_MENTION: "skill-mention",
     USER_MENTION: 'user-mention'
 }

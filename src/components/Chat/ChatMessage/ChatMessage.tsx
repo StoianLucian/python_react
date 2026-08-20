@@ -2,18 +2,20 @@ import { Alert, Box, Button } from '@mui/material'
 import HoverPopover from '../../HoverPopover/HoverPopover'
 import { EntityType } from '../../../types/chat';
 import { jsonrepair } from "jsonrepair";
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { SkillMentionComponent } from '../../ChatEditor/components/SkillMention';
 import { UserMentionComponent } from '../../ChatEditor/components/UserMention';
+import { UrlComponent } from '../../ChatEditor/components/Url';
 
 
 type ChatMessageProps = {
     message: string;
     alignRight: boolean;
+    isStreaming?: boolean;
 }
 
 
-function ChatMessage({ message, alignRight }: ChatMessageProps) {
+function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessageProps) {
 
     function safeParseJson(input: string) {
         try {
@@ -37,11 +39,24 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
         return safeParseJson(cleaned);
     }
 
-    const data = useMemo(() => {
+    // Last content we could parse successfully. While streaming, an incomplete
+    // chunk may fail to parse — instead of flashing the raw JSON as text, we keep
+    // rendering this until the newly streamed JSON becomes valid.
+    const lastValidData = useRef<any[] | null>(null);
+
+    const data = useMemo<any[]>(() => {
         const cleaned = parseLLMJson(message);
 
         if (cleaned) {
-            return Array.isArray(cleaned) ? cleaned : [cleaned];
+            const next = Array.isArray(cleaned) ? cleaned : [cleaned];
+            lastValidData.current = next;
+            return next;
+        }
+
+        // Couldn't parse. While streaming, keep the last valid render (or nothing
+        // yet) rather than dumping the half-finished JSON as text.
+        if (isStreaming) {
+            return lastValidData.current ?? [];
         }
 
         return [
@@ -50,38 +65,37 @@ function ChatMessage({ message, alignRight }: ChatMessageProps) {
                 text: message,
             },
         ];
-    }, [message]);
+    }, [message, isStreaming]);
 
     const renderedMessage = useMemo(() => {
-        return data.map((item) => {
-            const id = crypto.randomUUID()
+        return data.map((item, index) => {
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p key={id}>{item.text}</p>;
+                    return <p key={index}>{item.text}</p>;
 
                 case EntityType.BUTTON:
                     return (
-                        <Button key={id}>
+                        <Button key={index}>
                             {item.text}
                         </Button>
                     );
                 case EntityType.SKILL_MENTION:
-                    return (<SkillMentionComponent key={id} label={item.attrs.label} />)
+                    return (<SkillMentionComponent key={index} label={item?.attrs?.label} />)
 
                 case EntityType.USER_MENTION:
-                    return (<UserMentionComponent key={id} label={item.attrs.label} />)
+                    return (<UserMentionComponent key={index} label={item?.attrs?.label} />)
+
+                case EntityType.URL:
+                    return (<UrlComponent key={index} text={item.text} url={item.url} />)
 
                 case EntityType.POPOVER:
-                    return (
-                        <HoverPopover
-                            key={id}
-                            item={item}
-                        />
-                    );
+
+                    return <HoverPopover key={index} item={item} />
+
 
                 case EntityType.ERROR:
                     return (
-                        <Alert key={id} severity="error">
+                        <Alert key={index} severity="error">
                             {item.text}
                         </Alert>
                     );

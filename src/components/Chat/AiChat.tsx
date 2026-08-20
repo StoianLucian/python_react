@@ -67,6 +67,12 @@ export default function AiChat() {
         }
     }
 
+    function closeMention() {
+        setVirtualAnchor(null);
+        setMentionType(null);
+        focusInput();
+    }
+
 
     useEffect(() => {
         if (!file) {
@@ -165,6 +171,32 @@ export default function AiChat() {
         };
     }, [editor])
 
+    // While the mention popover is open, ArrowUp moves focus from the editor
+    // into the list (the popover is rendered above the input).
+    useEffect(() => {
+        if (!editor) return;
+
+        const dom = editor.view.dom;
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (!virtualAnchor) return;
+
+            if (event.key === "ArrowUp") {
+                event.preventDefault();
+                (firstItemRef.current as HTMLElement | null)?.focus();
+            } else if (event.key === "Escape") {
+                event.preventDefault();
+                closeMention();
+            }
+        };
+
+        dom.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            dom.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [editor, virtualAnchor])
+
 
 
     return (
@@ -205,6 +237,7 @@ export default function AiChat() {
                         items={items}
                         onSelect={(item) => handleMention(item)}
                         firstItemRef={firstItemRef}
+                        onEscape={closeMention}
                     />
                     <EditorContent ref={editorRef} className="w-full" editor={editor} />
                     <Button onClick={() => handleButton(chatPending)}>

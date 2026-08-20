@@ -2,6 +2,7 @@ import { useEditor, type Content } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { userMention } from "../../components/ChatEditor/components/UserMention";
 import { skillMention } from "../../components/ChatEditor/components/SkillMention";
+import { url } from "../../components/ChatEditor/components/Url";
 
 export function useChatEditor() {
 
@@ -9,7 +10,8 @@ export function useChatEditor() {
         extensions: [
             StarterKit,
             userMention,
-            skillMention
+            skillMention,
+            url
         ],
 
         content: "",

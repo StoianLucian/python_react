@@ -39,9 +39,6 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
         return safeParseJson(cleaned);
     }
 
-    // Last content we could parse successfully. While streaming, an incomplete
-    // chunk may fail to parse — instead of flashing the raw JSON as text, we keep
-    // rendering this until the newly streamed JSON becomes valid.
     const lastValidData = useRef<any[] | null>(null);
 
     const data = useMemo<any[]>(() => {
@@ -53,8 +50,6 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
             return next;
         }
 
-        // Couldn't parse. While streaming, keep the last valid render (or nothing
-        // yet) rather than dumping the half-finished JSON as text.
         if (isStreaming) {
             return lastValidData.current ?? [];
         }

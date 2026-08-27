@@ -8,7 +8,8 @@ export const APP_PATHS = {
   NOT_FOUND: "*",
   CHAT: "/chat",
   video: "/video",
-  BOT: "/bot"
+  BOT: "/bot",
+  LOOKUP: "/lookup"
 }
 
 export const PATHS = {

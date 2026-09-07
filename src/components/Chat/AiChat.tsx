@@ -13,6 +13,7 @@ import MentionContainer from '../MentionContainer/MentionContainer'
 import { useChatEditor } from '../../api/hooks/useChatEditor'
 import { EditorContent } from '@tiptap/react'
 import { MENTION_TYPES, useMentionItems } from '../../api/hooks/useMentionItems'
+import { DEFAULT_PROVIDER, LLM_PROVIDERS, type LlmProvider } from '../../enums/providers'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -28,6 +29,7 @@ export default function AiChat() {
     const { items, setSearch, setMentionType, mentionType } = useMentionItems()
     const { changeSession } = useChatContext()
     const [model, setModel] = useState<string>("")
+    const [provider, setProvider] = useState<LlmProvider>(DEFAULT_PROVIDER)
 
     const [virtualAnchor, setVirtualAnchor] = useState<any>(null)
     const editorRef = useRef<HTMLDivElement>(null);
@@ -45,9 +47,9 @@ export default function AiChat() {
         // setFile,
         file,
         loading
-    } = useChatSession(model)
+    } = useChatSession(model, provider)
 
-    const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel)
+    const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel, provider)
 
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -201,9 +203,19 @@ export default function AiChat() {
 
     return (
         <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
-            <StatusDot
-                model={model}
-            />
+            <Box className="flex items-center gap-4">
+                <SelectComponent
+                    onChange={setProvider}
+                    value={provider}
+                    options={LLM_PROVIDERS.map((p) => ({ id: p.id, name: p.name }))}
+                    isLoading={false}
+                />
+                <StatusDot
+                    model={model}
+                    provider={provider}
+                />
+
+            </Box>
             <ChatContainer
                 chatItems={chatResponse}
                 chatPending={loading}

@@ -63,6 +63,7 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
     }, [message, isStreaming]);
 
     const renderedMessage = useMemo(() => {
+
         return data.map((item, index) => {
             switch (item.type) {
                 case EntityType.TEXT:

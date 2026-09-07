@@ -2,12 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getAvailableModels } from '../../../chatApi';
 import { useEffect, type Dispatch, type SetStateAction } from 'react';
 import { queryKeys } from '../../../../enums/queryKeys';
+import type { LlmProvider } from '../../../../enums/providers';
 
 
-export function useChatModels(setModel: Dispatch<SetStateAction<string>>) {
+export function useChatModels(setModel: Dispatch<SetStateAction<string>>, provider: LlmProvider) {
     const query = useQuery({
-        queryFn: () => getAvailableModels(),
-        queryKey: queryKeys.models,
+        queryFn: () => getAvailableModels(provider),
+        queryKey: queryKeys.models(provider),
     });
 
     useEffect(() => {

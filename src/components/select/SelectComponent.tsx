@@ -6,15 +6,15 @@ type Option = {
     name: string;
 };
 
-type SelectProps = {
+type SelectProps<V extends string = string> = {
     options: Option[];
-    onChange: Dispatch<SetStateAction<string>>;
-    value: string | number;
+    onChange: Dispatch<SetStateAction<V>>;
+    value: V;
     itemKey?: string;
     isLoading: boolean
 };
 
-export default function SelectComponent({ options, onChange, value, itemKey = "id", isLoading }: SelectProps) {
+export default function SelectComponent<V extends string = string>({ options, onChange, value, itemKey = "id", isLoading }: SelectProps<V>) {
 
     return (
         <Box>
@@ -26,7 +26,7 @@ export default function SelectComponent({ options, onChange, value, itemKey = "i
                     className="w-full"
                     value={value}
                     onChange={(e) => {
-                        const newValue = e.target.value as string;
+                        const newValue = e.target.value as V;
                         onChange(newValue);
                     }}
                 >

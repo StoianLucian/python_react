@@ -2,18 +2,20 @@ import { Box, CircularProgress, Typography } from '@mui/material'
 import { BsCircleFill } from 'react-icons/bs'
 import { usePingModel } from '../../api/hooks/tanstack/chat/usePingChat';
 import { useEffect, useState } from 'react';
+import type { LlmProvider } from '../../enums/providers';
 
 
 type StatusDotProps = {
     model: string;
+    provider: LlmProvider;
 }
-export default function StatusDot({ model }: StatusDotProps) {
+export default function StatusDot({ model, provider }: StatusDotProps) {
     const [status, setStatus] = useState(false);
 
     useEffect(() => {
         if (model)
-            pingModel(model)
-    }, [model])
+            pingModel({ model, provider })
+    }, [model, provider])
 
     const { mutateAsync: pingModel, isSuccess } = usePingModel(setStatus);
     const color = status ? "green" : "red"

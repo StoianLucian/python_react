@@ -4,6 +4,7 @@ import { useCreateSession } from "./useCreateSession"
 import { useParams } from "react-router-dom"
 import { useStoreMessage } from "./useCreateMessage"
 import { useChatContext, type ChatResponse } from "../../../context/chatContext/ChatContext"
+import type { LlmProvider } from "../../../../enums/providers"
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -12,7 +13,7 @@ export const RoleEnum = {
 
 export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 
-export function useChatSession(model: string) {
+export function useChatSession(model: string, provider: LlmProvider) {
     const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
     const [file, setFile] = useState<File | null>(null)
 
@@ -142,6 +143,7 @@ export function useChatSession(model: string) {
 
         const history = {
             model,
+            provider,
             history: updatedHistory.map((message) => ({
                 role: message.role,
                 content: message.content,

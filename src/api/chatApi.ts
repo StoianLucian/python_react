@@ -1,5 +1,6 @@
 import { ApiMethod, baseURL, request } from "./axiosConfig";
 import type { History } from "../components/Chat/AiChat";
+import type { LlmProvider } from "../enums/providers";
 
 export const CHAT_ROUTES_ENUM = {
     CHAT: "/chat",
@@ -8,7 +9,7 @@ export const CHAT_ROUTES_ENUM = {
 }
 
 export async function chat(
-    obj: { model: string, history: History[] },
+    obj: { model: string, provider: LlmProvider, history: History[] },
     handleChunk: (chunk: string, isResponse: boolean, isThinking?: boolean, thinkingTime?: number) => void,
     signal: AbortSignal
 ) {
@@ -21,6 +22,7 @@ export async function chat(
             credentials: "include",
             body: JSON.stringify({
                 model: obj.model,
+                provider: obj.provider,
                 messages: obj.history
             }),
             signal: signal
@@ -89,10 +91,10 @@ export async function chat(
     }
 }
 
-export async function pingModel(model: string) {
-    return request({ method: ApiMethod.POST, url: CHAT_ROUTES_ENUM.CHAT_PING, data: { model } })
+export async function pingModel(model: string, provider: LlmProvider) {
+    return request({ method: ApiMethod.POST, url: CHAT_ROUTES_ENUM.CHAT_PING, data: { model, provider } })
 }
 
-export async function getAvailableModels() {
-    return request({ method: ApiMethod.GET, url: CHAT_ROUTES_ENUM.CHAT_MODELS })
+export async function getAvailableModels(provider: LlmProvider) {
+    return request({ method: ApiMethod.GET, url: `${CHAT_ROUTES_ENUM.CHAT_MODELS}?provider=${encodeURIComponent(provider)}` })
 }

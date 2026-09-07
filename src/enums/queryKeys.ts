@@ -10,7 +10,7 @@ const baseQueryKeys = {
 export const queryKeys = {
     sessions: [baseQueryKeys.sessions],
     session_id: (id: string) => [baseQueryKeys.sessions, id],
-    models: [baseQueryKeys.models],
+    models: (provider: string) => [baseQueryKeys.models, provider],
     files: [baseQueryKeys.files],
     file: (id: string) => [baseQueryKeys.files, id],
     users: (search: string) => [baseQueryKeys.users, search],

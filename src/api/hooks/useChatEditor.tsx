@@ -3,6 +3,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { userMention } from "../../components/ChatEditor/components/UserMention";
 import { skillMention } from "../../components/ChatEditor/components/SkillMention";
 import { url } from "../../components/ChatEditor/components/Url";
+import { image } from "../../components/ChatEditor/components/Image";
 
 export function useChatEditor() {
 
@@ -11,7 +12,8 @@ export function useChatEditor() {
             StarterKit,
             userMention,
             skillMention,
-            url
+            url,
+            image
         ],
 
         content: "",

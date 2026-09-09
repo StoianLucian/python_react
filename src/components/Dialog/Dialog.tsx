@@ -7,6 +7,8 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { translations } from '../../../i18n';
 
 type DialogProps = {
     open: boolean;
@@ -27,12 +29,13 @@ export default function Dialog({
     onSubmit,
     title,
     content,
-    cancelLabel = 'Cancel',
-    submitLabel = 'Confirm',
+    cancelLabel,
+    submitLabel,
     submitColor = 'primary',
     isPending = false,
     maxWidth = 'xs',
 }: DialogProps) {
+    const { t } = useTranslation();
     return (
         <MuiDialog
             open={open}
@@ -46,7 +49,7 @@ export default function Dialog({
             </DialogContent>
             <DialogActions className="px-8 pb-6 gap-2">
                 <Button onClick={onClose} disabled={isPending}>
-                    {cancelLabel}
+                    {cancelLabel ?? t(translations.common.cancel)}
                 </Button>
                 <Button
                     onClick={onSubmit}
@@ -54,7 +57,7 @@ export default function Dialog({
                     variant="contained"
                     disabled={isPending}
                 >
-                    {isPending ? <CircularProgress size={20} /> : submitLabel}
+                    {isPending ? <CircularProgress size={20} /> : (submitLabel ?? t(translations.common.confirm))}
                 </Button>
             </DialogActions>
         </MuiDialog>

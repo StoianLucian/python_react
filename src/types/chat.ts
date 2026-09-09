@@ -15,5 +15,7 @@ export const EntityType = {
     POPOVER: "popover",
     URL: "url",
     SKILL_MENTION: "skill-mention",
-    USER_MENTION: 'user-mention'
+    USER_MENTION: 'user-mention',
+    HARD_BREAK: "hardBreak",
+    IMAGE: "image"
 }

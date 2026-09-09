@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_PATHS } from '../../../routing/routes';
 import { useAuthContext } from '../../context/authContext/AuthContext';
+import { translations } from '../../../../i18n';
 
 export type LoginResponse = {
     id: string
@@ -26,17 +27,17 @@ export function useLogout() {
             if (errorCode) {
                 toast(t(`errors.${errorCode}`), { type: 'error' });
             } else {
-                toast(t('errors.unknownError'), { type: 'error' });
+                toast(t(translations.errors.unknownError), { type: 'error' });
             }
         },
         onSuccess(data) {
             if (data?.status === 200) {
-                toast(t('logout.success'), { type: 'success' });
+                toast(t(translations.success.loggedOut), { type: 'success' });
                 setIsAuthenticated(false);
                 setUser(undefined);
                 navigate(APP_PATHS.LOGIN);
             } else {
-                toast(t('logout.error'), { type: 'error' });
+                toast(t(translations.errors.logoutFailed), { type: 'error' });
             }
 
         }

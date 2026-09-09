@@ -20,12 +20,12 @@ export function useUploadFile() {
             if (errorCode) {
                 toast(t(`errors.${errorCode}`), { type: 'error' });
             } else {
-                toast(t('errors.unknownError'), { type: 'error' });
+                toast(t(translations.errors.unknownError), { type: 'error' });
             }
         },
         onSuccess() {
             queryClient.invalidateQueries({ queryKey: queryKeys.files });
-            toast(translations.filesPage.fileUploaded, { type: "success" })
+            toast(t(translations.filesPage.fileUploaded), { type: "success" })
         }
     });
 }

@@ -9,12 +9,15 @@ import InputComponent, { InputComponentVariantsEnum } from "../../inputComponent
 import { useEffect, useRef, useState } from "react";
 import { useSetSessionTitle } from "../../../api/hooks/tanstack/chat/useSetSessionTitle";
 import { keyboardShortcuts } from "../../inputComponent/helper";
+import { useTranslation } from "react-i18next";
+import { translations } from "../../../../i18n";
 
 type SessionCardProps = {
     session: ChatSession
 }
 
 export default function SessionCard({ session }: SessionCardProps) {
+    const { t } = useTranslation();
     const { title, id } = session
     const { mutateAsync: deleteSession } = useDeleteSession(id)
     const { mutateAsync: changeSessionTitle } = useSetSessionTitle();
@@ -69,7 +72,7 @@ export default function SessionCard({ session }: SessionCardProps) {
                         <Popover trigger={<Icon iconName={IconsEnum.DOTS} />}
                             items={[
                                 {
-                                    label: "Delete",
+                                    label: t(translations.aiChat.deleteSession),
                                     onClick: async () => { await deleteSession(id) }
                                 }
                             ]}

@@ -7,17 +7,30 @@ import ro from './locales/ro.json';
 
 
 export const TranslationKey = {
+    COMMON: "common",
     DASHBOARD: "dashboard",
     PROFILE_MENU: "profileMenu",
     LOGIN_PAGE: "loginPage",
     REGISTER_PAGE: "registerPage",
     FILES_PAGE: "filesPage",
     AI_CHAT: "aiChat",
+    LOOKUP_PAGE: "lookupPage",
+    HOME_PAGE: "homePage",
+    VIDEO_PAGE: "videoPage",
     ERRORS: "errors",
     SUCCESS: "success",
 }
 
 export const translations = {
+    common: {
+        add: `${TranslationKey.COMMON}.add`,
+        cancel: `${TranslationKey.COMMON}.cancel`,
+        confirm: `${TranslationKey.COMMON}.confirm`,
+        close: `${TranslationKey.COMMON}.close`,
+        loading: `${TranslationKey.COMMON}.loading`,
+        delete: `${TranslationKey.COMMON}.delete`,
+    },
+
     dashboard: {
         profile: `${TranslationKey.DASHBOARD}.profile`,
         settings: `${TranslationKey.DASHBOARD}.settings`,
@@ -55,23 +68,67 @@ export const translations = {
         dragFile: `${TranslationKey.FILES_PAGE}.dragFile`,
         files: `${TranslationKey.FILES_PAGE}.files`,
         noAvailableFiles: `${TranslationKey.FILES_PAGE}.noAvailableFiles`,
-        fileUploaded: `${TranslationKey.FILES_PAGE}.fileUploaded`
+        fileUploaded: `${TranslationKey.FILES_PAGE}.fileUploaded`,
+        recentFiles: `${TranslationKey.FILES_PAGE}.recentFiles`,
+        clearFiles: `${TranslationKey.FILES_PAGE}.clearFiles`,
+        clearAllTitle: `${TranslationKey.FILES_PAGE}.clearAllTitle`,
+        clearAllConfirm: `${TranslationKey.FILES_PAGE}.clearAllConfirm`,
+        pdfPreview: `${TranslationKey.FILES_PAGE}.pdfPreview`
     },
     aiChat: {
         thinking: `${TranslationKey.AI_CHAT}.thinking`,
         thinkingTime: `${TranslationKey.AI_CHAT}.thinkingTime`,
         chatHistory: `${TranslationKey.AI_CHAT}.chatHistory`,
-        newChat: `${TranslationKey.AI_CHAT}.newChat`
+        newChat: `${TranslationKey.AI_CHAT}.newChat`,
+        thinkingTooltip: `${TranslationKey.AI_CHAT}.thinkingTooltip`,
+        thinkingNotSupported: `${TranslationKey.AI_CHAT}.thinkingNotSupported`,
+        vision: `${TranslationKey.AI_CHAT}.vision`,
+        attachImage: `${TranslationKey.AI_CHAT}.attachImage`,
+        visionNotSupported: `${TranslationKey.AI_CHAT}.visionNotSupported`,
+        selectModel: `${TranslationKey.AI_CHAT}.selectModel`,
+        deleteSession: `${TranslationKey.AI_CHAT}.deleteSession`,
+        addSkill: `${TranslationKey.AI_CHAT}.addSkill`,
+        skillName: `${TranslationKey.AI_CHAT}.skillName`,
+        skillNameRequired: `${TranslationKey.AI_CHAT}.skillNameRequired`,
+        slug: `${TranslationKey.AI_CHAT}.slug`,
+        slugRequired: `${TranslationKey.AI_CHAT}.slugRequired`,
+        slugHelper: `${TranslationKey.AI_CHAT}.slugHelper`,
+        noItemsFound: `${TranslationKey.AI_CHAT}.noItemsFound`,
+        statusActive: `${TranslationKey.AI_CHAT}.statusActive`,
+        statusInactive: `${TranslationKey.AI_CHAT}.statusInactive`,
+        urlUnsafe: `${TranslationKey.AI_CHAT}.urlUnsafe`,
+        urlReachable: `${TranslationKey.AI_CHAT}.urlReachable`,
+        urlUnreachable: `${TranslationKey.AI_CHAT}.urlUnreachable`,
+        imageAttachment: `${TranslationKey.AI_CHAT}.imageAttachment`
+    },
+    lookupPage: {
+        title: `${TranslationKey.LOOKUP_PAGE}.title`,
+        placeholder: `${TranslationKey.LOOKUP_PAGE}.placeholder`,
+        submit: `${TranslationKey.LOOKUP_PAGE}.submit`,
+        loading: `${TranslationKey.LOOKUP_PAGE}.loading`,
+        error: `${TranslationKey.LOOKUP_PAGE}.error`,
+    },
+    homePage: {
+        title: `${TranslationKey.HOME_PAGE}.title`,
+    },
+    videoPage: {
+        title: `${TranslationKey.VIDEO_PAGE}.title`,
     },
     errors: {
         isRequired: `${TranslationKey.ERRORS}.isRequired`,
         invalidEmail: `${TranslationKey.ERRORS}.invalidEmail`,
         passwordsDoNotMatch: `${TranslationKey.ERRORS}.passwordsDoNotMatch`,
         userNotFound: `${TranslationKey.ERRORS}.user_not_found`,
+        unknownError: `${TranslationKey.ERRORS}.unknownError`,
+        logoutFailed: `${TranslationKey.ERRORS}.logoutFailed`,
+        skillAddFailed: `${TranslationKey.ERRORS}.skillAddFailed`,
+        registrationFailed: `${TranslationKey.ERRORS}.registrationFailed`,
     },
 
     success: {
         accountCreated: `${TranslationKey.SUCCESS}.accountCreated`,
+        skillAdded: `${TranslationKey.SUCCESS}.skillAdded`,
+        loggedOut: `${TranslationKey.SUCCESS}.loggedOut`,
     },
 } as const;
 

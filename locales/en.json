@@ -1,4 +1,12 @@
 {
+  "common": {
+    "add": "Add",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "loading": "Loading...",
+    "delete": "Delete"
+  },
   "dashboard": {
     "profile": "Profile",
     "settings": "Settings",
@@ -11,7 +19,9 @@
     "settings": "Settings",
     "logout": "Logout",
     "ro": "Romanian",
-    "en": "English"
+    "en": "English",
+    "notLoggedIn": "not logged into account",
+    "expandAria": "expand"
   },
   "loginPage": {
     "login": "Login",
@@ -35,24 +45,71 @@
     "dragFile": "Drag file",
     "files": "Files",
     "noAvailableFiles": "No files available",
-    "fileUploaded": "File uploaded"
+    "fileUploaded": "File uploaded",
+    "recentFiles": "Recent files",
+    "clearFiles": "Clear files",
+    "clearAllTitle": "Clear all files?",
+    "clearAllConfirm": "This will permanently delete all uploaded files. This action cannot be undone.",
+    "pdfPreview": "PDF Preview"
   },
 
   "aiChat": {
     "thinking": "Thinking...",
     "thinkingTime": "The AI thought for {{value}} seconds",
     "chatHistory": "Chat history",
-    "newChat": "New chat"
+    "newChat": "New chat",
+    "thinkingTooltip": "Thinking",
+    "thinkingNotSupported": "This model doesn't support thinking",
+    "vision": "Vision (can process images)",
+    "attachImage": "Attach image",
+    "visionNotSupported": "This model can't process images",
+    "selectModel": "Select model",
+    "deleteSession": "Delete",
+    "addSkill": "Add skill",
+    "skillName": "Skill name",
+    "skillNameRequired": "Skill name is required",
+    "slug": "Slug",
+    "slugRequired": "Slug is required",
+    "slugHelper": "Auto-filled from the name; edit to override.",
+    "noItemsFound": "No items found",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
+    "urlUnsafe": "Unsafe or invalid URL",
+    "urlReachable": "URL reachable",
+    "urlUnreachable": "URL unreachable",
+    "imageAttachment": "attachment"
+  },
+
+  "lookupPage": {
+    "title": "Food lookup",
+    "placeholder": "e.g. chicken breast",
+    "submit": "Look up",
+    "loading": "Looking up…",
+    "error": "Something went wrong. Please try again."
+  },
+
+  "homePage": {
+    "title": "Home"
+  },
+
+  "videoPage": {
+    "title": "Video"
   },
 
   "errors": {
     "isRequired": "{{field}} is required",
     "invalidEmail": "Invalid email",
     "passwordsDoNotMatch": "Passwords do not match",
-    "user_not_found": "User not found"
+    "user_not_found": "User not found",
+    "unknownError": "Something went wrong",
+    "logoutFailed": "Logout failed",
+    "skillAddFailed": "Could not add skill",
+    "registrationFailed": "Registration failed"
   },
 
   "success": {
-    "accountCreated": "Account created successfully"
+    "accountCreated": "Account created successfully",
+    "skillAdded": "Skill added",
+    "loggedOut": "Logged out successfully"
   }
 }

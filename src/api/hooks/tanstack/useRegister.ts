@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { APP_PATHS } from '../../../routing/routes';
 import type { RegisterCredentials } from '../../../pages/register/RegisterPage';
+import { translations } from '../../../../i18n';
 
 
 export function useRegister() {
@@ -17,7 +18,7 @@ export function useRegister() {
         },
         onError: (error) => {
             console.log(error)
-            toast("test")
+            toast(t(translations.errors.registrationFailed), { type: "error" })
         },
         onSuccess: (success) => {
             console.log(success)

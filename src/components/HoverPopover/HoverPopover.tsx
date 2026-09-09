@@ -1,8 +1,10 @@
 import { Button, Popover } from "@mui/material";
 import { useState, useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import usePreviewFile from "../../api/hooks/tanstack/files/usePreviewFile";
 import type { Entity } from "../../types/chat";
 import PdfPreview from "../PdfPreview/PdfPreview";
+import { translations } from "../../../i18n";
 
 // import { Document, Page } from "react-pdf";
 
@@ -105,6 +107,7 @@ import PdfPreview from "../PdfPreview/PdfPreview";
 
 
 export default function HoverPopover({ item }: { item: Entity }) {
+    const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     // const defaultLayout = useMemo(() => defaultLayoutPlugin(), []);
     const ref = useRef(0)
@@ -151,7 +154,7 @@ export default function HoverPopover({ item }: { item: Entity }) {
                     setAnchorEl(null);
                 }
             }}>
-                <Button onClick={() => { setAnchorEl(null) }}>X</Button>
+                <Button onClick={() => { setAnchorEl(null) }} aria-label={t(translations.common.close)}>X</Button>
 
                 {/* <ReactPdf pdfUrl={pdfUrl} loading={isFetching} /> */}
 

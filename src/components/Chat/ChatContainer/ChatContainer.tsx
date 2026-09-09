@@ -16,7 +16,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
     const { t } = useTranslation()
 
     return (
-        <Box className="h-[80vh] overflow-y-auto bg-[#FAF9F6] ring-1 ring-[#ECEAE4] rounded-2xl my-4 p-6 flex flex-col gap-4">
+        <Box className="flex-1 min-h-0 overflow-y-auto bg-[#FAF9F6] ring-1 ring-[#ECEAE4] rounded-2xl my-4 p-6 flex flex-col gap-4">
             {sessionFetching ? (
                 <CircularProgress />
             ) : (
@@ -55,25 +55,6 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                                 alignRight={isUser}
                                 isStreaming={isStreaming}
                             />
-                            <Box className="flex flex-wrap gap-2 mb-2">
-                                {(chatItem?.images || []).map((img, idx) => {
-                                    const imageSrc = `data:image/png;base64,${img}`;
-
-                                    return (
-                                        <a
-                                            key={idx}
-                                            href={imageSrc}
-                                            download={`attachment-${idx}.png`}
-                                        >
-                                            <img
-                                                src={imageSrc}
-                                                alt="attachment"
-                                                className="max-w-50 max-h-50 rounded-lg border cursor-pointer"
-                                            />
-                                        </a>
-                                    );
-                                })}
-                            </Box>
                         </Stack>
                     )
                 })

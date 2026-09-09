@@ -1,6 +1,9 @@
 import { Box, CircularProgress } from "@mui/material";
+import { useTranslation } from "react-i18next";
+import { translations } from "../../../i18n";
 
 export default function PdfPreview({ pdfUrl, pageNumber }: { pdfUrl?: string | null, loading: boolean, pageNumber?: string }) {
+    const { t } = useTranslation();
 
     function setParams(
         paramMappings: Record<string, any>,
@@ -31,7 +34,7 @@ export default function PdfPreview({ pdfUrl, pageNumber }: { pdfUrl?: string | n
                 <iframe
                     className="w-[99vw] h-[90vh] rounded"
                     src={`${pdfUrl}#${setParams(paramMappings)}`}
-                    title="PDF Preview"
+                    title={t(translations.filesPage.pdfPreview)}
                 />
             ) : <CircularProgress />}
         </Box>

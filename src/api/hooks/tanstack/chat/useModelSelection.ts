@@ -17,6 +17,7 @@ export function useModelSelection() {
     const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel, provider);
 
     const supportsThinking = !!options.find((o) => o.id === model)?.thinking;
+    const supportsVision = !!options.find((o) => o.id === model)?.vision;
 
     useEffect(() => {
         if (!supportsThinking && thinking) {
@@ -34,5 +35,6 @@ export function useModelSelection() {
         options,
         loadingOptions,
         supportsThinking,
+        supportsVision,
     };
 }

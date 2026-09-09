@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useLogout } from "../../api/hooks/tanstack/useLogout";
 import ChevronDownIcon from '@mui/icons-material/ExpandMore';
 import { useAuthContext } from "../../api/context/authContext/AuthContext";
+import { translations } from "../../../i18n";
 
 function ProfileMenu() {
     const { t, i18n } = useTranslation();
@@ -28,8 +29,8 @@ function ProfileMenu() {
 
     return (
         <div style={{ position: "absolute", top: "0", right: "0", padding: "1rem" }}>
-            <Button onClick={handleClick} aria-label="expand">
-                {user?.username || "not logged into account"}
+            <Button onClick={handleClick} aria-label={t(translations.profileMenu.expandAria)}>
+                {user?.username || t(translations.profileMenu.notLoggedIn)}
                 <div style={{ "translate": 102 }}></div>
                 <ChevronDownIcon sx={{
                     transform: !!anchorEl ? 'rotate(180deg)' : 'rotate(0deg)',

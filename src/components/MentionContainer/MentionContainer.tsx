@@ -1,4 +1,6 @@
 import { List, ListItemButton, ListItemText, Paper, Popper } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { translations } from '../../../i18n';
 
 type MentionItem = {
     id: string;
@@ -15,6 +17,7 @@ type MentionContainerProps = {
 };
 
 function MentionContainer({ anchor, items, onSelect, firstItemRef, onEscape }: MentionContainerProps) {
+    const { t } = useTranslation();
 
     // Move focus between items with the arrow keys once the list is focused.
     // Enter/Space selection is handled by ListItemButton (a MUI ButtonBase).
@@ -59,7 +62,7 @@ function MentionContainer({ anchor, items, onSelect, firstItemRef, onEscape }: M
                 <List onKeyDown={handleKeyDown} className='max-h-80 min-w-50 overflow-auto h-min-30'>
                     {items?.length === 0 ? (
                         <ListItemButton disabled>
-                            <ListItemText primary="No items found" />
+                            <ListItemText primary={t(translations.aiChat.noItemsFound)} />
                         </ListItemButton>
                     ) : (
                         items?.map((item, index) => (

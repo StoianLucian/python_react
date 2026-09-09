@@ -11,7 +11,8 @@ export const CHAT_ROUTES_ENUM = {
 export type ChatModel = {
     id: string;
     name: string;
-    thinking?: boolean;
+    thinking: boolean;
+    vision: boolean;
 }
 
 export async function chat(

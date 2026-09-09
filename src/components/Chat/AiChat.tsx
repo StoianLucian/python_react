@@ -1,10 +1,13 @@
-import { Box, Button, Chip, Grid, Switch, Tooltip, } from '@mui/material'
+import { Box, Button, Grid, IconButton, Switch, Tooltip, } from '@mui/material'
+import PsychologyIcon from '@mui/icons-material/Psychology'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import AttachFileIcon from '@mui/icons-material/AttachFile'
 import { useEffect, useRef, useState } from 'react'
-import { toggleIcon } from '../../pages/chat/helper'
+import StopIcon from '@mui/icons-material/Stop'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
 import AddSkillDialog from '../AddSkill/AddSkillDialog'
-import Icon from '../Icons/Icon'
+import Icon, { IconsEnum } from '../Icons/Icon'
 import { useModelSelection } from '../../api/hooks/tanstack/chat/useModelSelection'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
 import { useChatContext, type ChatResponse } from '../../api/context/chatContext/ChatContext'
@@ -15,6 +18,8 @@ import { useChatEditor } from '../../api/hooks/useChatEditor'
 import { EditorContent } from '@tiptap/react'
 import { MENTION_TYPES, useMentionItems } from '../../api/hooks/useMentionItems'
 import { LLM_PROVIDERS } from '../../enums/providers'
+import { useTranslation } from 'react-i18next'
+import { translations } from '../../../i18n'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -26,7 +31,8 @@ export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 export type History = Pick<ChatResponse, "role" | "content">
 
 export default function AiChat() {
-    const { editor, clearText, focusInput, getJson } = useChatEditor()
+    const { t } = useTranslation()
+    const { editor, clearText, focusInput, getJson, insertContent } = useChatEditor()
     const { items, setSearch, setMentionType, mentionType } = useMentionItems()
     const { changeSession } = useChatContext()
 
@@ -36,10 +42,14 @@ export default function AiChat() {
         thinking, setThinking,
         options, loadingOptions,
         supportsThinking,
+        supportsVision,
     } = useModelSelection()
 
     const [virtualAnchor, setVirtualAnchor] = useState<any>(null)
+    const [multiline, setMultiline] = useState(false)
+    const singleLineHeightRef = useRef<number | null>(null);
     const editorRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const firstItemRef = useRef(null)
 
@@ -51,12 +61,9 @@ export default function AiChat() {
         stopChat,
         chatPending,
         isSessionFetching,
-        // setFile,
-        file,
+        setFile,
         loading
     } = useChatSession(model, provider, thinking)
-
-    const [preview, setPreview] = useState<string | null>(null);
 
     useEffect(() => {
         if (id && id !== "new") {
@@ -79,20 +86,6 @@ export default function AiChat() {
         setMentionType(null);
         focusInput();
     }
-
-
-    useEffect(() => {
-        if (!file) {
-            setPreview(null);
-            return;
-        }
-
-        const objectUrl = URL.createObjectURL(file);
-        setPreview(objectUrl);
-
-        return () => URL.revokeObjectURL(objectUrl);
-    }, [file]);
-
 
 
     function handleMention(item: { id: string; label: string, slug: string }) {
@@ -204,6 +197,27 @@ export default function AiChat() {
         };
     }, [editor, virtualAnchor])
 
+    // Reflow the composer once the editor grows past a single line: the content
+    // moves to its own row on top and the controls drop to a bottom bar.
+    useEffect(() => {
+        if (!editor) return;
+
+        const dom = editor.view.dom as HTMLElement;
+
+        const check = () => {
+            if (singleLineHeightRef.current == null && dom.clientHeight > 0) {
+                singleLineHeightRef.current = dom.clientHeight;
+            }
+            const baseline = singleLineHeightRef.current ?? dom.clientHeight;
+            setMultiline(dom.clientHeight > baseline + 5);
+        };
+
+        check();
+        const observer = new ResizeObserver(check);
+        observer.observe(dom);
+        return () => observer.disconnect();
+    }, [editor])
+
 
 
     return (
@@ -222,29 +236,48 @@ export default function AiChat() {
                 <AddSkillDialog />
 
             </Box>
+            <Box className="relative flex-1 min-h-0 flex flex-col pb-15">
             <ChatContainer
                 chatItems={chatResponse}
                 chatPending={loading}
                 sessionFetching={isSessionFetching}
             />
-            <Grid className="grid grid-cols-4 gap-4">
-                <Box className="col-span-2 md:col-span-1 flex items-center gap-2 min-w-0">
+            <Box className="absolute bottom-0 left-0 right-0">
+            <Grid className={`shrink-0 flex gap-1 min-w-0 rounded-2xl ring-1 ring-[#ECEAE4] bg-white px-2 py-1 ${multiline ? "flex-wrap items-center" : "items-end"}`}>
+                <Box className={`flex items-center gap-1 shrink-0 ${multiline ? "order-2" : ""}`}>
                     <SelectComponent
-                        className="flex-1 min-w-37.5"
+                        className="shrink-0"
+                        variant="standard"
+                        disableUnderline
+                        loadingSize={24}
                         onChange={setModel}
                         value={model}
                         options={options}
                         isLoading={loadingOptions}
+                        renderValue={(value) => (
+                            <Tooltip title={options.find((o) => o.id === value)?.name ?? t(translations.aiChat.selectModel)}>
+                                <span className="flex items-center">
+                                    <Icon iconName={IconsEnum.ROBOT} size={24} />
+                                </span>
+                            </Tooltip>
+                        )}
                         label={(option) => (
-                            <Box className="flex items-center gap-2">
-                                {option.name}
+                            <Box className="flex items-center gap-2 min-w-0">
                                 {option.thinking && (
-                                    <Chip label="thinking" size="small" color="primary" variant="outlined" />
+                                    <Tooltip title={t(translations.aiChat.thinkingTooltip)}>
+                                        <PsychologyIcon fontSize="small" color="primary" className="shrink-0" />
+                                    </Tooltip>
                                 )}
+                                {option.vision && (
+                                    <Tooltip title={t(translations.aiChat.vision)}>
+                                        <VisibilityIcon fontSize="small" color="action" className="shrink-0" />
+                                    </Tooltip>
+                                )}
+                                <span className="truncate">{option.name}</span>
                             </Box>
                         )}
                     />
-                    <Tooltip title={supportsThinking ? "Thinking" : "This model doesn't support thinking"}>
+                    <Tooltip title={supportsThinking ? t(translations.aiChat.thinkingTooltip) : t(translations.aiChat.thinkingNotSupported)}>
                         <span className="shrink-0">
                             <Switch
                                 checked={thinking}
@@ -253,21 +286,41 @@ export default function AiChat() {
                             />
                         </span>
                     </Tooltip>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        onChange={(e) => {
+                            const selected = e.target.files?.[0];
+                            if (selected) {
+                                setFile(selected);
+                                const reader = new FileReader();
+                                reader.onload = () => {
+                                    insertContent({
+                                        type: "image",
+                                        attrs: { src: reader.result as string, alt: selected.name },
+                                    });
+                                    focusInput();
+                                };
+                                reader.readAsDataURL(selected);
+                            }
+                            e.target.value = "";
+                        }}
+                    />
+                    <Tooltip title={supportsVision ? t(translations.aiChat.attachImage) : t(translations.aiChat.visionNotSupported)}>
+                        <span className="shrink-0">
+                            <IconButton
+                                size="small"
+                                disabled={!supportsVision}
+                                onClick={() => fileInputRef.current?.click()}
+                            >
+                                <AttachFileIcon fontSize="small" />
+                            </IconButton>
+                        </span>
+                    </Tooltip>
                 </Box>
-                <Box className="col-span-2 md:col-span-3 flex items-center min-w-0">
-                    {file && (
-                        <div>
-                            <p>File ready to be sent: {file.name}</p>
-                            {preview && (
-                                <img
-                                    src={preview}
-                                    alt="Preview"
-                                    style={{ width: 200, height: "auto", marginTop: 10 }}
-                                />
-                            )}
-                        </div>
-
-                    )}
+                <Box className={`flex items-center min-w-0 ${multiline ? "order-first w-full" : "flex-1"}`}>
                     <MentionContainer
                         anchor={virtualAnchor}
                         items={items}
@@ -276,14 +329,17 @@ export default function AiChat() {
                         onEscape={closeMention}
                     />
                     <EditorContent ref={editorRef} className="flex-1 min-w-0" editor={editor} />
-                    <Button className="shrink-0" onClick={() => handleButton(chatPending)}>
-                        <Icon
-                            iconName={toggleIcon(chatPending)}
-                            className="mx-1"
-                        />
+                </Box>
+                <Box className={`shrink-0 ${multiline ? "order-3 ml-auto" : ""}`}>
+                    <Button onClick={() => handleButton(chatPending)}>
+                        {chatPending
+                            ? <StopIcon className="mx-1" />
+                            : <Icon iconName={IconsEnum.ARROW} className="mx-1" />}
                     </Button>
                 </Box>
             </Grid>
+            </Box>
+            </Box>
         </Box>
     )
 }

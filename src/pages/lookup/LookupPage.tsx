@@ -1,7 +1,10 @@
 import { useState, type FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useLookupFood } from '../../api/hooks/tanstack/useLookupFood'
+import { translations } from '../../../i18n'
 
 function LookupPage() {
+    const { t } = useTranslation()
     const [name, setName] = useState('')
     const { mutate, data, isPending, isError } = useLookupFood()
 
@@ -14,22 +17,22 @@ function LookupPage() {
 
     return (
         <div style={{ maxWidth: 480, margin: '2rem auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <h1>Food lookup</h1>
+            <h1>{t(translations.lookupPage.title)}</h1>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '0.5rem' }}>
                 <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="e.g. chicken breast"
+                    placeholder={t(translations.lookupPage.placeholder)}
                     style={{ flex: 1 }}
                 />
                 <button type="submit" disabled={isPending || !name.trim()}>
-                    {isPending ? 'Looking up…' : 'Look up'}
+                    {isPending ? t(translations.lookupPage.loading) : t(translations.lookupPage.submit)}
                 </button>
             </form>
 
-            {isError && <p style={{ color: 'crimson' }}>Something went wrong. Please try again.</p>}
+            {isError && <p style={{ color: 'crimson' }}>{t(translations.lookupPage.error)}</p>}
             {JSON.stringify(data)}
             {/* {data && (
                 data.found ? (

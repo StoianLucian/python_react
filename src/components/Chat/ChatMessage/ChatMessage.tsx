@@ -6,6 +6,7 @@ import { useMemo, useRef } from 'react';
 import { SkillMentionComponent } from '../../ChatEditor/components/SkillMention';
 import { UserMentionComponent } from '../../ChatEditor/components/UserMention';
 import { UrlComponent } from '../../ChatEditor/components/Url';
+import { ImageComponent } from '../../ChatEditor/components/Image';
 
 
 type ChatMessageProps = {
@@ -65,39 +66,46 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
     const renderedMessage = useMemo(() => {
 
         return data.map((item, index) => {
+            const key = `${index}-${item?.type ?? "text"}`;
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p key={index}>{item.text}</p>;
+                    return <p key={key}>{item.text}</p>;
+
+                case EntityType.HARD_BREAK:
+                    return <br key={key} />;
+
+                case EntityType.IMAGE:
+                    return <ImageComponent key={key} src={item.attrs?.src ?? item.src} alt={item.attrs?.alt} />;
 
                 case EntityType.BUTTON:
                     return (
-                        <Button key={index}>
+                        <Button key={key}>
                             {item.text}
                         </Button>
                     );
                 case EntityType.SKILL_MENTION:
-                    return (<SkillMentionComponent key={index} label={item?.attrs?.label} />)
+                    return (<SkillMentionComponent key={key} label={item?.attrs?.label} />)
 
                 case EntityType.USER_MENTION:
-                    return (<UserMentionComponent key={index} label={item?.attrs?.label} />)
+                    return (<UserMentionComponent key={key} label={item?.attrs?.label} />)
 
                 case EntityType.URL:
-                    return (<UrlComponent key={index} text={item.text} url={item.url} />)
+                    return (<UrlComponent key={key} text={item.text} url={item.url} />)
 
                 case EntityType.POPOVER:
 
-                    return <HoverPopover key={index} item={item} />
+                    return <HoverPopover key={key} item={item} />
 
 
                 case EntityType.ERROR:
                     return (
-                        <Alert key={index} severity="error">
+                        <Alert key={key} severity="error">
                             {item.text}
                         </Alert>
                     );
 
                 default:
-                    return message
+                    return <span key={key}>{typeof item === "string" ? item : (item?.text ?? "")}</span>
             }
         });
     }, [data]);

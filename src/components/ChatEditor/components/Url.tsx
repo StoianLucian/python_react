@@ -5,7 +5,9 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { NodeViewWrapper, ReactNodeViewRenderer, type ReactNodeViewProps } from "@tiptap/react";
 import { Node } from "@tiptap/core";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { EntityType } from "../../../types/chat";
+import { translations } from "../../../../i18n";
 
 type UrlAttrs = {
     text: string
@@ -66,6 +68,7 @@ function usePingUrl(url: string, enabled: boolean) {
 }
 
 export function UrlComponent({ text, url }: UrlAttrs) {
+    const { t } = useTranslation();
     const safe = isSafeUrl(url);
     const status = usePingUrl(url, safe);
 
@@ -75,7 +78,7 @@ export function UrlComponent({ text, url }: UrlAttrs) {
         return (
             <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.5 }}>
                 <span>{text}</span>
-                <ErrorIcon color="error" sx={{ fontSize: 14 }} titleAccess="Unsafe or invalid URL" />
+                <ErrorIcon color="error" sx={{ fontSize: 14 }} titleAccess={t(translations.aiChat.urlUnsafe)} />
             </Box>
         );
     }
@@ -91,10 +94,10 @@ export function UrlComponent({ text, url }: UrlAttrs) {
             </Link>
             {status === PingStatusEnum.PENDING && <CircularProgress size={12} />}
             {status === PingStatusEnum.OK && (
-                <CheckCircleIcon color="success" sx={{ fontSize: 14 }} titleAccess="URL reachable" />
+                <CheckCircleIcon color="success" sx={{ fontSize: 14 }} titleAccess={t(translations.aiChat.urlReachable)} />
             )}
             {status === PingStatusEnum.FAILED && (
-                <WarningIcon color="warning" sx={{ fontSize: 14 }} titleAccess="URL unreachable" />
+                <WarningIcon color="warning" sx={{ fontSize: 14 }} titleAccess={t(translations.aiChat.urlUnreachable)} />
             )}
         </Box>
     );

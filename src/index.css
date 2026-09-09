@@ -28,6 +28,8 @@ body {
 }
 
 .tiptap.ProseMirror {
-  padding: 15px;
-  border: 1px solid beige;
+  padding: 8px 12px;
+  outline: none;
+  max-height: 200px;
+  overflow-y: auto;
 }

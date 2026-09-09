@@ -43,6 +43,7 @@ function DropZone({ isDragging, handleDrop, isPending }: DropZoneProps) {
 }
 
 export default function FileManagement({ isDragging }: FileManagementProps) {
+    const { t } = useTranslation()
     const [search, setSearch] = useState("")
 
     const handleSearch = (value: string) => {
@@ -55,13 +56,13 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
 
     const handleClearFiles = () => {
         dialog.show({
-            title: "Clear all files?",
+            title: t(translations.filesPage.clearAllTitle),
             content: (
                 <DialogContentText>
-                    This will permanently delete all uploaded files. This action cannot be undone.
+                    {t(translations.filesPage.clearAllConfirm)}
                 </DialogContentText>
             ),
-            submitLabel: "Clear files",
+            submitLabel: t(translations.filesPage.clearFiles),
             submitColor: "error",
             onSubmit: () => resetFiles(),
         });
@@ -87,7 +88,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
                 disabled={resetFilesPending}
                 onClick={handleClearFiles}
             >
-                {resetFilesPending ? <CircularProgress /> : "Clear files"}
+                {resetFilesPending ? <CircularProgress /> : t(translations.filesPage.clearFiles)}
             </Button>
             <DropZone
                 isPending={isPending}
@@ -96,7 +97,7 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
             <Stack
                 direction="column"
             >
-                <Typography variant="h6" className='text-center' >Recent files</Typography>
+                <Typography variant="h6" className='text-center' >{t(translations.filesPage.recentFiles)}</Typography>
                 <Stack direction="column" className='h-80 overflow-y-auto'>
                     <Files files={files} isLoading={isLoading || filesPending} />
                 </Stack>

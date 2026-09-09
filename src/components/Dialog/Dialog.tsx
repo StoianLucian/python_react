@@ -1,0 +1,62 @@
+import type { ReactNode } from 'react';
+import {
+    Button,
+    CircularProgress,
+    Dialog as MuiDialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from '@mui/material';
+
+type DialogProps = {
+    open: boolean;
+    onClose: () => void;
+    onSubmit: () => void;
+    title?: ReactNode;
+    content: ReactNode;
+    cancelLabel?: string;
+    submitLabel?: string;
+    submitColor?: 'primary' | 'error' | 'success' | 'warning' | 'info' | 'secondary';
+    isPending?: boolean;
+    maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+};
+
+export default function Dialog({
+    open,
+    onClose,
+    onSubmit,
+    title,
+    content,
+    cancelLabel = 'Cancel',
+    submitLabel = 'Confirm',
+    submitColor = 'primary',
+    isPending = false,
+    maxWidth = 'xs',
+}: DialogProps) {
+    return (
+        <MuiDialog
+            open={open}
+            onClose={() => !isPending && onClose()}
+            maxWidth={maxWidth}
+            fullWidth
+        >
+            {title && <DialogTitle className="px-8 pt-6">{title}</DialogTitle>}
+            <DialogContent className="px-8 py-4">
+                {content}
+            </DialogContent>
+            <DialogActions className="px-8 pb-6 gap-2">
+                <Button onClick={onClose} disabled={isPending}>
+                    {cancelLabel}
+                </Button>
+                <Button
+                    onClick={onSubmit}
+                    color={submitColor}
+                    variant="contained"
+                    disabled={isPending}
+                >
+                    {isPending ? <CircularProgress size={20} /> : submitLabel}
+                </Button>
+            </DialogActions>
+        </MuiDialog>
+    );
+}

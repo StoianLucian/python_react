@@ -3,6 +3,7 @@ import AppRoutes from "./routing/AppRoutes";
 
 import ProfileMenu from "./components/profileMenu/ProfileMenu";
 import { ChatContextProvider } from "./api/context/chatContext/ChatContext";
+import DialogHost from "./components/Dialog/DialogHost";
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <ChatContextProvider>
         <ProfileMenu />
         <AppRoutes />
+        <DialogHost />
       </ChatContextProvider>
     </BrowserRouter>
   )

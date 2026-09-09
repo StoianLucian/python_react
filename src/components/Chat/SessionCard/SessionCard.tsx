@@ -42,7 +42,7 @@ export default function SessionCard({ session }: SessionCardProps) {
 
 
     return (
-        <Stack direction="row" className="items-center rounded-xl p-2 bg-[#F5F9FB] border border-[#a4a4a4] flex justify-between gap-2 my-2.5">
+        <Stack direction="row" className="items-center rounded-2xl p-2 bg-[#FAF9F6] ring-1 ring-[#ECEAE4] flex justify-between gap-2 my-2.5">
             {isEditing ?
                 <InputComponent
                     inputRef={inputRef}

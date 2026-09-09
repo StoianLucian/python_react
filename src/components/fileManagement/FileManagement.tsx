@@ -1,4 +1,5 @@
-import { Box, Button, CircularProgress, Stack, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, DialogContentText, Stack, Typography } from '@mui/material'
+import { dialog } from '../Dialog/dialogStore'
 import { translations } from '../../../i18n'
 import Icon, { IconsEnum } from '../Icons/Icon'
 import InputComponent from '../inputComponent/InputComponent'
@@ -51,6 +52,20 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
     const { data: files = [], isLoading, isPending: filesPending } = useGetFiles();
     const { mutateAsync: uploadFile, isPending } = useUploadFile();
     const { mutateAsync: resetFiles, isPending: resetFilesPending } = useResetFiles();
+
+    const handleClearFiles = () => {
+        dialog.show({
+            title: "Clear all files?",
+            content: (
+                <DialogContentText>
+                    This will permanently delete all uploaded files. This action cannot be undone.
+                </DialogContentText>
+            ),
+            submitLabel: "Clear files",
+            submitColor: "error",
+            onSubmit: () => resetFiles(),
+        });
+    };
     const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
 
@@ -70,9 +85,9 @@ export default function FileManagement({ isDragging }: FileManagementProps) {
             />
             <Button
                 disabled={resetFilesPending}
-                onClick={() => resetFiles()}
+                onClick={handleClearFiles}
             >
-                {resetFilesPending ? <CircularProgress /> : "X"}
+                {resetFilesPending ? <CircularProgress /> : "Clear files"}
             </Button>
             <DropZone
                 isPending={isPending}

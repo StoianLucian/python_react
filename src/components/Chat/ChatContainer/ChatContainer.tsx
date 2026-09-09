@@ -16,7 +16,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
     const { t } = useTranslation()
 
     return (
-        <Box className="h-[80vh] overflow-y-auto bg-gray-100 rounded-lg my-4 p-6 flex flex-col gap-2">
+        <Box className="h-[80vh] overflow-y-auto bg-[#FAF9F6] ring-1 ring-[#ECEAE4] rounded-2xl my-4 p-6 flex flex-col gap-4">
             {sessionFetching ? (
                 <CircularProgress />
             ) : (
@@ -30,7 +30,7 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                     return (
                         <Stack
                             key={i}
-                            className={`max-w-[75%] px-3 py-2 rounded-lg gap-5 ${isUser
+                            className={`max-w-[72%] gap-1.5 ${isUser
                                 ? "self-end"
                                 : "self-start"
                                 }`}

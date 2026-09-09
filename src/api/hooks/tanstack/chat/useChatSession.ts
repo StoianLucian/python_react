@@ -13,7 +13,7 @@ export const RoleEnum = {
 
 export type Role = typeof RoleEnum[keyof typeof RoleEnum];
 
-export function useChatSession(model: string, provider: LlmProvider) {
+export function useChatSession(model: string, provider: LlmProvider, thinking = false) {
     const { chatResponse = [], setChatResponse, isSessionFetching } = useChatContext()
     const [file, setFile] = useState<File | null>(null)
 
@@ -144,6 +144,7 @@ export function useChatSession(model: string, provider: LlmProvider) {
         const history = {
             model,
             provider,
+            thinking,
             history: updatedHistory.map((message) => ({
                 role: message.role,
                 content: message.content,

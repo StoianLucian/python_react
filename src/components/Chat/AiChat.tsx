@@ -1,10 +1,11 @@
-import { Box, Button, Grid, } from '@mui/material'
+import { Box, Button, Chip, Grid, Switch, Tooltip, } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { toggleIcon } from '../../pages/chat/helper'
 import SelectComponent from '../select/SelectComponent'
 import StatusDot from '../statusDot/StatusDot'
+import AddSkillDialog from '../AddSkill/AddSkillDialog'
 import Icon from '../Icons/Icon'
-import { useChatModels } from '../../api/hooks/tanstack/chat/useChatModels'
+import { useModelSelection } from '../../api/hooks/tanstack/chat/useModelSelection'
 import { useChatSession } from '../../api/hooks/tanstack/chat/useChatSession'
 import { useChatContext, type ChatResponse } from '../../api/context/chatContext/ChatContext'
 import { useParams } from 'react-router-dom'
@@ -13,7 +14,7 @@ import MentionContainer from '../MentionContainer/MentionContainer'
 import { useChatEditor } from '../../api/hooks/useChatEditor'
 import { EditorContent } from '@tiptap/react'
 import { MENTION_TYPES, useMentionItems } from '../../api/hooks/useMentionItems'
-import { DEFAULT_PROVIDER, LLM_PROVIDERS, type LlmProvider } from '../../enums/providers'
+import { LLM_PROVIDERS } from '../../enums/providers'
 
 export const RoleEnum = {
     AGENT: "assistant",
@@ -28,8 +29,14 @@ export default function AiChat() {
     const { editor, clearText, focusInput, getJson } = useChatEditor()
     const { items, setSearch, setMentionType, mentionType } = useMentionItems()
     const { changeSession } = useChatContext()
-    const [model, setModel] = useState<string>("")
-    const [provider, setProvider] = useState<LlmProvider>(DEFAULT_PROVIDER)
+
+    const {
+        provider, setProvider,
+        model, setModel,
+        thinking, setThinking,
+        options, loadingOptions,
+        supportsThinking,
+    } = useModelSelection()
 
     const [virtualAnchor, setVirtualAnchor] = useState<any>(null)
     const editorRef = useRef<HTMLDivElement>(null);
@@ -47,9 +54,7 @@ export default function AiChat() {
         // setFile,
         file,
         loading
-    } = useChatSession(model, provider)
-
-    const { data: options = [], isLoading: loadingOptions } = useChatModels(setModel, provider)
+    } = useChatSession(model, provider, thinking)
 
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -202,7 +207,7 @@ export default function AiChat() {
 
 
     return (
-        <Box className='flex-1 flex flex-col border-l-2 border-gray-200 p-10 h-screen'>
+        <Box className='flex-1 min-w-0 flex flex-col bg-white border-l border-[#ECEAE4] p-10 h-screen'>
             <Box className="flex items-center gap-4">
                 <SelectComponent
                     onChange={setProvider}
@@ -214,6 +219,7 @@ export default function AiChat() {
                     model={model}
                     provider={provider}
                 />
+                <AddSkillDialog />
 
             </Box>
             <ChatContainer
@@ -222,15 +228,33 @@ export default function AiChat() {
                 sessionFetching={isSessionFetching}
             />
             <Grid className="grid grid-cols-4 gap-4">
-                <Box className="col-span-1">
+                <Box className="col-span-2 md:col-span-1 flex items-center gap-2 min-w-0">
                     <SelectComponent
+                        className="flex-1 min-w-37.5"
                         onChange={setModel}
                         value={model}
                         options={options}
                         isLoading={loadingOptions}
+                        label={(option) => (
+                            <Box className="flex items-center gap-2">
+                                {option.name}
+                                {option.thinking && (
+                                    <Chip label="thinking" size="small" color="primary" variant="outlined" />
+                                )}
+                            </Box>
+                        )}
                     />
+                    <Tooltip title={supportsThinking ? "Thinking" : "This model doesn't support thinking"}>
+                        <span className="shrink-0">
+                            <Switch
+                                checked={thinking}
+                                onChange={(e) => setThinking(e.target.checked)}
+                                disabled={!supportsThinking}
+                            />
+                        </span>
+                    </Tooltip>
                 </Box>
-                <Box className="col-span-3 flex">
+                <Box className="col-span-2 md:col-span-3 flex items-center min-w-0">
                     {file && (
                         <div>
                             <p>File ready to be sent: {file.name}</p>
@@ -251,8 +275,8 @@ export default function AiChat() {
                         firstItemRef={firstItemRef}
                         onEscape={closeMention}
                     />
-                    <EditorContent ref={editorRef} className="w-full" editor={editor} />
-                    <Button onClick={() => handleButton(chatPending)}>
+                    <EditorContent ref={editorRef} className="flex-1 min-w-0" editor={editor} />
+                    <Button className="shrink-0" onClick={() => handleButton(chatPending)}>
                         <Icon
                             iconName={toggleIcon(chatPending)}
                             className="mx-1"

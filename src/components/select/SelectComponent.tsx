@@ -1,9 +1,10 @@
 import { Box, CircularProgress, MenuItem, Select } from "@mui/material";
-import { type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type ReactNode, type SetStateAction } from "react";
 
 type Option = {
-    [key: string]: string;
     name: string;
+    thinking?: boolean;
+    [key: string]: string | boolean | undefined;
 };
 
 type SelectProps<V extends string = string> = {
@@ -11,13 +12,15 @@ type SelectProps<V extends string = string> = {
     onChange: Dispatch<SetStateAction<V>>;
     value: V;
     itemKey?: string;
-    isLoading: boolean
+    isLoading: boolean;
+    label?: (option: Option) => ReactNode;
+    className?: string;
 };
 
-export default function SelectComponent<V extends string = string>({ options, onChange, value, itemKey = "id", isLoading }: SelectProps<V>) {
+export default function SelectComponent<V extends string = string>({ options, onChange, value, itemKey = "id", isLoading, label = (option) => option.name, className }: SelectProps<V>) {
 
     return (
-        <Box>
+        <Box className={className}>
             {isLoading
                 ?
                 <CircularProgress size={50} />
@@ -31,8 +34,8 @@ export default function SelectComponent<V extends string = string>({ options, on
                     }}
                 >
                     {options.map((option) => (
-                        <MenuItem key={option[itemKey]} value={option[itemKey]}>
-                            {option.name}
+                        <MenuItem key={option[itemKey] as string} value={option[itemKey] as string}>
+                            {label(option)}
                         </MenuItem>
                     ))}
                 </Select>}

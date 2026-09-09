@@ -8,8 +8,14 @@ export const CHAT_ROUTES_ENUM = {
     CHAT_MODELS: "/chat/models",
 }
 
+export type ChatModel = {
+    id: string;
+    name: string;
+    thinking?: boolean;
+}
+
 export async function chat(
-    obj: { model: string, provider: LlmProvider, history: History[] },
+    obj: { model: string, provider: LlmProvider, history: History[], thinking?: boolean },
     handleChunk: (chunk: string, isResponse: boolean, isThinking?: boolean, thinkingTime?: number) => void,
     signal: AbortSignal
 ) {
@@ -23,7 +29,8 @@ export async function chat(
             body: JSON.stringify({
                 model: obj.model,
                 provider: obj.provider,
-                messages: obj.history
+                messages: obj.history,
+                thinking: obj.thinking ?? false
             }),
             signal: signal
         });
@@ -95,6 +102,6 @@ export async function pingModel(model: string, provider: LlmProvider) {
     return request({ method: ApiMethod.POST, url: CHAT_ROUTES_ENUM.CHAT_PING, data: { model, provider } })
 }
 
-export async function getAvailableModels(provider: LlmProvider) {
+export async function getAvailableModels(provider: LlmProvider): Promise<ChatModel[]> {
     return request({ method: ApiMethod.GET, url: `${CHAT_ROUTES_ENUM.CHAT_MODELS}?provider=${encodeURIComponent(provider)}` })
 }

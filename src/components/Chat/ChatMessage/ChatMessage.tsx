@@ -102,16 +102,15 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
         });
     }, [data]);
 
-    const alignEnd = "bg-blue-500 text-white self-end"
-    const alignStart = "bg-white self-start"
-    const AiClasses = "text-gray-400 p-2 rounded-lg font-mono text-[13px] border-l-[3px] border-l-blue-500 opacity-90"
+    const base =
+        "flex flex-col gap-1.5 px-4 py-3 text-[15px] leading-relaxed break-words rounded-3xl"
+    const alignEnd = "bg-[#5B8C7B] text-white self-end rounded-tr-md"
+    const alignStart =
+        "bg-white text-[#1F2933] self-start rounded-tl-md shadow-sm ring-1 ring-[#ECEAE4]"
 
     return (
         <Box
-            className={`${AiClasses} ${alignRight
-                ? alignEnd
-                : alignStart
-                } `}
+            className={`${base} ${alignRight ? alignEnd : alignStart}`}
         >
             {renderedMessage}
         </Box>

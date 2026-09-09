@@ -1,5 +1,5 @@
 import { Box, Button, Collapse, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Icon, { IconsEnum, type IconsType } from '../Icons/Icon'
 
 type CollapsableContainerProps = {
@@ -13,6 +13,10 @@ type CollapsableContainerProps = {
 export default function CollapsableContainer({ children, loadingText, text, icon = IconsEnum.ARROW, isLoading }: CollapsableContainerProps) {
     const [open, setOpen] = useState(false)
     const loading = Boolean(isLoading && loadingText)
+
+    useEffect(() => {
+        setOpen(Boolean(isLoading))
+    }, [isLoading])
     return (
         <Stack direction="column">
             <Box className="flex items-center">

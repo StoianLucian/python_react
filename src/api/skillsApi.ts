@@ -19,3 +19,12 @@ export async function getSkills(search: string) {
 export async function triggerSkills() {
     return await request({ method: ApiMethod.GET, url: SKILL_ROUTES.SKILLS })
 }
+
+export type CreateSkillPayload = {
+    name: string
+    key: string
+}
+
+export async function createSkill(data: CreateSkillPayload) {
+    return await request({ method: ApiMethod.POST, url: SKILL_ROUTES.SKILLS, data })
+}

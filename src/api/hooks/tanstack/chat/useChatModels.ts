@@ -13,7 +13,11 @@ export function useChatModels(setModel: Dispatch<SetStateAction<string>>, provid
 
     useEffect(() => {
         if (query.isSuccess && query.data?.length) {
-            setModel(query.data[0].id);
+            setModel((current) =>
+                current && query.data.some((m) => m.id === current)
+                    ? current
+                    : query.data[0].id
+            );
         }
     }, [query.isSuccess, query.data, setModel]);
 

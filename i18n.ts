@@ -44,6 +44,8 @@ export const translations = {
         logout: `${TranslationKey.PROFILE_MENU}.logout`,
         ro: `${TranslationKey.PROFILE_MENU}.ro`,
         en: `${TranslationKey.PROFILE_MENU}.en`,
+        notLoggedIn: `${TranslationKey.PROFILE_MENU}.notLoggedIn`,
+        expandAria: `${TranslationKey.PROFILE_MENU}.expandAria`,
     },
 
     loginPage: {

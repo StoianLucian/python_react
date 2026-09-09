@@ -52,7 +52,7 @@ function LoginPage() {
     }
 
     return (
-        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t("loginPage.login")} isPending={isPending} >
+        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t(translations.loginPage.login)} isPending={isPending} title={t(translations.loginPage.login)} >
             <Controller
                 name="account"
                 control={control}

@@ -8,11 +8,17 @@
     "delete": "Delete"
   },
   "dashboard": {
+    "greeting": "Good morning, {{name}}!",
     "profile": "Profile",
     "settings": "Settings",
     "home": "Home",
     "PDF": "PDF",
-    "BOT": "BOT"
+    "BOT": "BOT",
+    "settingsDescription": "Configure your workspace preferences and options.",
+    "profileDescription": "View and update your personal account details.",
+    "homeDescription": "See what's happening across your workspace.",
+    "PDFDescription": "Upload and chat with your PDF documents.",
+    "BOTDescription": "Start a conversation with the AI assistant."
   },
   "profileMenu": {
     "profile": "Profile",

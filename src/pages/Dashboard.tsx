@@ -1,79 +1,113 @@
-import { Box, Stack } from "@mui/material"
-import { APP_PATHS } from "../routing/routes";
-import Icon, { IconsEnum } from "../components/Icons/Icon";
-import { useTranslation } from "react-i18next";
+import { Box, Typography } from "@mui/material";
+import type { SvgIconComponent } from "@mui/icons-material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import SmartToyRoundedIcon from "@mui/icons-material/SmartToyRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { APP_PATHS } from "../routing/routes";
 import { TranslationKey } from "../../i18n";
-import backgroundImage from "../assets/images/background.png";
+import { useAuthContext } from "../api/context/authContext/AuthContext";
 
-const gradients = [
-    "linear-gradient(135deg, #43E97B 0%, #38F9D7 100%)",
-    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",
+type CardTheme = { base: string; dark: string };
+
+type DashboardItem = {
+    title: string;
+    route: string;
+    icon: SvgIconComponent;
+    theme: CardTheme;
+};
+
+const items: DashboardItem[] = [
+    { title: "home", route: APP_PATHS.HOME, icon: HomeRoundedIcon, theme: { base: "#12876E", dark: "#0E6F5B" } },
+    { title: "BOT", route: `${APP_PATHS.CHAT}/new`, icon: SmartToyRoundedIcon, theme: { base: "#E6B34D", dark: "#B8860B" } },
+    { title: "profile", route: APP_PATHS.PROFILE, icon: PersonRoundedIcon, theme: { base: "#A78BFA", dark: "#7C3AED" } },
+    { title: "settings", route: APP_PATHS.SETTINGS, icon: SettingsRoundedIcon, theme: { base: "#60A5FA", dark: "#1E40AF" } },
 ];
 
-const getRandomGradient = () => {
-    // Pick a random index
-    const index = Math.floor(Math.random() * gradients.length);
+function DashboardCard({ item, featured }: { item: DashboardItem; featured: boolean }) {
+    const { t } = useTranslation();
+    const title = t(`${TranslationKey.DASHBOARD}.${item.title}`);
+    const description = t(`${TranslationKey.DASHBOARD}.${item.title}Description`);
+    const CardIcon = item.icon;
 
-    // Remove the element from the array and get it
-    const [removed] = gradients.splice(index, 1);
+    return (
+        <Link to={item.route} className="group block">
+            <Box
+                className="relative flex h-64 flex-col overflow-hidden rounded-2xl p-6 transition-shadow"
+                sx={
+                    featured
+                        ? {
+                            color: "#fff",
+                            background: `linear-gradient(135deg, ${item.theme.base} 0%, ${item.theme.dark} 100%)`,
+                            boxShadow: "0 12px 30px -12px rgba(14,111,91,0.55)",
+                        }
+                        : {
+                            backgroundColor: "#fff",
+                            boxShadow: "inset 0 0 0 1px #ECEAE4",
+                            "&:hover": { boxShadow: "inset 0 0 0 1px #ECEAE4, 0 12px 30px -14px rgba(0,0,0,0.25)" },
+                        }
+                }
+            >
+                <CardIcon
+                    aria-hidden
+                    className="pointer-events-none absolute -bottom-6 -right-4 transition-transform group-hover:scale-105"
+                    sx={{
+                        fontSize: 180,
+                        color: featured ? "rgba(255,255,255,0.18)" : item.theme.base,
+                        opacity: featured ? 1 : 0.14,
+                    }}
+                />
 
+                <Box className="flex items-start justify-end">
+                    <CardIcon sx={{ fontSize: 32, color: featured ? "#fff" : item.theme.dark }} />
+                </Box>
 
-    return removed;
+                <Box className="mt-4">
+                    <Typography variant="h6" fontWeight={700} className="leading-tight">
+                        {title}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        className="mt-2 max-w-[16rem]"
+                        sx={{ color: featured ? "rgba(255,255,255,0.85)" : "text.secondary" }}
+                    >
+                        {description}
+                    </Typography>
+                </Box>
+
+                <Box className="relative mt-auto">
+                    <ArrowForwardIcon
+                        className="transition-transform group-hover:translate-x-1"
+                        sx={{ color: featured ? "#fff" : "#1a1a1a" }}
+                    />
+                </Box>
+            </Box>
+        </Link>
+    );
 }
-
-const items = [{
-    title: "settings",
-    route: APP_PATHS.PROFILE,
-    icon: IconsEnum.COG
-}, {
-    title: "profile",
-    route: APP_PATHS.PROFILE,
-    icon: IconsEnum.PROFILE
-},
-{
-    title: "home",
-    route: APP_PATHS.PROFILE,
-    icon: IconsEnum.HOME
-},
-{
-    title: "PDF",
-    route: `${APP_PATHS.CHAT}/new`,
-    icon: IconsEnum.PDF
-},
-{
-    title: "BOT",
-    route: `${APP_PATHS.BOT}`,
-    icon: IconsEnum.ROBOT
-},
-]
-
-const newItems = items.map(item => ({ ...item, gradient: getRandomGradient() }))
 
 function Dashboard() {
-    const { t } = useTranslation()
+    const { t } = useTranslation();
+    const { user } = useAuthContext();
+
     return (
-        <Box className="w-screen min-h-screen flex flex-wrap justify-center content-center gap-4 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${backgroundImage})`, }}
-        >
-            {newItems.map((item) => (
-                <Link key={item.title} to={item.route}>
-                    <Stack className="justify-center items-center" direction="column" spacing={2} >
-                        <Box
-                            className="flex items-center justify-center h-50 w-75 rounded-lg"
-                            sx={{ background: item.gradient }}
-                        >
-                            <Icon size={120} iconName={item.icon} />
-                        </Box>
-                        <div> {t(`${TranslationKey.DASHBOARD}.${item.title}`)}</div>
-                    </Stack>
-                </Link>
-            ))}
-        </Box >
-    )
+        <Box className="flex min-h-screen w-screen flex-col items-center justify-center bg-[#FAF9F6] px-6 py-10 sm:px-10">
+            <Box className="w-full max-w-5xl">
+                <Typography variant="h4" fontWeight={800} className="mb-8">
+                    {t(`${TranslationKey.DASHBOARD}.greeting`, { name: user?.username ?? "" }).replace(", !", "!")}
+                </Typography>
+
+                <Box className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    {items.map((item, index) => (
+                        <DashboardCard key={item.title} item={item} featured={index % 2 === 0} />
+                    ))}
+                </Box>
+            </Box>
+        </Box>
+    );
 }
 
-export default Dashboard
+export default Dashboard;

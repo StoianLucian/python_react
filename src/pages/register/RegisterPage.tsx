@@ -44,7 +44,7 @@ function RegisterPage() {
     }
 
     return (
-        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t(translations.registerPage.register)} isPending={isPending}>
+        <AuthForm onSubmit={handleSubmit(submitData)} btnText={t(translations.registerPage.register)} isPending={isPending} title={t(translations.registerPage.register)}>
             <Controller
                 name="username"
                 control={control}

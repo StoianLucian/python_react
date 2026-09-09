@@ -8,11 +8,17 @@
     "delete": "Șterge"
   },
   "dashboard": {
+    "greeting": "Bună dimineața, {{name}}!",
     "profile": "Profil",
     "settings": "Setări",
     "home": "Pagină de pornire",
     "PDF": "PDF",
-    "BOT": "BOT"
+    "BOT": "BOT",
+    "settingsDescription": "Configurează preferințele și opțiunile spațiului de lucru.",
+    "profileDescription": "Vizualizează și actualizează detaliile contului tău.",
+    "homeDescription": "Vezi ce se întâmplă în spațiul tău de lucru.",
+    "PDFDescription": "Încarcă și conversează cu documentele tale PDF.",
+    "BOTDescription": "Începe o conversație cu asistentul AI."
   },
   "profileMenu": {
     "profile": "Profil",

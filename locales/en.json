@@ -7,6 +7,10 @@
     "loading": "Loading...",
     "delete": "Delete"
   },
+  "sidebar": {
+    "home": "Home",
+    "summary": "Summary"
+  },
   "dashboard": {
     "greeting": "Good morning, {{name}}!",
     "profile": "Profile",
@@ -91,6 +95,23 @@
     "placeholder": "e.g. chicken breast",
     "submit": "Look up",
     "loading": "Looking up…",
+    "error": "Something went wrong. Please try again."
+  },
+
+  "dailyPage": {
+    "title": "Daily summary",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "caloriesConsumed": "Calories consumed",
+    "caloriesBurned": "Calories burned",
+    "protein": "Protein",
+    "carbs": "Carbs",
+    "fat": "Fat",
+    "foodEntries": "Food entries",
+    "exercises": "Exercises",
+    "noExercises": "No exercises logged.",
+    "loading": "Loading…",
     "error": "Something went wrong. Please try again."
   },
 

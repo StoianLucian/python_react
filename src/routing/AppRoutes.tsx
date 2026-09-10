@@ -8,6 +8,7 @@ import ChatPage from '../pages/chat/ChatPage'
 import { useAuthContext } from '../api/context/authContext/AuthContext'
 import VideoPage from '../pages/video/VideoPage'
 import LookupPage from '../pages/lookup/LookupPage'
+import ProfilePage from '../pages/profile/ProfilePage'
 
 const routes = [
     { path: APP_PATHS.LOGIN, element: <LoginPage />, isPrivate: false },
@@ -16,6 +17,7 @@ const routes = [
     { path: `${APP_PATHS.CHAT}/:id`, element: <ChatPage />, isPrivate: true },
     { path: `${APP_PATHS.video}`, element: <VideoPage />, isPrivate: true },
     { path: APP_PATHS.LOOKUP, element: <LookupPage />, isPrivate: true },
+    { path: APP_PATHS.PROFILE, element: <ProfilePage />, isPrivate: true },
     { path: "*", element: <>Page not found</>, isPrivate: false },
 ];
 

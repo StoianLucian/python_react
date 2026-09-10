@@ -8,6 +8,7 @@ import ro from './locales/ro.json';
 
 export const TranslationKey = {
     COMMON: "common",
+    SIDEBAR: "sidebar",
     DASHBOARD: "dashboard",
     PROFILE_MENU: "profileMenu",
     LOGIN_PAGE: "loginPage",
@@ -15,6 +16,7 @@ export const TranslationKey = {
     FILES_PAGE: "filesPage",
     AI_CHAT: "aiChat",
     LOOKUP_PAGE: "lookupPage",
+    DAILY_PAGE: "dailyPage",
     HOME_PAGE: "homePage",
     VIDEO_PAGE: "videoPage",
     ERRORS: "errors",
@@ -29,6 +31,11 @@ export const translations = {
         close: `${TranslationKey.COMMON}.close`,
         loading: `${TranslationKey.COMMON}.loading`,
         delete: `${TranslationKey.COMMON}.delete`,
+    },
+
+    sidebar: {
+        home: `${TranslationKey.SIDEBAR}.home`,
+        summary: `${TranslationKey.SIDEBAR}.summary`,
     },
 
     dashboard: {
@@ -109,6 +116,22 @@ export const translations = {
         submit: `${TranslationKey.LOOKUP_PAGE}.submit`,
         loading: `${TranslationKey.LOOKUP_PAGE}.loading`,
         error: `${TranslationKey.LOOKUP_PAGE}.error`,
+    },
+    dailyPage: {
+        title: `${TranslationKey.DAILY_PAGE}.title`,
+        from: `${TranslationKey.DAILY_PAGE}.from`,
+        to: `${TranslationKey.DAILY_PAGE}.to`,
+        apply: `${TranslationKey.DAILY_PAGE}.apply`,
+        caloriesConsumed: `${TranslationKey.DAILY_PAGE}.caloriesConsumed`,
+        caloriesBurned: `${TranslationKey.DAILY_PAGE}.caloriesBurned`,
+        protein: `${TranslationKey.DAILY_PAGE}.protein`,
+        carbs: `${TranslationKey.DAILY_PAGE}.carbs`,
+        fat: `${TranslationKey.DAILY_PAGE}.fat`,
+        foodEntries: `${TranslationKey.DAILY_PAGE}.foodEntries`,
+        exercises: `${TranslationKey.DAILY_PAGE}.exercises`,
+        noExercises: `${TranslationKey.DAILY_PAGE}.noExercises`,
+        loading: `${TranslationKey.DAILY_PAGE}.loading`,
+        error: `${TranslationKey.DAILY_PAGE}.error`,
     },
     homePage: {
         title: `${TranslationKey.HOME_PAGE}.title`,

@@ -7,6 +7,10 @@
     "loading": "Se încarcă...",
     "delete": "Șterge"
   },
+  "sidebar": {
+    "home": "Acasă",
+    "summary": "Sumar"
+  },
   "dashboard": {
     "greeting": "Bună dimineața, {{name}}!",
     "profile": "Profil",
@@ -91,6 +95,23 @@
     "placeholder": "ex. piept de pui",
     "submit": "Caută",
     "loading": "Se caută…",
+    "error": "Ceva nu a mers bine. Te rugăm să încerci din nou."
+  },
+
+  "dailyPage": {
+    "title": "Sumar zilnic",
+    "from": "De la",
+    "to": "Până la",
+    "apply": "Aplică",
+    "caloriesConsumed": "Calorii consumate",
+    "caloriesBurned": "Calorii arse",
+    "protein": "Proteine",
+    "carbs": "Carbohidrați",
+    "fat": "Grăsimi",
+    "foodEntries": "Intrări alimentare",
+    "exercises": "Exerciții",
+    "noExercises": "Niciun exercițiu înregistrat.",
+    "loading": "Se încarcă…",
     "error": "Ceva nu a mers bine. Te rugăm să încerci din nou."
   },
 

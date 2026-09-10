@@ -94,7 +94,7 @@ function Dashboard() {
     const { user } = useAuthContext();
 
     return (
-        <Box className="flex min-h-screen w-screen flex-col items-center justify-center bg-[#FAF9F6] px-6 py-10 sm:px-10">
+        <Box className="flex min-h-screen w-full flex-col items-center justify-center bg-[#FAF9F6] px-6 py-10 sm:px-10">
             <Box className="w-full max-w-5xl">
                 <Typography variant="h4" fontWeight={800} className="mb-8">
                     {t(`${TranslationKey.DASHBOARD}.greeting`, { name: user?.username ?? "" }).replace(", !", "!")}

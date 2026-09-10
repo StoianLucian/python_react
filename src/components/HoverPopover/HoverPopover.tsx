@@ -1,124 +1,33 @@
-import { Button, Popover } from "@mui/material";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { Button, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import usePreviewFile from "../../api/hooks/tanstack/files/usePreviewFile";
+import useFileAccessible from "../../api/hooks/tanstack/files/useFileAccessible";
 import type { Entity } from "../../types/chat";
 import PdfPreview from "../PdfPreview/PdfPreview";
 import { translations } from "../../../i18n";
 
-// import { Document, Page } from "react-pdf";
-
-
-// import { pdfjs } from "react-pdf";
-
-// // IMPORTANT: match your installed pdfjs-dist version
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//     "pdfjs-dist/build/pdf.worker.min.mjs",
-//     import.meta.url
-// ).toString();
-
-// import { pdfjs } from "react-pdf";
-
-// pdfjs.GlobalWorkerOptions.workerSrc =
-//   `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
-// // import { pdfjs } from "react-pdf";
-
-
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//   "pdfjs-dist/build/pdf.worker.min.mjs",
-//   import.meta.url
-// ).toString();
-
-// function ViewerPdf({ fileUrl }: { fileUrl: string }) {
-//     return (
-//         <Document file={fileUrl}>
-//             <Page pageNumber={1} />
-//         </Document>
-//     );
-// }
-
-// src/components/PdfViewer.tsx
-
-// import { Viewer, Worker } from '@react-pdf-viewer/core';
-// import { searchPlugin } from '@react-pdf-viewer/search';
-// import { zoomPlugin } from '@react-pdf-viewer/zoom';
-// import '@react-pdf-viewer/zoom/lib/styles/index.css';
-
-// import '@react-pdf-viewer/core/lib/styles/index.css';
-// import '@react-pdf-viewer/search/lib/styles/index.css';
-
-
-
-// function PdfViewer({ pdfUrl }: { pdfUrl: string }) {
-//     const searchPluginInstance = searchPlugin();
-//     const zoom = zoomPlugin()
-//     const { Search, highlight } = searchPluginInstance;
-//     // const {
-//     //     ZoomIn,
-//     //     ZoomOut,
-//     //     ZoomPopover,
-//     // } = zoom;
-
-//     useEffect(() => {
-//         if (!pdfUrl) return;
-
-//         highlight(['invoice']);
-//     }, [pdfUrl]);
-
-//     return (
-//         <div>
-//             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-//                 <div style={{ marginBottom: 16 }}>
-//                     <Search>
-//                         {(props) => (
-//                             <>
-//                                 <input
-//                                     value={props.keyword}
-//                                     onChange={(e) => props.setKeyword(e.target.value)}
-//                                 />
-//                                 <button onClick={props.search}>Search</button>
-//                             </>
-//                         )}
-//                     </Search>
-//                 </div>
-
-//                 {/* <div style={{ height: '800px', border: '1px solid #ddd' }}> */}
-//                 <Viewer
-//                     fileUrl={pdfUrl}
-//                     defaultScale={1}
-//                     plugins={[searchPluginInstance, zoom]}
-//                     onDocumentLoad={() => {
-//                         highlight(['invoice']);
-//                     }}
-//                 />
-//                 {/* </div> */}
-//             </Worker>
-//         </div>
-//     );
-// }
-
-
-
-
-
-
-
 export default function HoverPopover({ item }: { item: Entity }) {
     const { t } = useTranslation();
-    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-    // const defaultLayout = useMemo(() => defaultLayoutPlugin(), []);
-    const ref = useRef(0)
+    const [open, setOpen] = useState(false);
 
-    const open = (e: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(e.currentTarget);
-    };
+    console.log(item)
+    const { data: files = "", isFetching } = usePreviewFile(item.source_id!, open)
+    // isLoading (not isPending) so a disabled/idle query — e.g. a popover with no
+    // numeric source_id — doesn't leave the spinner stuck forever.
+    const { data: accessible, isLoading: checking, isError } = useFileAccessible(item.source_id ?? "");
+    // Red X when the probe failed (network/auth) or the file is reported missing.
+    const inaccessible = isError || accessible === false;
 
-    ref.current++
-    // console.log(item)
-    const { data: files = "", isFetching } = usePreviewFile(item.source_id!)
+    function accessibilityIcon() {
+        if (checking) return <CircularProgress size={16} />;
+        if (inaccessible) return <CancelIcon fontSize="small" sx={{ color: "error.main" }} />;
+        if (accessible) return <CheckCircleIcon fontSize="small" sx={{ color: "success.main" }} />;
+        return null;
+    }
 
     const pdfUrl = useMemo(() => {
         if (!files) return null;
@@ -131,47 +40,48 @@ export default function HoverPopover({ item }: { item: Entity }) {
         };
     }, [pdfUrl]);
 
-    // const zoomPluginInstance = zoomPlugin();
-    // const { ZoomIn, ZoomOut, ZoomPopover } = zoomPluginInstance;
-
-
     return (
-        <div>
+        <>
             <Button
-                onClick={open}
+                onClick={() => setOpen(true)}
+                disabled={inaccessible}
+                startIcon={accessibilityIcon()}
             >
                 {item.text}
             </Button>
 
-            <Popover className="text-right" slotProps={{
-                backdrop: {
-                    sx: {
-                        backgroundColor: "rgba(0,0,0,0.3)",
+            <Dialog
+                open={open}
+                onClose={() => setOpen(false)}
+                maxWidth={false}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            width: "95vw",
+                            height: "92vh",
+                            maxWidth: "none",
+                            m: 0,
+                            display: "flex",
+                            flexDirection: "column",
+                        },
                     },
-                },
-            }} open={!!anchorEl} anchorEl={anchorEl} onClose={(_event, reason) => {
-                if (reason === "backdropClick") {
-                    setAnchorEl(null);
-                }
-            }}>
-                <Button onClick={() => { setAnchorEl(null) }} aria-label={t(translations.common.close)}>X</Button>
-
-                {/* <ReactPdf pdfUrl={pdfUrl} loading={isFetching} /> */}
-
-                {/* <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
-
-                    <div style={{ height: "80vh", width: "100%" }}>
-                        {pdfUrl && <Viewer fileUrl={pdfUrl} plugins={[zoomPluginInstance]}   className="w-screen h-[90vh] rounded"/>}
-                    </div>
-
-
-                </Worker> */}
-                {/* {pdfUrl && <PdfViewer pdfUrl={pdfUrl} />} */}
-                <PdfPreview pdfUrl={pdfUrl} loading={isFetching} pageNumber={item.page_number} />
-
-
-            </Popover>
-        </div >
+                }}
+            >
+                <DialogTitle className="flex items-center justify-between gap-2 pr-2">
+                    <span className="truncate">{item.text}</span>
+                    <IconButton onClick={() => setOpen(false)} aria-label={t(translations.common.close)}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent dividers className="min-h-0 flex-1 p-0">
+                    <PdfPreview
+                        pdfUrl={pdfUrl}
+                        loading={isFetching}
+                        pageNumber={item.page_number}
+                        highlightText={item.content ?? item.text}
+                    />
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }
-

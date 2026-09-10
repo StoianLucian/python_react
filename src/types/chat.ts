@@ -1,7 +1,8 @@
 
 export type Entity = {
-    type: string,
+    type: string
     text: string
+    content?: string
     action?: string
     source_id?: string
     page_number?: string

@@ -8,6 +8,7 @@ const FILE_ROUTES_ENUM = {
 export const FILE_ROUTES = {
     FILES: FILE_ROUTES_ENUM.FILES,
     GET_FILE: (id: string) => `${FILE_ROUTES_ENUM.FILES}/${id}`,
+    FILE_EXISTS: (id: string) => `${FILE_ROUTES_ENUM.FILES}/${id}/exists`,
 }
 
 export async function uploadFile(file: File) {
@@ -41,6 +42,11 @@ export async function getFile(id: string, filename: string) {
     })
 
     downloadFile(fileData, filename)
+}
+
+export async function checkFileAccessible(id: string): Promise<boolean> {
+    const data = await request({ method: ApiMethod.GET, url: FILE_ROUTES.FILE_EXISTS(id) })
+    return !!data?.exists
 }
 
 export async function previewFile(id: string) {

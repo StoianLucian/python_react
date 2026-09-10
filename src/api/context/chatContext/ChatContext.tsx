@@ -44,22 +44,26 @@ export function ChatContextProvider({ children }: { children: React.ReactNode })
 
     async function changeSession(id: string) {
         setIsSessionFetching(true);
-        const session = await queryClient.fetchQuery({
-            queryKey: queryKeys.session_id(id),
-            queryFn: () => getSession(id),
-        });
-        setChatResponse(
-            session.chat_messages.map((message) => ({
-                content: message.text,
-                thinking: "",
-                role: message.role,
-                images: message.images?.map((image) => image.text)
-            }))
-        );
+        try {
+            const session = await queryClient.fetchQuery({
+                queryKey: queryKeys.session_id(id),
+                queryFn: () => getSession(id),
+            });
+            setChatResponse(
+                session.chat_messages.map((message) => ({
+                    content: message.text,
+                    thinking: "",
+                    role: message.role,
+                    images: message.images?.map((image) => image.text)
+                }))
+            );
 
-        setIsSessionFetching(false);
-
-        navigate(PATHS.CHAT_ID(id), { replace: true })
+            navigate(PATHS.CHAT_ID(id), { replace: true })
+        } catch {
+            startSession();
+        } finally {
+            setIsSessionFetching(false);
+        }
     }
 
     return (

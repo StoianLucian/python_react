@@ -43,17 +43,31 @@ export type FoodSummary = {
     fat: number
 }
 
+export type DailyRow = {
+    date: string
+    calories_consumed: number
+    calories_burned: number
+}
+
 export type DailySummary = {
     start: string
     end: string
+    rows: DailyRow[]
+}
+
+export type DailyTotals = {
     calories_consumed: number
-    calories_burned: number
-    macros: {
-        protein: number
-        carbs: number
-        fat: number
-    }
+    protein: number
+    carbs: number
+    fat: number
     food_entries: number
+    calories_burned: number
+    exercise_entries: number
+}
+
+export type DailyDetail = {
+    date: string
+    totals: DailyTotals
     foods: FoodSummary[]
     exercises: ExerciseSummary[]
 }
@@ -70,6 +84,14 @@ export async function getDailySummary(
     filters: DailySummaryFilters = {}
 ): Promise<DailySummary> {
     const url = getUrlParams({ ...filters }, CALORIES_ROUTES.DAILY)
+
+    return await request({ method: ApiMethod.GET, url })
+}
+
+// Foods + exercises logged on a single day (YYYY-MM-DD). Backs the detail view
+// shown when a day is selected in the table/chart.
+export async function getDailyDetail(day: string): Promise<DailyDetail> {
+    const url = `${CALORIES_ROUTES.DAILY}/${day}`
 
     return await request({ method: ApiMethod.GET, url })
 }

@@ -31,6 +31,7 @@ export const translations = {
         close: `${TranslationKey.COMMON}.close`,
         loading: `${TranslationKey.COMMON}.loading`,
         delete: `${TranslationKey.COMMON}.delete`,
+        clear: `${TranslationKey.COMMON}.clear`,
     },
 
     sidebar: {
@@ -119,9 +120,16 @@ export const translations = {
     },
     dailyPage: {
         title: `${TranslationKey.DAILY_PAGE}.title`,
+        subtitle: `${TranslationKey.DAILY_PAGE}.subtitle`,
+        showing: `${TranslationKey.DAILY_PAGE}.showing`,
+        selectDay: `${TranslationKey.DAILY_PAGE}.selectDay`,
+        dailyGoal: `${TranslationKey.DAILY_PAGE}.dailyGoal`,
         from: `${TranslationKey.DAILY_PAGE}.from`,
         to: `${TranslationKey.DAILY_PAGE}.to`,
+        dateRange: `${TranslationKey.DAILY_PAGE}.dateRange`,
+        selectRange: `${TranslationKey.DAILY_PAGE}.selectRange`,
         apply: `${TranslationKey.DAILY_PAGE}.apply`,
+        dailyTotals: `${TranslationKey.DAILY_PAGE}.dailyTotals`,
         caloriesConsumed: `${TranslationKey.DAILY_PAGE}.caloriesConsumed`,
         caloriesBurned: `${TranslationKey.DAILY_PAGE}.caloriesBurned`,
         protein: `${TranslationKey.DAILY_PAGE}.protein`,

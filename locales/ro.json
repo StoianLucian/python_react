@@ -5,7 +5,8 @@
     "confirm": "Confirmă",
     "close": "Închide",
     "loading": "Se încarcă...",
-    "delete": "Șterge"
+    "delete": "Șterge",
+    "clear": "Golește"
   },
   "sidebar": {
     "home": "Acasă",
@@ -100,9 +101,16 @@
 
   "dailyPage": {
     "title": "Sumar zilnic",
+    "subtitle": "Vezi cum se adună nutriția ta.",
+    "showing": "Se afișează {{date}}",
+    "selectDay": "Apasă pe o coloană pentru detaliile zilei.",
+    "dailyGoal": "Obiectiv zilnic",
     "from": "De la",
     "to": "Până la",
+    "dateRange": "Interval de date",
+    "selectRange": "Selectează un interval",
     "apply": "Aplică",
+    "dailyTotals": "Totaluri zilnice",
     "caloriesConsumed": "Calorii consumate",
     "caloriesBurned": "Calorii arse",
     "protein": "Proteine",

@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Toolbar } from '@mui/material'
 import Sidebar from '../../components/sidebar/Sidebar'
 import DailyPage from '../daily/DailyPage'
 
@@ -9,6 +9,10 @@ function ProfilePage() {
         <Box sx={{ display: 'flex' }}>
             <Sidebar />
             <Box component="main" sx={{ flexGrow: 1, minWidth: 0 }}>
+                {/* Spacer so content clears the absolutely-positioned top-right
+                    ProfileMenu button (mirrors the Sidebar's own spacer). Without
+                    it the menu overlaps the header filters on narrower screens. */}
+                <Toolbar />
                 <DailyPage />
             </Box>
         </Box>

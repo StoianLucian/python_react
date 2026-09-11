@@ -5,7 +5,8 @@
     "confirm": "Confirm",
     "close": "Close",
     "loading": "Loading...",
-    "delete": "Delete"
+    "delete": "Delete",
+    "clear": "Clear"
   },
   "sidebar": {
     "home": "Home",
@@ -100,9 +101,16 @@
 
   "dailyPage": {
     "title": "Daily summary",
+    "subtitle": "See how your nutrition adds up.",
+    "showing": "Showing {{date}}",
+    "selectDay": "Click a bar to see that day's details.",
+    "dailyGoal": "Daily goal",
     "from": "From",
     "to": "To",
+    "dateRange": "Date range",
+    "selectRange": "Select a date range",
     "apply": "Apply",
+    "dailyTotals": "Daily totals",
     "caloriesConsumed": "Calories consumed",
     "caloriesBurned": "Calories burned",
     "protein": "Protein",

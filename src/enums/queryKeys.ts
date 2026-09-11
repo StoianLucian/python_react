@@ -16,5 +16,6 @@ export const queryKeys = {
     file: (id: string) => [baseQueryKeys.files, id],
     users: (search: string) => [baseQueryKeys.users, search],
     skills: (search: string) => [baseQueryKeys.skills, search],
-    dailySummary: (filters: Record<string, string | undefined>) => [baseQueryKeys.dailySummary, filters]
+    dailySummary: (filters: Record<string, string | undefined>) => [baseQueryKeys.dailySummary, filters],
+    dailyDetail: (day: string) => [baseQueryKeys.dailySummary, "detail", day]
 } as const;

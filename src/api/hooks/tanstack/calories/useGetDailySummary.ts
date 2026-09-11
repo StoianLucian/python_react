@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { queryKeys } from "../../../../enums/queryKeys";
 import {
   getDailySummary,
@@ -12,6 +12,7 @@ const useGetDailySummary = (filters: DailySummaryFilters = {}) => {
   return useQuery<DailySummary, any>({
     queryFn: () => getDailySummary(filters),
     queryKey: queryKeys.dailySummary(filters),
+    placeholderData: keepPreviousData,
   });
 };
 

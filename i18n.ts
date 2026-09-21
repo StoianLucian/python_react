@@ -132,6 +132,7 @@ export const translations = {
         dailyTotals: `${TranslationKey.DAILY_PAGE}.dailyTotals`,
         caloriesConsumed: `${TranslationKey.DAILY_PAGE}.caloriesConsumed`,
         caloriesBurned: `${TranslationKey.DAILY_PAGE}.caloriesBurned`,
+        caloriesTarget: `${TranslationKey.DAILY_PAGE}.caloriesTarget`,
         protein: `${TranslationKey.DAILY_PAGE}.protein`,
         carbs: `${TranslationKey.DAILY_PAGE}.carbs`,
         fat: `${TranslationKey.DAILY_PAGE}.fat`,

@@ -1,6 +1,8 @@
 // Chart series colors, matching the two legend swatches in the design.
 export const CONSUMED_COLOR = '#4f6ef7'
 export const BURNED_COLOR = '#f5b400'
+export const TARGET_COLOR = '#2e9e5b'
+export const OVER_TARGET_COLOR = '#e5484d'
 
 // Soft tinted backgrounds + accent colors for the per-day stat cards.
 export type StatTone = {

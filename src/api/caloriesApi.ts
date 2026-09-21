@@ -35,6 +35,7 @@ export type ExerciseSummary = {
 export type FoodSummary = {
     id: number
     name: string | null
+    category: string | null
     date: string
     grams: number
     calories: number

@@ -5,7 +5,7 @@ import { ChartsReferenceLine } from '@mui/x-charts/ChartsReferenceLine'
 import dayjs from 'dayjs'
 import { type DailySummary as DailySummaryData } from '../../../api/caloriesApi'
 import { translations } from '../../../../i18n'
-import { BURNED_COLOR, CONSUMED_COLOR } from './palette'
+import { BURNED_COLOR, CONSUMED_COLOR, OVER_TARGET_COLOR, TARGET_COLOR } from './palette'
 
 type DailyChartProps = {
     data: DailySummaryData
@@ -21,6 +21,13 @@ export default function DailyChart({ data, activeDate, onSelectDate }: DailyChar
     const dates = data.rows.map((row) => row.date)
     const consumed = data.rows.map((row) => row.calories_consumed)
     const burned = data.rows.map((row) => row.calories_burned)
+    // Hardcoded daily calorie target for now.
+    const DAILY_TARGET = 1700
+    const target = data.rows.map((_) => DAILY_TARGET)
+
+    // Shared y-domain so the consumed column (on its own axis for value-based
+    // coloring) stays height-aligned with the target and burned columns.
+    const maxValue = Math.max(DAILY_TARGET, ...consumed, ...burned, 0)
 
     return (
         <Paper variant="outlined" sx={{ p: 2, borderRadius: 3 }}>
@@ -46,9 +53,31 @@ export default function DailyChart({ data, activeDate, onSelectDate }: DailyChar
                             tickLabelStyle: { angle: -45, textAnchor: 'end' },
                         },
                     ]}
+                    yAxis={[
+                        { id: 'default', min: 0, max: maxValue },
+                        {
+                            // Dedicated axis so its value-based colorMap only recolors the
+                            // consumed bars: blue at/under target, red when over it.
+                            id: 'consumed',
+                            min: 0,
+                            max: maxValue,
+                            position: 'none',
+                            colorMap: {
+                                type: 'piecewise',
+                                thresholds: [DAILY_TARGET],
+                                colors: [CONSUMED_COLOR, OVER_TARGET_COLOR],
+                            },
+                        },
+                    ]}
                     margin={{ bottom: 40 }}
                     series={[
-                        { data: consumed, label: t(translations.dailyPage.caloriesConsumed), color: CONSUMED_COLOR },
+                        { data: target, label: t(translations.dailyPage.caloriesTarget), color: TARGET_COLOR },
+                        {
+                            data: consumed,
+                            label: t(translations.dailyPage.caloriesConsumed),
+                            color: CONSUMED_COLOR,
+                            yAxisId: 'consumed',
+                        },
                         { data: burned, label: t(translations.dailyPage.caloriesBurned), color: BURNED_COLOR },
                     ]}
                     sx={{ cursor: 'pointer' }}

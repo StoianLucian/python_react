@@ -8,7 +8,8 @@ type ChatProps = {
         history: History[],
         model: string,
         provider: LlmProvider,
-        thinking?: boolean
+        thinking?: boolean,
+        version?: string
     },
     handleChunk: (chunk: string, isResponse: boolean, isThinking?: boolean, thinkingTime?: number) => void,
     signal: AbortSignal

@@ -45,6 +45,7 @@ export default function AiChat() {
         supportsVision,
     } = useModelSelection()
 
+    const [version, setVersion] = useState<"v1" | "v2" | "v3">("v2")
     const [virtualAnchor, setVirtualAnchor] = useState<any>(null)
     const [multiline, setMultiline] = useState(false)
     const singleLineHeightRef = useRef<number | null>(null);
@@ -63,7 +64,7 @@ export default function AiChat() {
         isSessionFetching,
         setFile,
         loading
-    } = useChatSession(model, provider, thinking)
+    } = useChatSession(model, provider, thinking, version)
 
     useEffect(() => {
         if (id && id !== "new") {
@@ -219,9 +220,9 @@ export default function AiChat() {
     }, [editor])
 
 
-
+    console.log(chatResponse)
     return (
-        <Box className='flex-1 min-w-0 flex flex-col bg-white border-l border-[#ECEAE4] p-10 h-screen'>
+        <Box className='flex-1 min-w-0 flex flex-col bg-white border-l border-[#ECEAE4] p-10 h-full'>
             <Box className="flex items-center gap-4">
                 <SelectComponent
                     onChange={setProvider}
@@ -275,6 +276,20 @@ export default function AiChat() {
                                 )}
                                 <span className="truncate">{option.name}</span>
                             </Box>
+                        )}
+                    />
+                    <SelectComponent<"v1" | "v2" | "v3">
+                        className="shrink-0"
+                        variant="standard"
+                        disableUnderline
+                        onChange={setVersion}
+                        value={version}
+                        options={[{ id: "v1", name: "v1" }, { id: "v2", name: "v2" }, { id: "v3", name: "v3" }]}
+                        isLoading={false}
+                        renderValue={(v) => (
+                            <Tooltip title="Endpoint version">
+                                <span className="px-1 text-sm font-medium">{v.toUpperCase()}</span>
+                            </Tooltip>
                         )}
                     />
                     <Tooltip title={supportsThinking ? t(translations.aiChat.thinkingTooltip) : t(translations.aiChat.thinkingNotSupported)}>

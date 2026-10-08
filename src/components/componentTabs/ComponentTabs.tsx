@@ -46,7 +46,7 @@ export default function ComponentTabs({ items }: ComponentTabsProps) {
         return tabComponents
     }
     return (
-        <Box className="flex justify-center items-center flex-col w-70 h-screen bg-white border-r border-[#ECEAE4]">
+        <Box className="flex justify-center items-center flex-col w-full lg:w-70 h-[45vh] lg:h-screen bg-white border-r border-[#ECEAE4]">
             <Tabs value={currentTab} onChange={handleCurrentTab}>
                 {renderTabs(items)}
             </Tabs>

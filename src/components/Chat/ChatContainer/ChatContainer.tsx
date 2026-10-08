@@ -38,9 +38,6 @@ export default function ChatContainer({ chatItems, chatPending, sessionFetching 
                             {!isUser && chatItem.thinking && (
                                 <CollapsableContainer
                                     loadingText={t(translations.aiChat.thinking)}
-                                    text={t(translations.aiChat.thinkingTime, {
-                                        value: chatItem?.thinkingTime || 0
-                                    })}
                                     isLoading={chatItem?.isThinking}
                                 >
                                     <ChatMessage

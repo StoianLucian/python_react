@@ -69,7 +69,7 @@ function ChatMessage({ message, alignRight, isStreaming = false }: ChatMessagePr
             const key = `${index}-${item?.type ?? "text"}`;
             switch (item.type) {
                 case EntityType.TEXT:
-                    return <p key={key}>{item.text}</p>;
+                    return <p key={key} className="whitespace-pre-line">{item.text}</p>;
 
                 case EntityType.HARD_BREAK:
                     return <br key={key} />;

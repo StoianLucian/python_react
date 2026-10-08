@@ -1,7 +1,7 @@
 import axios from "axios"
 
-const isDev = import.meta.env.VITE_IS_DEV;
-const apiUrl = import.meta.env.VITE_API_URL;
+// const isDev = import.meta.env.VITE_IS_DEV;
+// const apiUrl = import.meta.env.VITE_API_URL;
 
 export const baseURL = "https://python-te51.onrender.com"
 
